@@ -1,0 +1,33 @@
+@medium(
+    name='rule_cve202420266',
+    platform=['cisco_iosxr'],
+    commands=dict(show_dhcp_ipv4='show running-config dhcp ipv4'),
+)
+def rule_cve202420266(configuration, commands, device, devices):
+    """
+    This rule checks for the presence of the DHCPv4 server or proxy feature
+    on Cisco IOS XR devices, which are vulnerable to a DoS attack as described
+    in CVE-2024-20266. The vulnerability allows an unauthenticated, remote attacker
+    to crash the dhcpd process by sending malformed DHCPv4 messages, causing a denial
+    of service condition.
+
+    The test involves checking the device's configuration to see if the DHCPv4 server
+    or proxy profile is bound to any interface. If such a configuration is found, the
+    device is considered vulnerable unless it has been updated to a fixed software version.
+    """
+
+    # Extract the output of the 'show running-config dhcp ipv4' command
+    dhcp_config = commands.show_dhcp_ipv4
+
+    # Check if the configuration contains any DHCPv4 server or proxy profiles
+    # bound to interfaces, indicating the device is potentially vulnerable
+    vulnerable = False
+    if 'profile' in dhcp_config and 'interface' in dhcp_config:
+        vulnerable = True
+
+    # Assert that the device is not vulnerable, i.e., no DHCPv4 server or proxy
+    # profiles should be bound to interfaces
+    assert not vulnerable, (
+        f"Device {device.name} is vulnerable to CVE-2024-20266. "
+        "DHCPv4 server or proxy profile is bound to an interface."
+    )
