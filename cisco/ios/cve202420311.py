@@ -17,4 +17,6 @@ def rule_cve202420311(configuration, commands, device, devices):
     assert 'router lisp' not in lisp_config, (
         f"Device {device.name} is vulnerable to CVE-2024-20311. "
         "LISP is enabled, which could allow an attacker to cause a denial of service."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-lisp-3gYXs3qP"
+
     )

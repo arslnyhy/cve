@@ -47,4 +47,5 @@ def rule_cve202420327(configuration, commands, device, devices):
     assert not (has_vulnerable_line_card and is_pppoe_enabled_globally and is_pppoe_enabled_on_interface), (
         "Device is vulnerable to CVE-2024-20327: "
         "Vulnerable line card detected with PPPoE enabled."
+        "Fore more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-pppma-JKWFgneW"
     )

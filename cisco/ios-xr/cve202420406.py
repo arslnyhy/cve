@@ -33,4 +33,5 @@ def rule_cve202420406(configuration, commands, device, devices):
         f"Device {device.name} is vulnerable to CVE-2024-20406. "
         "IS-IS Segment Routing Flexible Algorithm is enabled along with "
         "either Microloop Avoidance or TI-LFA."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-isis-xehpbVNe"
     )

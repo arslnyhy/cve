@@ -32,4 +32,5 @@ def rule_cve202420320(configuration, commands, device, devices):
     assert not is_vulnerable, (
         f"Device {device.name} is running a vulnerable version of Cisco IOS XR Software. "
         "Please upgrade to a fixed release to mitigate CVE-2024-20320."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-ssh-privesc-eWDMKew3"
     )

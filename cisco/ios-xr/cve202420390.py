@@ -23,4 +23,5 @@ def rule_cve202420390(configuration, commands, device, devices):
     assert 'xml agent' not in xml_config_output, (
         f"Device {device.name} is vulnerable to CVE-2024-20390. "
         "The Dedicated XML Agent feature is enabled."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-xml-tcpdos-ZEXvrU2S"
     )

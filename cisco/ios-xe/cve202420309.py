@@ -28,4 +28,5 @@ def rule_cve202420309(configuration, commands, device, devices):
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-20309. "
         "AUX port is configured with flowcontrol hardware and allows telnet connections."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-aux-333WBz8f"
     )

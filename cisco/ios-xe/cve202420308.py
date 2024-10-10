@@ -37,3 +37,4 @@ def rule_cve202420308(configuration, commands, device, devices):
     # If all conditions are met, the device is vulnerable
     if ikev1_fragmentation_enabled and ikev1_configured and buffers_huge_config and size > 32767:
         assert False, "Device is vulnerable to CVE-2024-20307 due to IKEv1 fragmentation and buffers huge size configuration."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ikev1-NO2ccFWz"

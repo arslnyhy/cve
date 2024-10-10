@@ -31,4 +31,5 @@ def rule_cve202420259(configuration, commands, device, devices):
     assert not (dhcp_snooping_enabled and endpoint_analytics_enabled), (
         f"Device {device.name} is vulnerable to CVE-2024-20259. "
         "Both DHCP snooping and endpoint analytics are enabled."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-dhcp-dos-T3CXPO9z"
     )

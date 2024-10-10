@@ -35,6 +35,7 @@ def rule_cve202420317(configuration, commands, device, devices):
                 f"Device {device.name} shows dropped packets in TC_7 VOQ, "
                 "indicating potential exploitation of CVE-2024-20317. "
                 "Immediate action is recommended."
+                "Fore more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-l2services-2mvHdNuC"
             )
 
     # If no Layer 2 services are configured and no packet drops are detected, the device is not vulnerable

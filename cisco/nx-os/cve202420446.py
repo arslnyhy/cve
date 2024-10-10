@@ -23,4 +23,5 @@ def rule_cve202420446(configuration, commands, device, devices):
     assert not (dhcp_relay_enabled and ipv6_address_configured), (
         f"Device {device.name} is vulnerable to CVE-2024-20446. "
         "DHCPv6 relay agent is enabled and an IPv6 address is configured."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-nxos-dhcp6-relay-dos-znEAA6xn"
     )

@@ -25,4 +25,5 @@ def rule_cve202420489(configuration, commands, device, devices):
     assert '"password_opts":' in pon_ctlr_config, (
         f"Device {device.name} is not using secure password storage for MongoDB credentials. "
         "Ensure the configuration uses 'password_opts' for secure storage."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-ponctlr-ci-OHcHmsFL"
     )

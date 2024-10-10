@@ -51,4 +51,5 @@ def rule_cve202420318(configuration, commands, device, devices):
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-20318. "
         "Please apply the necessary software updates or configuration changes."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-xrl2vpn-jesrU3fc"
     )

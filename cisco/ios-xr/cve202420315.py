@@ -32,6 +32,7 @@ def rule_cve202420315(configuration, commands, device, devices):
         if 'access-group' in interface_config_output and 'ingress' in interface_config_output:
             # If an ingress ACL is found, the device is vulnerable
             assert False, f"Ingress ACL found on MPLS interface {interface}, which is vulnerable to CVE-2024-20315."
+            "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-acl-dos-4Xj4555G"
 
     # If no ingress ACLs are found on any MPLS interfaces, the device is not vulnerable
     assert True, "No ingress ACLs found on MPLS interfaces, device is not vulnerable to CVE-2024-20315."

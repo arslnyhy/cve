@@ -21,6 +21,7 @@ def rule_cve202420483(configuration, commands, device, devices):
         assert False, (
             f"Device {device.name} is potentially vulnerable to CVE-2024-20483. "
             "The PON Controller is enabled, which could allow command injection attacks."
+            "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-ponctlr-ci-OHcHmsFL"
         )
     else:
         # If 'pon-ctlr' is not found, the device is not affected by this vulnerability

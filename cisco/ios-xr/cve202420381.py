@@ -25,6 +25,7 @@ def rule_cve202420381(configuration, commands, device, devices):
             f"Device {device.name} is vulnerable to CVE-2024-20381. "
             "The 'webui' feature is enabled in the confd.conf configuration, "
             "indicating that the JSON-RPC API is active."
+            "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-nso-auth-bypass-QnTEesp"
         )
     else:
         # If the 'webui' feature is not enabled, the device is not vulnerable

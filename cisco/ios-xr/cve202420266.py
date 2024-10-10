@@ -1,6 +1,6 @@
 @medium(
     name='rule_cve202420266',
-    platform=['cisco_iosxr'],
+    platform=['cisco_xr'],
     commands=dict(show_dhcp_ipv4='show running-config dhcp ipv4'),
 )
 def rule_cve202420266(configuration, commands, device, devices):
@@ -30,4 +30,5 @@ def rule_cve202420266(configuration, commands, device, devices):
     assert not vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-20266. "
         "DHCPv4 server or proxy profile is bound to an interface."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxr-dhcp-dos-3tgPKRdm"
     )

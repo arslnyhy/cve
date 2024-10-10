@@ -37,4 +37,5 @@ def rule_cve202420307(configuration, commands, device, devices):
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-20307. "
         f"IKEv1 fragmentation is enabled and buffers huge size is set to {buffers_huge_size}."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ikev1-NO2ccFWz"
     )

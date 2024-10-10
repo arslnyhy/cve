@@ -1,6 +1,6 @@
 @high(
     name='rule_cve202420303',
-    platform=['cisco_ios'],
+    platform=['cisco_xe'],
     commands=dict(
         show_ap_status='show ap status | i Flex',
         show_mdns_sd_summary='show mdns-sd summary'
@@ -26,4 +26,5 @@ def rule_cve202420303(configuration, commands, device, devices):
     # If both conditions are true, the device is vulnerable
     assert not (ap_in_flexconnect_mode and mdns_gateway_enabled), (
         "Device is vulnerable to CVE-2024-20303: mDNS gateway is enabled and APs are in FlexConnect mode."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-wlc-mdns-dos-4hv6pBGf"
     )

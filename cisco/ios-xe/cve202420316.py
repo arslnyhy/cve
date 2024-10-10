@@ -34,6 +34,7 @@ def rule_cve202420316(configuration, commands, device, devices):
         # If any of these log messages are present, the device is in a vulnerable state
         assert not (sync_needed or sync_start or sync_err or dmi_degraded), (
             "Device logs indicate potential vulnerability due to NETCONF/RESTCONF ACL bypass."
+            "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-dmi-acl-bypass-Xv8FO8Vz"
         )
     else:
         # If neither NETCONF nor RESTCONF is enabled, the device is not vulnerable

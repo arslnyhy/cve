@@ -36,4 +36,5 @@ def rule_cve202420312(configuration, commands, device, devices):
         assert True, (
             f"Device {device.name} is not vulnerable to CVE-2024-20312. "
             "It is not configured for IS-IS routing."
+            "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-isis-sGjyOUHX"
         )

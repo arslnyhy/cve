@@ -23,4 +23,5 @@ def rule_cve202420278(configuration, commands, device, devices):
         f"Device {device.name} with IP {device.ip_address} has NETCONF enabled, "
         "which may expose it to CVE-2024-20278 privilege escalation vulnerability. "
         "Consider updating the software to a fixed version."
+        "For more information, see hhttps://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxe-priv-esc-seAx6NLX"
     )

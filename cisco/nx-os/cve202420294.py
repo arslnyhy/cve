@@ -35,4 +35,5 @@ def rule_cve202420294(configuration, commands, device, devices):
     assert 'lldp receive' not in configuration, (
         "LLDP receive is configured on one or more interfaces. "
         "Ensure LLDP is disabled on all interfaces to mitigate CVE-2024-20294."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-nxos-lldp-dos-z7PncTgt"
     )

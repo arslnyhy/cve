@@ -42,4 +42,5 @@ def rule_cve202420304(configuration, commands, device, devices):
         f"Device {device.name} is vulnerable to CVE-2024-20304. "
         f"Multicast RPM is active, Mtrace2 processing is enabled, "
         f"and packet counts are high (MLD: {mld_packet_count}, IGMP: {igmp_packet_count})."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-pak-mem-exhst-3ke9FeFy"
     )
