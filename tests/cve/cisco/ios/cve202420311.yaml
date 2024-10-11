@@ -1,0 +1,15 @@
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202420311:
+    - outcome: TESTS_FAILED
+      commands:
+        check_lisp: |
+          router lisp
+
+    - outcome: OK
+      commands:
+        check_lisp: |
+          no router lisp

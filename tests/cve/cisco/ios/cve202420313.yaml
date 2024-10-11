@@ -1,0 +1,17 @@
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202420313:
+    - outcome: TESTS_FAILED
+      commands:
+        show_running_config: |
+          router ospf 1
+           distribute link-state
+
+    - outcome: OK
+      commands:
+        show_running_config: |
+          router ospf 1
+           no distribute link-state
