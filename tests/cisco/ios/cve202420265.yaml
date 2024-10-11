@@ -12,4 +12,4 @@ tests:
     - outcome: TEST_PASSED
       commands:
         show_version: |
-          
+          15.2(4)E8
