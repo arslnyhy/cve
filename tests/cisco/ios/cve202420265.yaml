@@ -7,9 +7,9 @@ tests:
     - outcome: TEST_FAILED
       commands:
         show_version: |
-          Cisco IOS Software, C3750E Software (C3750E-UNIVERSALK9-M), Version 15.2(4)E7, RELEASE SOFTWARE (fc2)
+          15.2(4)E7
 
     - outcome: TEST_PASSED
       commands:
         show_version: |
-          Cisco IOS Software, C3750E Software (C3750E-UNIVERSALK9-M), Version 16.9.5, RELEASE SOFTWARE (fc2)
+          
