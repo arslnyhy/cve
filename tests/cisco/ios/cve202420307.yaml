@@ -4,14 +4,14 @@ defaults:
 
 tests:
   rule_cve202420307:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_ikev1_fragmentation: |
           crypto isakmp fragmentation
         show_buffers_huge: |
           buffers huge size 65535
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_ikev1_fragmentation: |
           no crypto isakmp fragmentation

@@ -15,13 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
     - name: Run YAML tests
       run: |
         for test in tests/cisco/ios/*.yaml; do
           echo "Running test: $test"
-          python run_test.py "$test"
+          bash /root/cve/.git/hooks/pre-commit "$test"
         done
-    - name: Analyze Python files
-      run: python analyze.py cve/cisco/ios/

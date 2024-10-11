@@ -4,7 +4,7 @@ defaults:
 
 tests:
   rule_cve202420316:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_netconf: |
           netconf-yang
@@ -16,7 +16,7 @@ tests:
           %DMI-3-SYNC_ERR: Configuration sync error
           %DMI-3-DMI_DEGRADED: DMI degraded
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_netconf: |
           no netconf-yang

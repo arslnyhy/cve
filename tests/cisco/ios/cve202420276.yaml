@@ -4,7 +4,7 @@ defaults:
 
 tests:
   rule_cve202420276:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_running_config: |
           interface GigabitEthernet1/0/1
@@ -12,7 +12,7 @@ tests:
           !
           device classifier
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_running_config: |
           interface GigabitEthernet1/0/1

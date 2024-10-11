@@ -4,16 +4,16 @@ defaults:
 
 tests:
   rule_cve202420308:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_running_config: |
           crypto isakmp fragmentation
           buffers huge size 65535
         show_udp: |
           Local Address        Foreign Address      State        Process
-          0.0.0.0:500          0.0.0.0:*            LISTEN       ISAKMP
+           0.0.0.0:500          0.0.0.0:*            LISTEN       ISAKMP
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_running_config: |
           no crypto isakmp fragmentation

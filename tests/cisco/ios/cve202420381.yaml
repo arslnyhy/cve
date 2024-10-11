@@ -4,7 +4,7 @@ defaults:
 
 tests:
   rule_cve202420381:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_confd_conf: |
           <confd.conf>
@@ -13,7 +13,7 @@ tests:
             </webui>
           </confd.conf>
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_confd_conf: |
           <confd.conf>

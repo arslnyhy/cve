@@ -4,12 +4,12 @@ defaults:
 
 tests:
   rule_cve202420311:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         check_lisp: |
           router lisp
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         check_lisp: |
           no router lisp

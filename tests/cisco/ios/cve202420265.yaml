@@ -4,12 +4,21 @@ defaults:
 
 tests:
   rule_cve202420265:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_version: |
-          15.2(4)E7
+          8.9
+          8.10
+          17.2
+          17.3
+          17.4
+          17.5
+          17.7
+          17.8
+          17.10
+          17.11
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_version: |
-          15.2(4)E8
+          15

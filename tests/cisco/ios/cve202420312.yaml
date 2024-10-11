@@ -4,13 +4,13 @@ defaults:
 
 tests:
   rule_cve202420312:
-    - outcome: TEST_FAILED
+    - outcome: TESTS_FAILED
       commands:
         show_running_config: |
           router isis
            is-type level-1
 
-    - outcome: TEST_PASSED
+    - outcome: OK
       commands:
         show_running_config: |
           router isis
