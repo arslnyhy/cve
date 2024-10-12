@@ -1,3 +1,6 @@
+from comfy import medium
+
+
 @medium(
     name='rule_cve202420316',
     platform=['cisco_ios', 'cisco_xe'],

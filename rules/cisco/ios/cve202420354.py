@@ -1,3 +1,6 @@
+from comfy import medium
+
+
 @medium(
     name='rule_cve202420354',
     platform=['cisco_ios'],  # Specify the platform that this rule applies to

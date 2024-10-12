@@ -1,3 +1,6 @@
+from comfy import high
+
+
 @high(
     name='rule_cve202420265',
     platform=['cisco_ios'],
@@ -17,15 +20,15 @@ def rule_cve202420265(configuration, commands, device, devices):
     show_version_output = commands.show_version
     # This is a placeholder for extracting the version; adjust the regex based on actual output format
     import re
-    version_match = re.search(r'Version (\d+\.\d+\.\d+)', show_version_output)
-    
+    version_match = re.search(r'Version (\d+\.\d+\.\d+)', show_version_output.source)
+
     if version_match:
         software_version = version_match.group(1)
         # Define a list of vulnerable versions based on the advisory
         vulnerable_versions = [
             '8.9', '8.10', '17.2', '17.3', '17.4', '17.5', '17.7', '17.8', '17.10', '17.11'
         ]
-        
+
         # Check if the current software version is in the list of vulnerable versions
         if any(software_version.startswith(v) for v in vulnerable_versions):
             # If the version is vulnerable, the test fails

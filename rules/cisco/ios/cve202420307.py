@@ -1,3 +1,6 @@
+from comfy import high
+
+
 @high(
     name='rule_cve202420307',
     platform=['cisco_ios', 'cisco_xe'],
@@ -13,9 +16,10 @@ def rule_cve202420307(configuration, commands, device, devices):
     if exploited. The test checks if IKEv1 fragmentation is enabled and if the buffers huge
     size is set to a value greater than 32,767, which are the conditions for the vulnerability.
     """
-
     # Check if IKEv1 fragmentation is enabled by looking for the specific configuration command
-    ikev1_fragmentation_enabled = 'crypto isakmp fragmentation' in commands.show_ikev1_fragmentation
+    show_ikev1_fragmentation = commands.show_ikev1_fragmentation
+    ikev1_fragmentation_disabled = 'no crypto isakmp fragmentation' in show_ikev1_fragmentation
+    ikev1_fragmentation_enabled = not ikev1_fragmentation_disabled and 'crypto isakmp fragmentation' in show_ikev1_fragmentation
 
     # Check if the buffers huge size is configured and greater than 32,767
     buffers_huge_output = commands.show_buffers_huge
@@ -25,7 +29,7 @@ def rule_cve202420307(configuration, commands, device, devices):
     if 'buffers huge size' in buffers_huge_output:
         try:
             # Extract the size value from the command output
-            buffers_huge_size = int(buffers_huge_output.split()[-1])
+            buffers_huge_size = int(buffers_huge_output.source.split()[-1])
         except ValueError:
             # If conversion fails, log a warning (not expected in correct output)
             print(f"Warning: Unable to parse buffers huge size on device {device.name}")

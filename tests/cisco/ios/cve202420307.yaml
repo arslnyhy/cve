@@ -1,3 +1,6 @@
+.show_ikev1_fragmentation: &show_ikev1_fragmentation 'show running-config | include crypto isakmp fragmentation'
+.show_buffers_huge: &show_buffers_huge 'show running-config | include buffers huge'
+
 defaults:
   devices:
     - platform: cisco_ios
@@ -6,14 +9,14 @@ tests:
   rule_cve202420307:
     - outcome: TESTS_FAILED
       commands:
-        show_ikev1_fragmentation: |
+        *show_ikev1_fragmentation: |
           crypto isakmp fragmentation
-        show_buffers_huge: |
+        *show_buffers_huge: |
           buffers huge size 65535
 
     - outcome: OK
       commands:
-        show_ikev1_fragmentation: |
+        *show_ikev1_fragmentation: |
           no crypto isakmp fragmentation
-        show_buffers_huge: |
+        *show_buffers_huge: |
           buffers huge size 32767

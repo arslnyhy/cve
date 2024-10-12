@@ -1,3 +1,6 @@
+from comfy import high
+
+
 @high(
     name='rule_cve202420276',
     platform=['cisco_ios'],
@@ -11,15 +14,16 @@ def rule_cve202420276(configuration, commands, device, devices):
     The vulnerability is due to improper handling of process-switched traffic, which can be exploited by an
     unauthenticated, adjacent attacker to cause a denial of service (DoS) condition by reloading the device.
     """
-
     # Extract the output of the show running-config command
     config_output = commands.show_running_config
 
     # Check if port security is enabled
-    port_security_enabled = 'switchport port-security' in config_output
+    port_security_disabled = 'no switchport port-security' in config_output
+    port_security_enabled = not port_security_disabled and 'switchport port-security' in config_output
 
     # Check if device classifier is enabled
-    device_classifier_enabled = 'device classifier' in config_output
+    device_classifier_disabled = 'no device classifier' in config_output
+    device_classifier_enabled = not device_classifier_disabled and 'device classifier' in config_output
 
     # Check if AAA is enabled
     aaa_enabled = any(keyword in config_output for keyword in [

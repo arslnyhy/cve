@@ -1,3 +1,6 @@
+from comfy import high
+
+
 @high(
     name='rule_cve202420308',
     platform=['cisco_ios', 'cisco_xe'],
@@ -14,7 +17,8 @@ def rule_cve202420308(configuration, commands, device, devices):
     """
 
     # Check if IKEv1 fragmentation is enabled
-    ikev1_fragmentation_enabled = 'crypto isakmp fragmentation' in configuration
+    ikev1_fragmentation_disabled = 'no crypto isakmp fragmentation' in configuration
+    ikev1_fragmentation_enabled = not ikev1_fragmentation_disabled and 'crypto isakmp fragmentation' in configuration
     assert not ikev1_fragmentation_enabled, "IKEv1 fragmentation is enabled, which is part of the vulnerability condition."
 
     # Check if any IKEv1 VPN is configured by checking open UDP ports
@@ -27,9 +31,9 @@ def rule_cve202420308(configuration, commands, device, devices):
     buffers_huge_config = 'buffers huge size' in configuration
     if buffers_huge_config:
         # Extract the value of 'buffers huge size'
-        for line in configuration.splitlines():
+        for line in configuration:
             if 'buffers huge size' in line:
-                _, size = line.split()
+                *_, size = line.split()
                 size = int(size)
                 # Assert that the size is not greater than 32,767
                 assert size <= 32767, f"buffers huge size is set to {size}, which is greater than 32,767 and part of the vulnerability condition."

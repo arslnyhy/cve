@@ -1,3 +1,5 @@
+.show_confd_conf: &show_confd_conf 'show running-config | include confd.conf'
+
 defaults:
   devices:
     - platform: cisco_ios
@@ -6,7 +8,7 @@ tests:
   rule_cve202420381:
     - outcome: TESTS_FAILED
       commands:
-        show_confd_conf: |
+        *show_confd_conf: |
           <confd.conf>
             <webui>
               <enabled>true</enabled>
@@ -15,7 +17,7 @@ tests:
 
     - outcome: OK
       commands:
-        show_confd_conf: |
+        *show_confd_conf: |
           <confd.conf>
             <webui>
               <enabled>false</enabled>
