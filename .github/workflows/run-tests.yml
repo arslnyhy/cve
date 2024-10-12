@@ -1,0 +1,13 @@
+name: Run YAML tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-and-analyze:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run YAML tests
+      run: test-rules --rules-dir rules/ -p runner.yaml_rules -vvvl --rootdir $PWD $PWD
