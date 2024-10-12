@@ -16,8 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Run YAML tests
-      run: |
-        for test in tests/cisco/ios/*.yaml; do
-          echo "Running test: $test"
-          bash /root/cve/.git/hooks/pre-commit "$test"
-        done
+      run: test-rules --rules-dir rules/ -p runner.yaml_rules -vvvl --rootdir $PWD $PWD
+      # run: |
+      #  for test in tests/cisco/ios/*.yaml; do
+      #    echo "Running test: $test"
+      #    bash /root/cve/.git/hooks/pre-commit "$test"
+      #  done
