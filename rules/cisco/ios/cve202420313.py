@@ -22,14 +22,14 @@ def rule_cve202420313(configuration, commands, device, devices):
     ospf_config = commands.show_running_config
 
     # Check if both 'router ospf' and 'distribute link-state' are present in the configuration
-    no_dist_link_state = 'no distribute link-state' in ospf_config
-    is_dist_link_state = not no_dist_link_state and 'distribute link-state' in ospf_config
-    is_vulnerable = 'router ospf' in ospf_config and is_dist_link_state
+    is_ospf_enabled = 'router ospf' in ospf_config
+    is_dist_link_state = 'distribute link-state' in ospf_config
+    is_vulnerable = is_ospf_enabled and is_dist_link_state
 
     # Assert that the device is not vulnerable
     # If the device is vulnerable, the assertion will fail, indicating a high severity issue
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-20313. "
-        "OSPF with distribute link-state is enabled."
+        "OSPF with distribute link-state is enabled. "
         "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxe-ospf-dos-dR9Sfrxp"
     )

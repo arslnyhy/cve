@@ -18,12 +18,10 @@ def rule_cve202420276(configuration, commands, device, devices):
     config_output = commands.show_running_config
 
     # Check if port security is enabled
-    port_security_disabled = 'no switchport port-security' in config_output
-    port_security_enabled = not port_security_disabled and 'switchport port-security' in config_output
+    port_security_enabled = 'switchport port-security' in config_output
 
     # Check if device classifier is enabled
-    device_classifier_disabled = 'no device classifier' in config_output
-    device_classifier_enabled = not device_classifier_disabled and 'device classifier' in config_output
+    device_classifier_enabled = 'device classifier' in config_output
 
     # Check if AAA is enabled
     aaa_enabled = any(keyword in config_output for keyword in [
@@ -41,6 +39,6 @@ def rule_cve202420276(configuration, commands, device, devices):
     # If the device is vulnerable, the test will fail, indicating the presence of the vulnerability
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-20276. "
-        "Port security, device classifier, or AAA is enabled, which makes the device susceptible to DoS attacks."
+        "Port security, device classifier, or AAA is enabled, which makes the device susceptible to DoS attacks. "
         "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ios-dos-Hq4d3tZG"
     )

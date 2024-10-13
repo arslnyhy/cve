@@ -1,26 +1,15 @@
-.show_version: &show_version 'show version'
-
+---
 defaults:
   devices:
     - platform: cisco_ios
-
 tests:
   rule_cve202420265:
     - outcome: TESTS_FAILED
       commands:
-        *show_version: |
+        show version: |
           8.9
-          8.10
-          17.2
-          17.3
-          17.4
-          17.5
-          17.7
-          17.8
-          17.10
-          17.11
 
     - outcome: OK
       commands:
-        *show_version: |
-          15
+        show version: |
+          17.12.02

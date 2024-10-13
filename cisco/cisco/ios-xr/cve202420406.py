@@ -1,0 +1,37 @@
+@high(
+    name='rule_cve202420406',
+    platform=['cisco_xr'],
+    commands=dict(
+        flex_algo='show running-config router isis | include flex-algo',
+        microloop='show running-config router isis | include microloop',
+        ti_lfa='show running-config router isis | include ti-lfa'
+    ),
+)
+def rule_cve202420406(configuration, commands, device, devices):
+    """
+    This rule checks for the CVE-2024-20406 vulnerability in Cisco IOS XR devices.
+    The vulnerability is present if the device has IS-IS Segment Routing Flexible Algorithm
+    enabled along with either Microloop Avoidance or TI-LFA.
+    """
+
+    # Check if IS-IS Segment Routing Flexible Algorithm is enabled
+    flex_algo_enabled = bool(commands.flex_algo.strip())
+    
+    # Check if IS-IS Segment Routing Microloop Avoidance is enabled
+    microloop_enabled = bool(commands.microloop.strip())
+    
+    # Check if TI-LFA for Flexible Algorithm is enabled
+    ti_lfa_enabled = bool(commands.ti_lfa.strip())
+
+    # If IS-IS Segment Routing Flexible Algorithm is enabled and either Microloop Avoidance
+    # or TI-LFA is enabled, the device is vulnerable
+    is_vulnerable = flex_algo_enabled and (microloop_enabled or ti_lfa_enabled)
+
+    # Assert that the device is not vulnerable
+    # If the device is vulnerable, the assertion will fail, indicating a high severity issue
+    assert not is_vulnerable, (
+        f"Device {device.name} is vulnerable to CVE-2024-20406. "
+        "IS-IS Segment Routing Flexible Algorithm is enabled along with "
+        "either Microloop Avoidance or TI-LFA."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-isis-xehpbVNe"
+    )

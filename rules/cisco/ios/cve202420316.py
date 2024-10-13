@@ -29,14 +29,15 @@ def rule_cve202420316(configuration, commands, device, devices):
     if netconf_enabled or restconf_enabled:
         # Check device logs for indicators of compromise
         logs = commands.show_logs
-        sync_needed = '%DMI-5-SYNC_NEEDED' in logs
-        sync_start = '%DMI-5-SYNC_START' in logs
-        sync_err = '%DMI-3-SYNC_ERR' in logs
-        dmi_degraded = '%DMI-3-DMI_DEGRADED' in logs
-
+        sync_needed = '%DMI-5-SYNC_NEEDED'
+        sync_start = '%DMI-5-SYNC_START'
+        sync_err = '%DMI-3-SYNC_ERR'
+        dmi_degraded = '%DMI-3-DMI_DEGRADED'
+        candidates = (sync_needed, sync_start, sync_err, dmi_degraded)
+        vulnerable = any(candidate in logs for candidate in candidates)
         # If any of these log messages are present, the device is in a vulnerable state
-        assert not (sync_needed or sync_start or sync_err or dmi_degraded), (
-            "Device logs indicate potential vulnerability due to NETCONF/RESTCONF ACL bypass."
+        assert not vulnerable, (
+            "Device logs indicate potential vulnerability due to NETCONF/RESTCONF ACL bypass. "
             "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-dmi-acl-bypass-Xv8FO8Vz"
         )
     else:

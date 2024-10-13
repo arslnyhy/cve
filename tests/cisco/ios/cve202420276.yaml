@@ -1,5 +1,5 @@
+---
 .show_running_config: &show_running_config 'show running-config | include interface|port-security|device classifier|system-auth-control|port-control|mab'
-
 defaults:
   devices:
     - platform: cisco_ios
@@ -9,15 +9,14 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_running_config: |
-          interface GigabitEthernet1/0/1
-           switchport port-security
-          !
+          switchport port-security
           device classifier
+          dot1x system-auth-control
+          authentication order
+          authentication priority
+          authentication port-control
+          mab
 
     - outcome: OK
       commands:
-        *show_running_config: |
-          interface GigabitEthernet1/0/1
-           no switchport port-security
-          !
-          no device classifier
+        *show_running_config:

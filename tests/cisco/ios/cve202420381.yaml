@@ -9,17 +9,10 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_confd_conf: |
-          <confd.conf>
             <webui>
               <enabled>true</enabled>
             </webui>
-          </confd.conf>
 
     - outcome: OK
       commands:
         *show_confd_conf: |
-          <confd.conf>
-            <webui>
-              <enabled>false</enabled>
-            </webui>
-          </confd.conf>

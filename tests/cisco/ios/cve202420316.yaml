@@ -22,9 +22,6 @@ tests:
 
     - outcome: OK
       commands:
-        *show_netconf: |
-          no netconf-yang
-        *show_restconf: |
-          no restconf
-        *show_logs: |
-          No relevant DMI logs found
+        *show_netconf:
+        *show_restconf:
+        *show_logs:

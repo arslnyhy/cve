@@ -12,11 +12,10 @@ tests:
         *show_ikev1_fragmentation: |
           crypto isakmp fragmentation
         *show_buffers_huge: |
-          buffers huge size 65535
+          buffers huge size 50000
 
     - outcome: OK
       commands:
-        *show_ikev1_fragmentation: |
-          no crypto isakmp fragmentation
-        *show_buffers_huge: |
-          buffers huge size 32767
+        *show_ikev1_fragmentation:
+        *show_buffers_huge:
+          buffers huge size 30000

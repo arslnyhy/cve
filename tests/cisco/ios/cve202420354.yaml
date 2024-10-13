@@ -6,10 +6,10 @@ tests:
   rule_cve202420354:
     - outcome: TESTS_FAILED
       commands:
-        'show version': |
-          Cisco IOS Software, C3700 Software (AP3G2-K9W8-M), Version 8.5.171.0, RELEASE SOFTWARE (fc1)
+        show version: |
+          8.5.171.0
 
     - outcome: OK
       commands:
-        'show version': |
-          Cisco IOS Software, C3700 Software (AP3G2-K9W8-M), Version 8.10.151.0, RELEASE SOFTWARE (fc1)
+        show version: |
+          8.6

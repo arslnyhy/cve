@@ -16,24 +16,21 @@ def rule_cve202420265(configuration, commands, device, devices):
     If the device is running a vulnerable version, the test will fail.
     """
 
-    # Extract the software version from the command output
-    show_version_output = commands.show_version
-    # This is a placeholder for extracting the version; adjust the regex based on actual output format
-    import re
-    version_match = re.search(r'Version (\d+\.\d+\.\d+)', show_version_output.source)
+    # Extract the version information from the command output
+    version_output = commands.show_version
 
-    if version_match:
-        software_version = version_match.group(1)
-        # Define a list of vulnerable versions based on the advisory
-        vulnerable_versions = [
-            '8.9', '8.10', '17.2', '17.3', '17.4', '17.5', '17.7', '17.8', '17.10', '17.11'
-        ]
+    # List of vulnerable software versions
+    vulnerable_versions = [
+        '8.9', '8.10', '17.2', '17.3', '17.4', '17.5', '17.7', '17.8', '17.10', '17.11'
+    ]
 
-        # Check if the current software version is in the list of vulnerable versions
-        if any(software_version.startswith(v) for v in vulnerable_versions):
-            # If the version is vulnerable, the test fails
-            assert False, f"Device {device.name} is running a vulnerable software version: {software_version}. Please upgrade to a fixed release."
-            "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ap-secureboot-bypass-zT5vJkSD"
-    else:
-        # If the version cannot be determined, raise an error
-        assert False, "Unable to determine the software version from the device. Please check the command output format."
+    # Check if the current device's software version is in the list of vulnerable versions
+    is_vulnerable = any(version in version_output for version in vulnerable_versions)
+
+    # Assert that the device is not running a vulnerable version
+    # If the device is running a vulnerable version, the test will fail
+    assert not is_vulnerable, (
+        f"Device {device.name} is running a vulnerable version of Cisco IOS Software. "
+        "Please upgrade to a fixed release to mitigate CVE-2024-20265. "
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-ap-secureboot-bypass-zT5vJkSD"
+    )

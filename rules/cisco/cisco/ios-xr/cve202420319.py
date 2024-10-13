@@ -1,0 +1,27 @@
+@medium(
+    name='rule_cve202420319',
+    platform=['cisco_xr'],
+    commands=dict(
+        show_mgmt_plane='show running-config control-plane management-plane',
+        show_snmp='show running-config snmp-server'
+    ),
+)
+def rule_cve202420319(configuration, commands, device, devices):
+    """
+    This rule checks for the presence of CVE-2024-20319 vulnerability in Cisco IOS XR devices.
+    The vulnerability allows an attacker to bypass management plane protection policies
+    and access the SNMP server if both management plane protection and SNMP server are configured.
+    """
+
+    # Check if management plane protection is configured
+    mgmt_plane_configured = 'management-plane' in commands.show_mgmt_plane
+    # Check if SNMP server is configured
+    snmp_configured = 'snmp-server' in commands.show_snmp
+
+    # Assert that the device is not vulnerable
+    # The device is vulnerable if both management plane protection and SNMP server are configured
+    assert not (mgmt_plane_configured and snmp_configured), (
+        f"Device {device.name} is vulnerable to CVE-2024-20319. "
+        "Both management plane protection and SNMP server are configured."
+        "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-snmp-uhv6ZDeF"
+    )

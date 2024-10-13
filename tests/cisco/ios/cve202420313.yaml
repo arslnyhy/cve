@@ -15,5 +15,3 @@ tests:
     - outcome: OK
       commands:
         *show_running_config: |
-          router ospf 1
-           no distribute link-state

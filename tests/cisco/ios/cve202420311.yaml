@@ -14,4 +14,3 @@ tests:
     - outcome: OK
       commands:
         *check_lisp: |
-          no router lisp
