@@ -1,0 +1,18 @@
+---
+defaults:
+  devices:
+    - platform: cisco_xe
+tests:
+  rule_cve202420306:
+    - outcome: TESTS_FAILED
+      commands:
+        show version: |
+          Cisco IOS-XE Software
+        show running-config: |
+          utd engine standard unified-policy
+
+    - outcome: OK
+      commands:
+        show version:
+          Cisco IOS Software
+        show running-config:

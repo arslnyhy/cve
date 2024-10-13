@@ -1,6 +1,8 @@
+from comfy import medium
+
 @medium(
     name='rule_cve202420278',
-    platform=['cisco_ios_xe'],
+    platform=['cisco_xe'],
     commands=dict(show_netconf='show running-config | include netconf-yang'),
 )
 def rule_cve202420278(configuration, commands, device, devices):

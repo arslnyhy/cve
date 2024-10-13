@@ -1,0 +1,17 @@
+.check_lisp: &check_lisp 'show running-config | include router lisp'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+    - platform: cisco_ios
+
+tests:
+  rule_cve202420311:
+    - outcome: TESTS_FAILED
+      commands:
+        *check_lisp: |
+          router lisp
+
+    - outcome: OK
+      commands:
+        *check_lisp:

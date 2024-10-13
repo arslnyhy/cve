@@ -1,6 +1,8 @@
+from comfy import high
+
 @high(
     name='rule_cve202420259',
-    platform=['cisco_ios_xe'],
+    platform=['cisco_xe'],
     commands=dict(
         show_dhcp_snooping='show running-config | include dhcp snooping vlan',
         show_endpoint_analytics='show avc sd-service info detailed | include isLearnMacOnFif|isDcsEnabled'

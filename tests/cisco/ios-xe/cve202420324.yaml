@@ -1,0 +1,17 @@
+---
+defaults:
+  devices:
+    - platform: cisco_xe
+tests:
+  rule_cve202420324:
+    - outcome: TESTS_FAILED
+      commands:
+        show tech wireless: |
+          password
+        show running-config: |
+          password
+
+    - outcome: OK
+      commands:
+        show tech wireless:
+        show running-config:

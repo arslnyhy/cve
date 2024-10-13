@@ -1,0 +1,22 @@
+---
+.show_dhcp_snooping: &show_dhcp_snooping 'show running-config | include dhcp snooping vlan'
+.show_endpoint_analytics: &show_endpoint_analytics 'show avc sd-service info detailed | include isLearnMacOnFif|isDcsEnabled'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202420259:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_dhcp_snooping: |
+          ip dhcp snooping vlan
+        *show_endpoint_analytics: |
+          "isDcsEnabled": true
+          "isLearnMacOnFif": true
+
+    - outcome: OK
+      commands:
+        *show_dhcp_snooping:
+        *show_endpoint_analytics:

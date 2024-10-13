@@ -1,0 +1,20 @@
+---
+.show_ap_status: &show_ap_status 'show ap status | i Flex'
+.show_mdns_sd_summary: &show_mdns_sd_summary 'show mdns-sd summary'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+tests:
+  rule_cve202420303:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_ap_status: |
+          AP1234.5678.90AB  FlexConnect  Registered
+        *show_mdns_sd_summary: |
+          mDNS Gateway: Enabled
+
+    - outcome: OK
+      commands:
+        *show_ap_status:
+        *show_mdns_sd_summary:

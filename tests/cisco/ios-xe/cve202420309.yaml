@@ -1,0 +1,28 @@
+---
+.show_aux_config: &show_aux_config 'show running-config | section line aux 0'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+tests:
+  rule_cve202420309:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_aux_config: |
+          line aux 0
+           flowcontrol hardware
+           transport input all
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_aux_config: |
+          line aux 0
+           flowcontrol hardware
+           transport input telnet
+
+    - outcome: OK
+      commands:
+        *show_aux_config: |
+          line aux 0
+          flowcontrol hardware
+           transport input ssh

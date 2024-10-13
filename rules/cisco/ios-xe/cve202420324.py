@@ -1,9 +1,11 @@
+from comfy import medium
+
 @medium(
-    name='rule_cve_2024_20324',
+    name='rule_cve202420324',
     platform=['cisco_xe'],
     commands=dict(show_tech_wireless='show tech wireless', show_run='show running-config'),
 )
-def rule_cve_2024_20324(configuration, commands, device, devices):
+def rule_cve202420324(configuration, commands, device, devices):
     """
     This rule checks for the presence of a vulnerability in Cisco IOS XE Software
     that allows low-privileged users to access WLAN configuration details.

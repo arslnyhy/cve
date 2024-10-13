@@ -1,0 +1,16 @@
+---
+.show_netconf: &show_netconf 'show running-config | include netconf-yang'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+tests:
+  rule_cve202420278:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_netconf: |
+          netconf-yang
+
+    - outcome: OK
+      commands:
+        *show_netconf:

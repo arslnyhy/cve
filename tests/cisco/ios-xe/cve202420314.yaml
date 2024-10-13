@@ -1,0 +1,14 @@
+---
+defaults:
+  devices:
+    - platform: cisco_xe
+tests:
+  rule_cve202420314:
+    - outcome: TESTS_FAILED
+      commands:
+        show sd-access fabric edge-nodes: |
+          Edge Node
+
+    - outcome: OK
+      commands:
+        show sd-access fabric edge-nodes:
