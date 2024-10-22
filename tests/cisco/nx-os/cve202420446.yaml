@@ -1,0 +1,39 @@
+---
+.show_dhcp_relay: &show_dhcp_relay 'show run all | include "^ipv6 dhcp relay"'
+.show_ipv6_interface: &show_ipv6_interface 'show ipv6 interface brief'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420446:
+    - outcome: OK
+      commands:
+        *show_dhcp_relay: |
+          No DHCPv6 relay configuration found
+        *show_ipv6_interface: |
+          No IPv6 interfaces configured
+
+    - outcome: OK
+      commands:
+        *show_dhcp_relay: |
+          ipv6 dhcp relay
+        *show_ipv6_interface: |
+          No IPv6 interfaces configured
+
+    - outcome: OK
+      commands:
+        *show_dhcp_relay: |
+          No DHCPv6 relay configuration found
+        *show_ipv6_interface: |
+          Interface              IPv6 Address/Link-local address
+          Eth1/1                 2001:db8::1/64
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_dhcp_relay: |
+          ipv6 dhcp relay
+        *show_ipv6_interface: |
+          Interface              IPv6 Address/Link-local address
+          Eth1/1                 2001:db8::1/64

@@ -1,0 +1,18 @@
+---
+.show_mpls_interface_detail: &show_mpls_interface_detail 'show mpls interface detail'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420267:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_mpls_interface_detail: |
+            MPLS operational
+            
+    - outcome: OK
+      commands:
+        *show_mpls_interface_detail:
+

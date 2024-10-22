@@ -1,0 +1,26 @@
+---
+.show_confd_conf: &show_confd_conf 'show running-config | include confd.conf'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420381:
+    - outcome: OK
+      commands:
+        *show_confd_conf: |
+          <confd.conf>
+            <webui>
+              <enabled>false</enabled>
+            </webui>
+          </confd.conf>
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_confd_conf: |
+          <confd.conf>
+            <webui>
+              <enabled>true</enabled>
+            </webui>
+          </confd.conf>

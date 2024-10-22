@@ -1,0 +1,23 @@
+---
+.show_feature: &show_feature 'show feature | include bash'
+.show_running_config: &show_running_config 'show running-config | include shelltype'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420411:
+    - outcome: OK
+      commands:
+        *show_feature: |
+          bash                  1         disabled
+        *show_running_config: |
+          No 'shelltype bash' configuration found
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_feature: |
+          bash                  1         enabled
+        *show_running_config: |
+          username admin shelltype bash

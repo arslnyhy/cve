@@ -1,0 +1,22 @@
+---
+.show_bgp: &show_bgp 'show running-config | include "router bgp"'
+.show_neighbors: &show_neighbors 'show running-config | include neighbor'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420321:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_bgp: |
+          router bgp 65000
+        *show_neighbors: |
+          neighbor 192.168.1.1 remote-as 65001
+          
+    - outcome: OK
+      commands:
+        *show_bgp:
+        *show_neighbors:
+

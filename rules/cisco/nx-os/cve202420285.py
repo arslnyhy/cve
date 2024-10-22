@@ -1,9 +1,11 @@
+from comfy import medium
+
 @medium(
-    name='rule_cve202420284',
+    name='rule_cve202420285',
     platform=['cisco_nxos'],
     commands=dict(show_version='show version'),
 )
-def rule_cve202420284(configuration, commands, device, devices):
+def rule_cve202420285(configuration, commands, device, devices):
     """
     This rule checks for the presence of a vulnerable NX-OS version that is susceptible
     to the Python Sandbox Escape Vulnerabilities (CVE-2024-20284, CVE-2024-20285, CVE-2024-20286).

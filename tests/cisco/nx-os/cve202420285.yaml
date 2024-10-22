@@ -1,0 +1,18 @@
+.show_version: &show_version 'show version'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420285:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          9.3(13)
+          
+    - outcome: OK
+      commands:
+        *show_version: |
+          9.4
+

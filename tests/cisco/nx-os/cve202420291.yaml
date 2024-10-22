@@ -1,0 +1,29 @@
+---
+.show_port_channel: &show_port_channel 'show running-config interface port-channel'
+.show_acl_entries: &show_acl_entries 'show system internal access-list interface port-channel input entries detail'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202420291:
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_port_channel: |
+          interface port-channel1
+            description Uplink to Core
+            switchport mode trunk
+            ip access-group
+        *show_acl_entries: |
+          Interface port-channel1:
+            ip access-group
+            
+    - outcome: OK
+      commands:
+        *show_port_channel: |
+          interface port-channel1
+            description Uplink to Core
+            switchport mode trunk
+        *show_acl_entries: |            
