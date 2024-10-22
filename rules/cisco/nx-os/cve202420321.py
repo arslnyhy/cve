@@ -22,12 +22,10 @@ def rule_cve202420321(configuration, commands, device, devices):
     """
 
     # Check if BGP is configured on the device
-    bgp_config = commands.show_bgp
-    bgp_enabled = 'router bgp' in bgp_config
+    bgp_enabled = 'router bgp' in commands.show_bgp
 
     # Check if there is any eBGP neighbor configured
-    neighbors_config = commands.show_neighbors
-    has_ebgp_neighbor = 'remote-as' in neighbors_config
+    has_ebgp_neighbor = 'remote-as' in commands.show_neighbors
 
     # If both conditions are met, the device is vulnerable
     # Raise an assertion error to indicate the vulnerability
