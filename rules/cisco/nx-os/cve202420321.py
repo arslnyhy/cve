@@ -31,7 +31,7 @@ def rule_cve202420321(configuration, commands, device, devices):
 
     # If both conditions are met, the device is vulnerable
     # Raise an assertion error to indicate the vulnerability
-    assert not bgp_enabled and not has_ebgp_neighbor, (
+    assert not (bgp_enabled and has_ebgp_neighbor), (
         f"Device {device.name} with IP {device.ip_address} is vulnerable to "
         "CVE-2024-20321. eBGP is configured with a neighbor from a different AS."
         "For more information, see https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-nxos-ebgp-dos-L3QCwVJ"

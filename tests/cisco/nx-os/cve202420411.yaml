@@ -12,9 +12,8 @@ tests:
       commands:
         *show_feature: |
           bash                  1         disabled
-        *show_running_config: |
-          No 'shelltype bash' configuration found
-
+        *show_running_config:
+        
     - outcome: TESTS_FAILED
       commands:
         *show_feature: |

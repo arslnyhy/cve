@@ -1,3 +1,5 @@
+from comfy import high
+
 @high(
     name='rule_cve202420446',
     platform=['cisco_nxos'],
@@ -16,7 +18,7 @@ def rule_cve202420446(configuration, commands, device, devices):
     # Check if the DHCPv6 relay agent is enabled
     dhcp_relay_enabled = 'ipv6 dhcp relay' in commands.show_dhcp_relay
     # Check if there is at least one IPv6 address configured
-    ipv6_address_configured = bool(commands.show_ipv6_interface.strip())
+    ipv6_address_configured = 'Interface' in commands.show_ipv6_interface
 
     # Assert that the device is not vulnerable
     # The device is vulnerable if both conditions are true

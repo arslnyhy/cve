@@ -7,14 +7,15 @@ defaults:
 
 tests:
   rule_cve202420399:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          NXOS: version 9.2(3)
+          
     - outcome: OK
       commands:
         *show_version: |
           Cisco Nexus Operating System (NX-OS) Software
           NXOS: version 9.3(14)
 
-    - outcome: TESTS_FAILED
-      commands:
-        *show_version: |
-          Cisco Nexus Operating System (NX-OS) Software
-          NXOS: version 9.2(3)
