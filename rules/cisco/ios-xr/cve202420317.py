@@ -1,6 +1,8 @@
+from comfy import high
+
 @high(
     name='rule_cve202420317',
-    platform=['cisco_iosxr'],
+    platform=['cisco_xr'],
     commands=dict(
         show_running_config='show running-config | include l2transport',
         show_voq_stats='show controllers npu stats voq ingress interface'

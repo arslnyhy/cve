@@ -3,7 +3,7 @@
 
 defaults:
   devices:
-    - platform: cisco_nxos
+    - platform: cisco_xr
 
 tests:
   rule_cve202420381:
@@ -17,4 +17,4 @@ tests:
     - outcome: OK
       commands:
         *show_confd_conf:
-          # no webui configuration
+          # no webui enabled

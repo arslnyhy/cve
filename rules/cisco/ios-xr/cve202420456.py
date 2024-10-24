@@ -1,3 +1,5 @@
+from comfy import high
+
 @high(
     name='rule_cve202420456',
     platform=['cisco_xr'],
@@ -14,7 +16,7 @@ def rule_cve202420456(configuration, commands, device, devices):
     show_version_output = commands.show_version
 
     # Check if the device is running the vulnerable version 24.2.1
-    is_vulnerable_version = 'Version 24.2.1' in show_version_output
+    is_vulnerable_version = '24.2.1' in show_version_output
 
     # Assert that the device is not running the vulnerable version
     assert not is_vulnerable_version, (

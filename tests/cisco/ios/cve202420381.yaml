@@ -15,4 +15,5 @@ tests:
 
     - outcome: OK
       commands:
-        *show_confd_conf: |
+        *show_confd_conf:
+          # empty output

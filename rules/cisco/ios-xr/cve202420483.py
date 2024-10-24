@@ -1,3 +1,5 @@
+from comfy import high
+
 @high(
     name='rule_cve202420483',
     platform=['cisco_iosxr'],

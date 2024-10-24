@@ -1,0 +1,24 @@
+---
+.show_dhcp_ipv4: &show_dhcp_ipv4 'show running-config dhcp ipv4'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420266:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_dhcp_ipv4: |
+          dhcp ipv4
+           profile DHCP_SERVER server
+            lease 0 1 0
+           !
+           interface GigabitEthernet0/0/0/0 server profile DHCP_SERVER
+
+    - outcome: OK
+      commands:
+        *show_dhcp_ipv4:
+          dhcp ipv4
+           # no profile DHCP_SERVER server
+           # no interface configuration

@@ -8,15 +8,16 @@ defaults:
 
 tests:
   rule_cve202420411:
-    - outcome: OK
-      commands:
-        *show_feature: |
-          bash                  1         disabled
-        *show_running_config:
-        
     - outcome: TESTS_FAILED
       commands:
         *show_feature: |
           bash                  1         enabled
         *show_running_config: |
           username admin shelltype bash
+          
+    - outcome: OK
+      commands:
+        *show_feature: |
+          bash                  1         disabled
+        *show_running_config:
+          # no shelltype bash

@@ -3,17 +3,16 @@
 
 defaults:
   devices:
-    - platform: cisco_nxos
+    - platform: cisco_xr
 
 tests:
-  rule_cve202420399:
+  rule_cve202420456:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          Nexus9000
-          
+          24.2.1
+
     - outcome: OK
       commands:
-        *show_version:
-          # no vulnerable platform
-
+        *show_version: |
+          24.1.1

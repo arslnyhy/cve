@@ -1,6 +1,8 @@
+from comfy import high
+
 @high(
     name='rule_cve202420327',
-    platform=['cisco_iosxr'],
+    platform=['cisco_xr'],
     commands=dict(
         show_platform='show platform',
         show_running_config_pppoe='show running-config pppoe bba-group',

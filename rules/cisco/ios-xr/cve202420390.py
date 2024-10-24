@@ -1,6 +1,8 @@
+from comfy import medium
+
 @medium(
     name='rule_cve202420390',
-    platform=['cisco_iosxr'],
+    platform=['cisco_xr'],
     commands=dict(show_xml_config='show running-config | include xml'),
 )
 def rule_cve202420390(configuration, commands, device, devices):

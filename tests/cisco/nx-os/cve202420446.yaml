@@ -19,5 +19,6 @@ tests:
     - outcome: OK
       commands:
         *show_dhcp_relay:
+          # no ipv6 dhcp relay
         *show_ipv6_interface:
-
+          # no ipv6 interface

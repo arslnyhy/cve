@@ -1,0 +1,23 @@
+---
+.show_run: &show_run 'show running-config'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420262:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_run: |
+          scp
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_run: |
+          sftp
+
+    - outcome: OK
+      commands:
+        *show_run:
+          # no scp or sftp configuration

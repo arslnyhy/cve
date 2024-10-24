@@ -10,12 +10,10 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          Cisco Nexus Operating System (NX-OS) Software
-          NXOS: version 7.0(3)I7(5)
+          7.0(3)I7(5)
           
     - outcome: OK
       commands:
         *show_version: |
-          Cisco Nexus Operating System (NX-OS) Software
-          NXOS: version 7.0(3)I7(6)
+          7.0(3)I7(6)
 

@@ -20,8 +20,7 @@ def rule_cve202420289(configuration, commands, device, devices):
 
     # Define a list of vulnerable versions
     vulnerable_versions = [
-        "7.0(3)I7(5)",  # Example vulnerable version
-        # Add other known vulnerable versions here
+        "7.0(3)I7(5)",
     ]
     
     is_vulnerable = any(version in version_output for version in vulnerable_versions)

@@ -3,8 +3,8 @@ from comfy import medium
 
 @medium(
     name='rule_cve202420354',
-    platform=['cisco_ios'],  # Specify the platform that this rule applies to
-    commands=dict(show_version='show version'),  # Command to get the software version
+    platform=['cisco_ios'],
+    commands=dict(show_version='show version'),
 )
 def rule_cve202420354(configuration, commands, device, devices):
     """
@@ -17,9 +17,16 @@ def rule_cve202420354(configuration, commands, device, devices):
     version_output = commands.show_version
 
     # List of vulnerable software versions for Cisco Aironet APs
+    # Checkout documentaton to see fixed versions
+    # https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-airo-ap-dos-PPPtcVW
     vulnerable_versions = [
-        '8.5.171.0',  # Example of a vulnerable version
-        # Add other vulnerable versions as needed
+        '8.5.171.0',
+        '8.10.130.0',
+        '16.12.4a',
+        '17.3',
+        '17.6',
+        '17.9',
+        '17.12',
     ]
 
     # Check if the current device's software version is in the list of vulnerable versions

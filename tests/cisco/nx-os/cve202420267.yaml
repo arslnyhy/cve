@@ -10,9 +10,10 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_mpls_interface_detail: |
-            MPLS operational
-            
+          MPLS operational
+
     - outcome: OK
       commands:
         *show_mpls_interface_detail:
+          # no MPLS operational
 

@@ -12,19 +12,23 @@ def rule_cve202420399(configuration, commands, device, devices):
     to escape the NX-OS CLI and execute arbitrary commands on the underlying Linux OS.
 
     The rule checks the device's software version to determine if it is vulnerable.
-    If the version is one of the known vulnerable versions, the test will fail.
+    If the version is one of the known vulnerable plat, the test will fail.
     """
 
-    # List of known vulnerable versions of NX-OS
-    vulnerable_versions = [
-        '7.3(0)N1(1)',  # Example version, replace with actual vulnerable versions
-        '9.2(3)',       # Example version, replace with actual vulnerable versions
-        # Add more versions as necessary
+    # List of known vulnerable platforms of NX-OS
+    vulnerable_platforms = [
+        'MDS9000',
+        'Nexus3000',
+        'Nexus5500',
+        'Nexus5600',
+        'Nexus6000',
+        'Nexus7000',
+        'Nexus9000',
     ]
 
     # Extract the software version from the 'show version' command output
     show_version_output = commands.show_version
-    for version in vulnerable_versions:
-        if version in show_version_output:
-            assert False, f"Device is running a vulnerable version: {version}"
+    for platform in vulnerable_platforms:
+        if platform in show_version_output:
+            assert False, f"Device is running a vulnerable platform: {platform}"
             "Fore more information, see https://www.sygnia.co/threat-reports-and-advisories/china-nexus-threat-group-velvet-ant-exploits-cisco-0-day/"

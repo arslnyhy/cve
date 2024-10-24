@@ -1,0 +1,29 @@
+---
+.show_platform: &show_platform 'show platform'
+.show_running_config: &show_running_config 'show running-config'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420318:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_platform: |
+          0/0/CPU0        A9K-8HG-FLEX-TR
+        *show_running_config: |
+          interface GigabitEthernet0/0/0/0
+           rewrite ingress tag pop 1 symmetric
+          l2vpn
+           load-balancing flow src-dst-ip
+          interface GigabitEthernet0/0/0/1
+           service-policy input POLICY-IN
+
+    - outcome: OK
+      commands:
+        *show_platform: |
+          0/0/CPU0        A9K-RSP440-TR
+        *show_running_config: |
+          interface GigabitEthernet0/0/0/0
+           ipv4 address 192.168.1.1 255.255.255.0

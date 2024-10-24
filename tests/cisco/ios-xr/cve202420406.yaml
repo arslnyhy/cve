@@ -1,0 +1,28 @@
+---
+.flex_algo: &flex_algo 'show running-config router isis | include flex-algo'
+.microloop: &microloop 'show running-config router isis | include microloop'
+.ti_lfa: &ti_lfa 'show running-config router isis | include ti-lfa'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420406:
+    - outcome: TESTS_FAILED
+      commands:
+        *flex_algo: |
+          flex-algo 128
+        *microloop: |
+          microloop
+        *ti_lfa: |
+          ti-lfa
+
+    - outcome: OK
+      commands:
+        *flex_algo:
+          # no flex-algo
+        *microloop:
+          # no microloop
+        *ti_lfa:
+          # no ti-lfa

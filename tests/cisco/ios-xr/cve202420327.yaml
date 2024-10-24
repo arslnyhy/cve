@@ -1,0 +1,29 @@
+---
+.show_platform: &show_platform 'show platform'
+.show_running_config_pppoe: &show_running_config_pppoe 'show running-config pppoe bba-group'
+.show_running_config_interface: &show_running_config_interface 'show running-config interface | utility egrep "interface|pppoe enable bba-group|bundle id"'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420327:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_platform: |
+          0/0/CPU0        A9K-8HG-FLEX-TR
+        *show_running_config_pppoe: |
+          pppoe bba-group GROUP1
+        *show_running_config_interface: |
+          interface GigabitEthernet0/0/0/0
+           pppoe enable bba-group GROUP1
+
+    - outcome: OK
+      commands:
+        *show_platform: |
+          0/0/CPU0        A9K-RSP440-TR
+        *show_running_config_pppoe:
+          # no pppoe bba-group
+        *show_running_config_interface:
+          # no pppoe enable bba-group

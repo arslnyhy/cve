@@ -15,6 +15,6 @@ tests:
 
     - outcome: OK
       commands:
-        *show_running_config: |
+        *show_running_config:
           router isis
-           is-type level-2-only
+           is-type level-2-only # No level-1

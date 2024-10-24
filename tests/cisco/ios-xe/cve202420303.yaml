@@ -17,4 +17,13 @@ tests:
     - outcome: OK
       commands:
         *show_ap_status:
+          # empty output
         *show_mdns_sd_summary:
+          # empty output
+
+    - outcome: OK
+      commands:
+        *show_ap_status:
+          # empty output
+        *show_mdns_sd_summary:
+          mDNS Gateway: Disabled

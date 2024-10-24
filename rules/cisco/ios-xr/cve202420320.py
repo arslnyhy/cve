@@ -1,6 +1,8 @@
+from comfy import high
+
 @high(
     name='rule_cve202420320',
-    platform=['cisco_iosxr'],
+    platform=['cisco_xr'],
     commands=dict(show_version='show version'),
 )
 def rule_cve202420320(configuration, commands, device, devices):
@@ -15,13 +17,13 @@ def rule_cve202420320(configuration, commands, device, devices):
 
     # Define the vulnerable software versions
     vulnerable_versions = [
-        '7.3.2 LNT',
-        '7.4 LNT',
-        '7.5 LNT',
-        '7.6 LNT',
-        '7.7 LNT',
-        '7.8 LNT',
-        '7.9 LNT',
+        '7.3.2',
+        '7.4',
+        '7.5',
+        '7.6',
+        '7.7',
+        '7.8',
+        '7.9',
     ]
 
     # Check if the device's software version is listed as vulnerable

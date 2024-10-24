@@ -1,9 +1,10 @@
+from comfy import medium
+
 @medium(
     name='rule_cve202420262',
     platform=['cisco_xr'],
     commands=dict(
         show_run='show running-config',
-        show_features='show features'
     ),
 )
 def rule_cve202420262(configuration, commands, device, devices):
@@ -18,9 +19,9 @@ def rule_cve202420262(configuration, commands, device, devices):
     """
 
     # Check if SCP is enabled in the device configuration
-    scp_enabled = 'scp' in commands.show_features.lower()
+    scp_enabled = 'scp' in commands.show_run
     # Check if SFTP is enabled in the device configuration
-    sftp_enabled = 'sftp' in commands.show_features.lower()
+    sftp_enabled = 'sftp' in commands.show_run
 
     # Assert that neither SCP nor SFTP is enabled to pass the test
     assert not (scp_enabled or sftp_enabled), (

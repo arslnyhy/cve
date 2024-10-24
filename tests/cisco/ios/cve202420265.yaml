@@ -7,9 +7,9 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         show version: |
-          8.9
+          8.10
 
     - outcome: OK
       commands:
         show version: |
-          17.12.02
+          9

@@ -15,3 +15,4 @@ tests:
     - outcome: OK
       commands:
         *check_lisp:
+          # empty output

@@ -1,0 +1,18 @@
+---
+.show_xml_config: &show_xml_config 'show running-config | include xml'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420390:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_xml_config: |
+          xml agent
+
+    - outcome: OK
+      commands:
+        *show_xml_config:
+          # no xml agent enabled

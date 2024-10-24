@@ -1,0 +1,28 @@
+---
+.show_install_active: &show_install_active 'show install active summary | include mcast'
+.show_lpts_pifib_hardware: &show_lpts_pifib_hardware 'show lpts pifib hardware entry brief location | include 33433'
+.show_lpts_pifib_entry: &show_lpts_pifib_entry 'show lpts pifib entry brief | include 33433'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420304:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_install_active: |
+          mcast-1.0.0.0-r7x.x86_64
+        *show_lpts_pifib_hardware: |
+          any
+        *show_lpts_pifib_entry: |
+          any
+
+    - outcome: OK
+      commands:
+        *show_install_active:
+          # no mcast
+        *show_lpts_pifib_hardware:
+          # no any
+        *show_lpts_pifib_entry:
+          # no any

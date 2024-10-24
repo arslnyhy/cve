@@ -1,0 +1,18 @@
+---
+.show_running_config: &show_running_config 'show running-config'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420315:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_running_config: |
+           ipv4 access-group ACL_INGRESS ingress
+
+    - outcome: OK
+      commands:
+        *show_running_config:
+          # no ipv4 access-group ACL_INGRESS ingress

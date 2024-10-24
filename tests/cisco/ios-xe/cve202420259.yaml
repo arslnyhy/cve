@@ -19,4 +19,14 @@ tests:
     - outcome: OK
       commands:
         *show_dhcp_snooping:
+          # empty output
         *show_endpoint_analytics:
+          # empty output
+
+    - outcome: OK
+      commands:
+        *show_dhcp_snooping:
+          # empty output
+        *show_endpoint_analytics:
+          "isDcsEnabled": false
+          "isLearnMacOnFif": false

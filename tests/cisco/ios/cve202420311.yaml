@@ -13,4 +13,5 @@ tests:
 
     - outcome: OK
       commands:
-        *check_lisp: |
+        *check_lisp:
+          # No LISP enabled

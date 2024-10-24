@@ -1,3 +1,5 @@
+from comfy import high
+
 @high(
     name='rule_cve202420406',
     platform=['cisco_xr'],
@@ -15,13 +17,13 @@ def rule_cve202420406(configuration, commands, device, devices):
     """
 
     # Check if IS-IS Segment Routing Flexible Algorithm is enabled
-    flex_algo_enabled = bool(commands.flex_algo.strip())
+    flex_algo_enabled = 'flex-algo' in commands.flex_algo
     
     # Check if IS-IS Segment Routing Microloop Avoidance is enabled
-    microloop_enabled = bool(commands.microloop.strip())
+    microloop_enabled = 'microloop' in commands.microloop
     
     # Check if TI-LFA for Flexible Algorithm is enabled
-    ti_lfa_enabled = bool(commands.ti_lfa.strip())
+    ti_lfa_enabled = 'ti-lfa' in commands.ti_lfa
 
     # If IS-IS Segment Routing Flexible Algorithm is enabled and either Microloop Avoidance
     # or TI-LFA is enabled, the device is vulnerable

@@ -12,4 +12,4 @@ tests:
     - outcome: OK
       commands:
         show version: |
-          8.6
+          17.13

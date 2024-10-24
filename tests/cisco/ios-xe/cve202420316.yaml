@@ -24,5 +24,8 @@ tests:
     - outcome: OK
       commands:
         *show_netconf:
+          # no netconf-yang
         *show_restconf:
+          # no restconf
         *show_logs:
+          # no DMI logs

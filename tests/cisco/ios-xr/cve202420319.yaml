@@ -1,0 +1,27 @@
+---
+.show_mgmt_plane: &show_mgmt_plane 'show running-config control-plane management-plane'
+.show_snmp: &show_snmp 'show running-config snmp-server'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420319:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_mgmt_plane: |
+          control-plane
+           management-plane
+            inband
+             interface all
+              allow all
+        *show_snmp: |
+          snmp-server community public RO
+
+    - outcome: OK
+      commands:
+        *show_mgmt_plane:
+          # no management-plane
+        *show_snmp:
+          # no snmp-server

@@ -1,0 +1,18 @@
+---
+.show_pon_ctlr: &show_pon_ctlr 'show running-config pon-ctlr'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420489:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_pon_ctlr: |
+          "password"
+
+    - outcome: OK
+      commands:
+        *show_pon_ctlr: |
+          "password_opts" 

@@ -14,3 +14,4 @@ tests:
     - outcome: OK
       commands:
         *show_netconf:
+          # empty output

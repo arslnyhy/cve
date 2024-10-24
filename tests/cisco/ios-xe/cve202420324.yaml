@@ -14,4 +14,6 @@ tests:
     - outcome: OK
       commands:
         show tech wireless:
+          # no password parameter
         show running-config:
+          # no password parameter

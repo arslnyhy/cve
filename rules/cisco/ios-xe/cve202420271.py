@@ -2,8 +2,8 @@ from comfy import high
 
 @high(
     name='rule_cve202420271',
-    platform=['cisco_wlc', 'cisco_xe'],  # Assuming the platforms are cisco_wlc and cisco_ios for Wireless LAN Controllers and APs
-    commands=dict(show_version='show version'),  # Command to get the software version
+    platform=['cisco_wlc', 'cisco_xe'],
+    commands=dict(show_version='show version'),
 )
 def rule_cve202420271(configuration, commands, device, devices):
     """

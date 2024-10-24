@@ -1,0 +1,23 @@
+---
+.show_running_config: &show_running_config 'show running-config | include l2transport'
+.show_voq_stats: &show_voq_stats 'show controllers npu stats voq ingress interface'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202420317:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_running_config: |
+          l2transport
+        *show_voq_stats: |
+          TC_7 DroppedPkts 10
+
+    - outcome: OK
+      commands:
+        *show_running_config:
+          # no l2transport
+        *show_voq_stats:
+          # no TC_7 DroppedPkts

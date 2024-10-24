@@ -12,3 +12,4 @@ tests:
     - outcome: OK
       commands:
         show sd-access fabric edge-nodes:
+          # empty output

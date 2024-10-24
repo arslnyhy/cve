@@ -18,5 +18,6 @@ tests:
     - outcome: OK
       commands:
         *show_bgp:
+          # no BGP configuration
         *show_neighbors:
-
+          # no BGP neighbors

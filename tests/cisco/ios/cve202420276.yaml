@@ -20,3 +20,4 @@ tests:
     - outcome: OK
       commands:
         *show_running_config:
+          # No port security, device classifier, or AAA enabled

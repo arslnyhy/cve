@@ -26,4 +26,5 @@ tests:
           interface port-channel1
             description Uplink to Core
             switchport mode trunk
-        *show_acl_entries: |            
+        *show_acl_entries:
+          # no ACL entries
