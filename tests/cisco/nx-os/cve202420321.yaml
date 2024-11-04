@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_bgp: &show_bgp 'show running-config | include "router bgp"'
 .show_neighbors: &show_neighbors 'show running-config | include neighbor'
 
@@ -10,14 +11,18 @@ tests:
   rule_cve202420321:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          9.3(12)
         *show_bgp: |
           router bgp 65000
         *show_neighbors: |
           neighbor 192.168.1.1 remote-as 65001
-          
+
     - outcome: OK
       commands:
-        *show_bgp:
-          # no BGP configuration
-        *show_neighbors:
-          # no BGP neighbors
+        *show_version: |
+          9.4(1)
+        *show_bgp: |
+          # No BGP configuration
+        *show_neighbors: |
+          # No BGP neighbors

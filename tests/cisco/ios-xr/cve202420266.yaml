@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_dhcp_ipv4: &show_dhcp_ipv4 'show running-config dhcp ipv4'
 
 defaults:
@@ -9,6 +10,8 @@ tests:
   rule_cve202420266:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.7.1
         *show_dhcp_ipv4: |
           dhcp ipv4
            profile DHCP_SERVER server
@@ -18,7 +21,9 @@ tests:
 
     - outcome: OK
       commands:
-        *show_dhcp_ipv4:
+        *show_version: |
+          7.11.3
+        *show_dhcp_ipv4: |
           dhcp ipv4
            # no profile DHCP_SERVER server
            # no interface configuration

@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_mpls_interface_detail: &show_mpls_interface_detail 'show mpls interface detail'
 
 defaults:
@@ -9,11 +10,15 @@ tests:
   rule_cve202420267:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.0(3)I7(5)
         *show_mpls_interface_detail: |
           MPLS operational
 
     - outcome: OK
       commands:
-        *show_mpls_interface_detail:
+        *show_version: |
+          9.4(1)
+        *show_mpls_interface_detail: |
           # no MPLS operational
 

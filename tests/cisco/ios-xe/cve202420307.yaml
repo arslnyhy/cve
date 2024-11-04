@@ -1,3 +1,5 @@
+---
+.show_version: &show_version 'show version'
 .show_ikev1_fragmentation: &show_ikev1_fragmentation 'show running-config | include crypto isakmp fragmentation'
 .show_buffers_huge: &show_buffers_huge 'show running-config | include buffers huge'
 
@@ -9,6 +11,8 @@ tests:
   rule_cve202420307:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
         *show_ikev1_fragmentation: |
           crypto isakmp fragmentation
         *show_buffers_huge: |
@@ -16,13 +20,17 @@ tests:
 
     - outcome: OK
       commands:
-        *show_ikev1_fragmentation: |
+        *show_version: |
+          Cisco IOS XE Software, Version 18.0.1
+        *show_ikev1_fragmentation:
           # No IKEv1 fragmentation enabled
         *show_buffers_huge: |
           buffers huge size 30000
 
     - outcome: OK
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
         *show_ikev1_fragmentation: |
           crypto isakmp fragmentation
         *show_buffers_huge: |

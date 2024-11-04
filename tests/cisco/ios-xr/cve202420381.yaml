@@ -1,5 +1,6 @@
 ---
-.show_confd_conf: &show_confd_conf 'show running-config | include confd.conf'
+.show_version: &show_version 'show version'
+.show_confd_conf: &show_confd_conf 'show confd.conf'
 
 defaults:
   devices:
@@ -9,6 +10,8 @@ tests:
   rule_cve202420381:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.7.1
         *show_confd_conf: |
           <webui>
             <enabled>true</enabled>
@@ -16,5 +19,7 @@ tests:
 
     - outcome: OK
       commands:
+        *show_version: |
+          7.11.3
         *show_confd_conf:
           # no webui enabled

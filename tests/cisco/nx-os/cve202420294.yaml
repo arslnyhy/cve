@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_feature: &show_feature 'show feature | include lldp'
 .show_lldp_interface: &show_lldp_interface 'show lldp interface eth 1/1'
 
@@ -10,14 +11,17 @@ tests:
   rule_cve202420294:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.0(3)I7(5)
         *show_feature: |
           lldp                   1         enabled
         *show_lldp_interface: |
-          Interface Information:
-            Enable (tx/rx/dcbx): Y/Y/Y
+          Enable (tx/rx/dcbx): Y/Y/Y
 
     - outcome: OK
       commands:
+        *show_version: |
+          9.4(1)
         *show_feature: |
           lldp                   1         disabled
         *show_lldp_interface: |

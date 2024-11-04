@@ -1,5 +1,7 @@
 ---
+.show_version: &show_version 'show version'
 .show_running_config: &show_running_config 'show running-config | include interface|port-security|device classifier|system-auth-control|port-control|mab'
+
 defaults:
   devices:
     - platform: cisco_ios
@@ -8,6 +10,8 @@ tests:
   rule_cve202420276:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.5(1)SY8
         *show_running_config: |
           switchport port-security
           device classifier
@@ -19,5 +23,16 @@ tests:
 
     - outcome: OK
       commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.5(1)SY8
         *show_running_config:
           # No port security, device classifier, or AAA enabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 16.0.1  # Non-vulnerable version
+        *show_running_config: |
+          switchport port-security
+          device classifier
+          dot1x system-auth-control

@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_port_channel: &show_port_channel 'show running-config interface port-channel'
 .show_acl_entries: &show_acl_entries 'show system internal access-list interface port-channel input entries detail'
 
@@ -8,23 +9,25 @@ defaults:
 
 tests:
   rule_cve202420291:
-
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          9.3(11)
         *show_port_channel: |
           interface port-channel1
             description Uplink to Core
             switchport mode trunk
-            ip access-group
+            ip access-group ACL-IN in
         *show_acl_entries: |
-          Interface port-channel1:
-            ip access-group
-            
+          # No ACL entries found
+
     - outcome: OK
       commands:
+        *show_version: |
+          9.4(1)
         *show_port_channel: |
           interface port-channel1
             description Uplink to Core
             switchport mode trunk
-        *show_acl_entries:
-          # no ACL entries
+        *show_acl_entries: |
+          # No ACL configuration

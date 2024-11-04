@@ -1,3 +1,4 @@
+.show_version: &show_version 'show version'
 .check_lisp: &check_lisp 'show running-config | include router lisp'
 
 defaults:
@@ -8,10 +9,21 @@ tests:
   rule_cve202420311:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.8(3)M8
         *check_lisp: |
           router lisp
 
     - outcome: OK
       commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.8(3)M8
         *check_lisp:
           # No LISP enabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 16.0.1  # Non-vulnerable version
+        *check_lisp: |
+          router lisp

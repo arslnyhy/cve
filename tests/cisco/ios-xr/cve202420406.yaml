@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .flex_algo: &flex_algo 'show running-config router isis | include flex-algo'
 .microloop: &microloop 'show running-config router isis | include microloop'
 .ti_lfa: &ti_lfa 'show running-config router isis | include ti-lfa'
@@ -11,6 +12,8 @@ tests:
   rule_cve202420406:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.7.1
         *flex_algo: |
           flex-algo 128
         *microloop: |
@@ -20,6 +23,8 @@ tests:
 
     - outcome: OK
       commands:
+        *show_version: |
+          7.11.3
         *flex_algo:
           # no flex-algo
         *microloop:

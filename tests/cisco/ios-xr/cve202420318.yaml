@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_platform: &show_platform 'show platform'
 .show_running_config: &show_running_config 'show running-config'
 
@@ -10,6 +11,8 @@ tests:
   rule_cve202420318:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.7.1
         *show_platform: |
           0/0/CPU0        A9K-8HG-FLEX-TR
         *show_running_config: |
@@ -22,6 +25,8 @@ tests:
 
     - outcome: OK
       commands:
+        *show_version: |
+          7.11.3
         *show_platform: |
           0/0/CPU0        A9K-RSP440-TR
         *show_running_config: |

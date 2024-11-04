@@ -9,9 +9,9 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          7.5
+          7.5.1
 
     - outcome: OK
       commands:
         *show_version: |
-          7.10
+          7.11

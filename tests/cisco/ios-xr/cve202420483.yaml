@@ -1,18 +1,23 @@
 ---
+.show_version: &show_version 'show version'
 .show_pon_ctlr: &show_pon_ctlr 'show running-config pon-ctlr'
 
 defaults:
   devices:
-    - platform: cisco_iosxr
+    - platform: cisco_xr
 
 tests:
   rule_cve202420483:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          24.1.1
         *show_pon_ctlr: |
           pon-ctlr
 
     - outcome: OK
       commands:
+        *show_version: |
+          24.3.2
         *show_pon_ctlr:
           # no pon-ctlr

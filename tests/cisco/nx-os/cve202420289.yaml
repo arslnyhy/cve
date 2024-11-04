@@ -10,8 +10,8 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          7.0(3)I7(5)
-          
+          10.4(1)
+
     - outcome: OK
       commands:
         *show_version: |

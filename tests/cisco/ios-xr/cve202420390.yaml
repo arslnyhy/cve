@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_xml_config: &show_xml_config 'show running-config | include xml'
 
 defaults:
@@ -9,10 +10,14 @@ tests:
   rule_cve202420390:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          7.7.1
         *show_xml_config: |
           xml agent
 
     - outcome: OK
       commands:
+        *show_version: |
+          7.11.3
         *show_xml_config:
           # no xml agent enabled

@@ -15,5 +15,5 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          9.4
+          9.4(3)
 

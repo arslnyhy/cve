@@ -1,3 +1,5 @@
+---
+.show_version: &show_version 'show version'
 .check_lisp: &check_lisp 'show running-config | include router lisp'
 
 defaults:
@@ -9,10 +11,21 @@ tests:
   rule_cve202420311:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
         *check_lisp: |
           router lisp
 
     - outcome: OK
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 18.0.1
+        *check_lisp:
+          # empty output
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
         *check_lisp:
           # empty output

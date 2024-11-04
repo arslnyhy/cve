@@ -1,13 +1,16 @@
 ---
+.show_version: &show_version 'show version'
 .show_aux_config: &show_aux_config 'show running-config | section line aux 0'
 
 defaults:
   devices:
-    - platform: cisco_ios
+    - platform: cisco_xe
 tests:
   rule_cve202420309:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
         *show_aux_config: |
           line aux 0
            flowcontrol hardware
@@ -15,6 +18,8 @@ tests:
 
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
         *show_aux_config: |
           line aux 0
            flowcontrol hardware
@@ -22,7 +27,9 @@ tests:
 
     - outcome: OK
       commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 18.0.1
         *show_aux_config: |
           line aux 0
-          flowcontrol hardware
+           flowcontrol hardware
            transport input ssh

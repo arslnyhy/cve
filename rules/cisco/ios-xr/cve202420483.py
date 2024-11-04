@@ -2,7 +2,7 @@ from comfy import high
 
 @high(
     name='rule_cve202420483',
-    platform=['cisco_iosxr'],
+    platform=['cisco_xr'],
     commands=dict(
         show_version='show version',
         show_pon_ctlr='show running-config pon-ctlr'

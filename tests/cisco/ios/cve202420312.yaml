@@ -1,5 +1,5 @@
+.show_version: &show_version 'show version'
 .show_running_config: &show_running_config 'show running-config | section router isis'
-
 
 defaults:
   devices:
@@ -9,12 +9,32 @@ tests:
   rule_cve202420312:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.5(3)S6
         *show_running_config: |
           router isis
            is-type level-1
 
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.5(3)S6
+        *show_running_config: |
+          router isis
+           is-type level-1-2
+
     - outcome: OK
       commands:
-        *show_running_config:
+        *show_version: |
+          Cisco IOS Software, Version 15.5(3)S6
+        *show_running_config: |
           router isis
-           is-type level-2-only # No level-1
+           is-type level-2-only
+
+    - outcome: OK
+      commands:
+        *show_version:
+          Cisco IOS Software, Version 16.0.1  # Non-vulnerable version
+        *show_running_config: |
+          router isis
+           is-type level-1

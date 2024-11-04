@@ -10,10 +10,12 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          Nexus9000
-          
+          Cisco Nexus9000 C9300v Chassis
+          7.0(3)I7(5)
+
     - outcome: OK
       commands:
-        *show_version:
-          # no vulnerable platform
+        *show_version: |
+          Cisco Nexus9500 C9300v Chassis
+          9.4(1)
 

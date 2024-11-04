@@ -1,4 +1,8 @@
 ---
+.show_version: &show_version 'show version'
+.show_tech_wireless: &show_tech_wireless 'show tech wireless'
+.show_running_config: &show_running_config 'show running-config'
+
 defaults:
   devices:
     - platform: cisco_xe
@@ -6,14 +10,27 @@ tests:
   rule_cve202420324:
     - outcome: TESTS_FAILED
       commands:
-        show tech wireless: |
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.1
+        *show_tech_wireless: |
           password
-        show running-config: |
+        *show_running_config: |
           password
 
     - outcome: OK
       commands:
-        show tech wireless:
+        *show_version: |
+          Cisco IOS XE Software, Version 18.0.1
+        *show_tech_wireless:
           # no password parameter
-        show running-config:
+        *show_running_config:
+          # no password parameter
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.1
+        *show_tech_wireless:
+          # no password parameter
+        *show_running_config:
           # no password parameter

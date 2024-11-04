@@ -1,4 +1,7 @@
 ---
+.show_version: &show_version 'show version'
+.show_sd_access_fabric: &show_sd_access_fabric 'show sd-access fabric edge-nodes'
+
 defaults:
   devices:
     - platform: cisco_xe
@@ -6,10 +9,21 @@ tests:
   rule_cve202420314:
     - outcome: TESTS_FAILED
       commands:
-        show sd-access fabric edge-nodes: |
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.1
+        *show_sd_access_fabric: |
           Edge Node
 
     - outcome: OK
       commands:
-        show sd-access fabric edge-nodes:
+        *show_version: |
+          Cisco IOS XE Software, Version 18.0.1
+        *show_sd_access_fabric:
+          # empty output
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.1
+        *show_sd_access_fabric:
           # empty output

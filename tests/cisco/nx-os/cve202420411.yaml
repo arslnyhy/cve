@@ -1,4 +1,5 @@
 ---
+.show_version: &show_version 'show version'
 .show_feature: &show_feature 'show feature | include bash'
 .show_running_config: &show_running_config 'show running-config | include shelltype'
 
@@ -10,14 +11,18 @@ tests:
   rule_cve202420411:
     - outcome: TESTS_FAILED
       commands:
+        *show_version: |
+          9.3(13)
         *show_feature: |
           bash                  1         enabled
         *show_running_config: |
           username admin shelltype bash
-          
+
     - outcome: OK
       commands:
+        *show_version: |
+          9.4(1)
         *show_feature: |
           bash                  1         disabled
-        *show_running_config:
-          # no shelltype bash
+        *show_running_config: |
+          # No shelltype configuration
