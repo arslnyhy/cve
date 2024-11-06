@@ -1,0 +1,69 @@
+from comfy import medium
+
+@medium(
+    name='rule_cve202439519',
+    platform=['juniper_junos'],
+    commands=dict(
+        show_version='show version',
+        show_chassis_hardware='show chassis hardware',
+        show_config_evpn='show configuration | display set | match "routing-instances.*instance-type evpn"',
+        show_config_irb='show configuration | display set | match "routing-instances.*routing-interface irb"'
+    )
+)
+def rule_cve202439519(configuration, commands, device, devices):
+    """
+    This rule checks for CVE-2024-39519 vulnerability in Juniper Networks Junos OS Evolved on ACX7000 Series.
+    The vulnerability allows an unauthenticated, adjacent attacker to cause a Denial of Service (DoS)
+    through multicast traffic loops in a multihoming EVPN MPLS scenario.
+
+    Args:
+        configuration (str): The full device configuration
+        commands (dict): Output of the executed commands
+        device: The current device object
+        devices: All devices in the test scope
+    """
+    # Check if device is ACX7000 Series
+    chassis_output = commands.show_chassis_hardware
+    if not any(model in chassis_output for model in ['ACX7024', 'ACX7100', 'ACX7509']):
+        return
+
+    # Check if running Junos OS Evolved
+    version_output = commands.show_version
+    if 'Evolved' not in version_output:
+        return
+
+    # List of vulnerable software versions
+    vulnerable_versions = [
+        # 22.2 versions before 22.4R2-EVO
+        '22.2R1-EVO', '22.2R2-EVO', '22.2R3-EVO',
+        # 22.3 versions
+        '22.3R1-EVO', '22.3R2-EVO', '22.3R3-EVO',
+        # 22.4 versions before 22.4R2-EVO
+        '22.4R1-EVO'
+    ]
+
+    # Check if version is vulnerable
+    version_vulnerable = any(version in version_output for version in vulnerable_versions)
+
+    if not version_vulnerable:
+        return
+
+    # Check if EVPN is configured with IRB interface
+    evpn_config = commands.show_config_evpn
+    irb_config = commands.show_config_irb
+
+    evpn_enabled = 'instance-type evpn' in evpn_config
+    irb_configured = 'routing-interface irb' in irb_config
+
+    # Device is vulnerable if both EVPN and IRB are configured
+    is_vulnerable = evpn_enabled and irb_configured
+
+    assert not is_vulnerable, (
+        f"Device {device.name} is vulnerable to CVE-2024-39519. "
+        "The device is running a vulnerable version of Junos OS Evolved with EVPN and IRB configured. "
+        "This configuration can allow multicast traffic loops in a multihoming scenario. "
+        "Please upgrade to one of the following fixed versions: "
+        "22.4R2-EVO, 23.2R1-EVO, or later. "
+        "There are no known workarounds for this issue. "
+        "For more information, see https://supportportal.juniper.net/JSA82983"
+    )
