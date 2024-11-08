@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_slicing: &show_config_slicing 'show configuration | display set | match "chassis network-slices"'
+.show_config_ri: &show_config_ri 'show configuration | display set | match "routing-instances"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421597:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_config_slicing: |
+          set chassis network-slices guest-network-functions
+        *show_config_ri: |
+          set routing-instances test-ri instance-type virtual-router
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_config_slicing: 
+          # No network slicing configured
+        *show_config_ri: |
+          set routing-instances test-ri instance-type virtual-router
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_config_slicing: |
+          set chassis network-slices guest-network-functions
+        *show_config_ri: |
+          set routing-instances test-ri instance-type virtual-router

@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_netconf: &show_config_netconf 'show configuration | display set | match "system services netconf"'
+.show_config_grpc: &show_config_grpc 'show configuration | display set | match "system services extension-service request-response grpc"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421614:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R2
+        *show_config_netconf: |
+          set system services netconf ssh
+        *show_config_grpc: |
+          set system services extension-service request-response grpc
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R2
+        *show_config_netconf: |
+          set system services netconf ssh
+        *show_config_grpc: 
+          # gRPC not configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_netconf: |
+          set system services netconf ssh
+        *show_config_grpc: |
+          set system services extension-service request-response grpc

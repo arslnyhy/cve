@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_system_users: &show_system_users 'show system users'
+.show_config_login: &show_config_login 'show configuration | display set | match "system login"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439520:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10008
+        *show_system_users: |
+          operator  pts/0    Apr  1 12:34
+        *show_config_login: |
+          set system login class operator permissions view
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10008
+        *show_system_users: |
+          root     pts/0    Apr  1 12:34
+        *show_config_login: |
+          set system login class super-user permissions all
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 23.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10008
+        *show_system_users: |
+          operator  pts/0    Apr  1 12:34
+        *show_config_login: |
+          set system login class operator permissions view

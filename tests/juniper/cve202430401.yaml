@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_fpc_crashes: &show_fpc_crashes 'show system core-dumps | match fpc'
+.show_aftman_status: &show_aftman_status 'show system processes extensive | match aftman'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430401:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+        *show_fpc_crashes: |
+          /var/crash/fpc0.core.0
+        *show_aftman_status: |
+          aftman core dumped
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+        *show_fpc_crashes: 
+          # No FPC crashes
+        *show_aftman_status: |
+          aftman running normally
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+        *show_fpc_crashes: |
+          /var/crash/fpc0.core.0
+        *show_aftman_status: |
+          aftman core dumped 

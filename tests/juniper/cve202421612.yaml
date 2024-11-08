@@ -1,0 +1,38 @@
+.show_version: &show_version 'show version'
+.show_ofp_status: &show_ofp_status 'show system connections | match ofp | match LISTEN'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "firewall family inet filter mgmt-filter"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421612:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_ofp_status: |
+          ofp LISTEN
+        *show_config_filter: 
+          # No firewall filter configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_ofp_status: |
+          ofp LISTEN
+        *show_config_filter: |
+          set firewall family inet filter mgmt-filter term discard_ofp from protocol tcp
+          set firewall family inet filter mgmt-filter term discard_ofp then discard
+          set firewall family inet filter mgmt-filter term 2 then accept
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS 22.2R2
+        *show_ofp_status: |
+          ofp LISTEN
+        *show_config_filter: 
+          # Not running Junos OS Evolved

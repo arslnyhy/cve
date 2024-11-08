@@ -1,0 +1,64 @@
+---
+.show_version: &show_version 'show version'
+.show_config_analytics: &show_config_analytics 'show configuration | display set | match "services analytics"'
+.show_fpc_crashes: &show_fpc_crashes 'show system core-dumps | match fpc'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447494:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S8
+        *show_config_analytics: |
+          set services analytics streaming-server collector1
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234
+          /var/crash/fpc1_crash_5678
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S9  # Fixed version
+        *show_config_analytics: |
+          set services analytics streaming-server collector1
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S8
+        *show_config_analytics: # Analytics not configured
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S8
+        *show_config_analytics: |
+          set services analytics streaming-server collector1
+        *show_fpc_crashes: # No FPC crashes
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: PTX10001-36MR
+          Junos: 21.4R3-S8-EVO  # Evolved not affected
+        *show_config_analytics: |
+          set services analytics streaming-server collector1
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234

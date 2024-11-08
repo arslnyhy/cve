@@ -1,0 +1,48 @@
+.show_version: &show_version 'show version'
+.show_config_te: &show_config_te 'show configuration | display set | match "protocols (source-packet-routing traffic-engineering|ospf traffic-engineering|isis traffic-engineering)"'
+.show_rpd_crashes: &show_rpd_crashes 'show system core-dumps | match rpd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439541:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.4R2
+        *show_config_te: |
+          set protocols source-packet-routing traffic-engineering database
+          set protocols ospf traffic-engineering
+        *show_rpd_crashes: |
+          /var/crash/rpd.core-tarball.0.tgz
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.4R2-EVO
+        *show_config_te: |
+          set protocols source-packet-routing traffic-engineering database
+          set protocols isis traffic-engineering
+        *show_rpd_crashes: |
+          /var/crash/rpd.core-tarball.0.tgz
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.4R3-S1
+        *show_config_te: |
+          set protocols source-packet-routing traffic-engineering database
+          set protocols ospf traffic-engineering
+        *show_rpd_crashes: |
+          # No rpd crashes found
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.4R2
+        *show_config_te: |
+          set protocols ospf traffic-engineering
+        *show_rpd_crashes: |
+          /var/crash/rpd.core-tarball.0.tgz

@@ -1,0 +1,37 @@
+# Placeholder for CVE script
+.show_version: &show_version 'show version'
+.show_config_bgp: &show_config_bgp 'show configuration | display set | match "protocols bgp"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421598:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_bgp: |
+          set protocols bgp group test-group peer-as 65000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_bgp: 
+          # BGP not configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 20.3R3
+        *show_config_bgp: |
+          set protocols bgp group test-group peer-as 65000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_bgp: |
+          set protocols bgp group test-group peer-as 65000

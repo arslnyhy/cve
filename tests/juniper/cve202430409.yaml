@@ -1,0 +1,46 @@
+# Placeholder for CVE script
+.show_version: &show_version 'show version'
+.show_config_telemetry: &show_config_telemetry 'show configuration | display set | match "services analytics streaming"'
+.show_fibtd_status: &show_fibtd_status 'show system processes extensive | match fibtd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430409:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.1R1
+        *show_config_telemetry: |
+          set services analytics streaming
+        *show_fibtd_status: |
+          fibtd    21507  0.0  0.1  100% CPU
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.1R1-EVO
+        *show_config_telemetry: |
+          set services analytics streaming
+        *show_fibtd_status: |
+          fibtd core dumped
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.1R2
+        *show_config_telemetry: |
+          set services analytics streaming
+        *show_fibtd_status: |
+          fibtd    21507  0.0  0.1   normal operation
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.1R1
+        *show_config_telemetry: |
+          # No telemetry streaming configured
+        *show_fibtd_status: |
+          fibtd    21507  0.0  0.1  100% CPU

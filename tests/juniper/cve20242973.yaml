@@ -1,0 +1,38 @@
+.show_version: &show_version 'show version'
+.show_config_ha: &show_config_ha 'show configuration | display set | match "high-availability"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve20242973:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          SSR version 5.6.14
+        *show_config_ha: |
+          set high-availability enabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          SSR version 5.6.14
+        *show_config_ha:
+          # No high-availability configuration
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          SSR version 5.6.15
+        *show_config_ha: |
+          set high-availability enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          SSR version 6.2.5-sts
+        *show_config_ha: |
+          set high-availability enabled

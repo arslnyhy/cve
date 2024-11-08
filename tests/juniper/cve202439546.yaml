@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_si: &show_config_si 'show configuration | display set | match "system services socket-intercept"'
+.show_users: &show_users 'show system users | match "uid|gid"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439546:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3-S5-EVO
+        *show_config_si: |
+          set system services socket-intercept
+        *show_users: |
+          uid=1000(operator) gid=1000(operator)
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3-S6-EVO
+        *show_config_si: |
+          set system services socket-intercept
+        *show_users: |
+          uid=1000(operator) gid=1000(operator)
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3-S5-EVO
+        *show_config_si: |
+          # No socket-intercept configured
+        *show_users: |
+          uid=1000(operator) gid=1000(operator)

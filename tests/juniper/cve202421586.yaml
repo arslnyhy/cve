@@ -1,0 +1,44 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421586:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3-S4
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Serial number     Description
+          Chassis                   SRX5400                       SRX5400
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3-S7.9
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Serial number     Description
+          Chassis                   SRX5400                       SRX5400
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Serial number     Description
+          Chassis                   MX240                         MX240
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.3R1
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Serial number     Description
+          Chassis                   SRX5400                       SRX5400

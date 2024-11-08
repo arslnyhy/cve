@@ -1,0 +1,63 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_system_users: &show_system_users 'show system users'
+.show_config_login: &show_config_login 'show configuration | display set | match "system login class"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439527:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_system_users: |
+          admin    pts/0    192.168.1.100   2d3h
+          operator pts/1    192.168.1.101   1:23
+        *show_config_login: |
+          set system login class operator permissions [ view view-configuration ]
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_system_users: |
+          root     pts/0    192.168.1.100   2d3h
+        *show_config_login: |
+          set system login class restricted permissions [ view ]
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S5
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_system_users: |
+          admin    pts/0    192.168.1.100   2d3h
+        *show_config_login: |
+          set system login class admin permissions [ all-permissions ]
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX240
+        *show_system_users: |
+          admin    pts/0    192.168.1.100   2d3h
+        *show_config_login: |
+          set system login class restricted permissions [ view ]

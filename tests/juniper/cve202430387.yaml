@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_pfe_statistics: &show_pfe_statistics 'show pfe statistics traffic'
+.show_interfaces: &show_interfaces 'show interfaces detail'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430387:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX5448
+        *show_pfe_statistics: |
+          PFE error: crash detected
+        *show_interfaces: |
+          Link flaps: 5
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX5448
+        *show_pfe_statistics: |
+          PFE statistics normal
+        *show_interfaces: |
+          Link flaps: 0
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX5448
+        *show_pfe_statistics: |
+          PFE error: crash detected
+        *show_interfaces: |
+          Link flaps: 5

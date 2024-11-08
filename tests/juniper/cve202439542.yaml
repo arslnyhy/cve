@@ -1,0 +1,55 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_cfm: &show_config_cfm 'show configuration | display set | match "protocols oam ethernet connectivity-fault-management"'
+.show_config_sflow: &show_config_sflow 'show configuration | display set | match "protocols sflow interfaces"'
+.show_fpc_crashes: &show_fpc_crashes 'show system core-dumps | match "packetio|evo-aftman"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439542:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.2R3-S3
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX304
+            FPC 1                     750-0xxxxx   ABCD1234         MPC10
+        *show_config_cfm: |
+          set protocols oam ethernet connectivity-fault-management maintenance-domain test
+        *show_config_sflow: ""
+        *show_fpc_crashes: |
+          /var/crash/packetio.core-tarball.0.tgz
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.2R3-S3-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     PTX10008
+        *show_config_cfm: ""
+        *show_config_sflow: |
+          set protocols sflow interfaces xe-0/0/0
+        *show_fpc_crashes: |
+          /var/crash/evo-aftman.core-tarball.0.tgz
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.2R3-S4
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX304
+            FPC 1                     750-0xxxxx   ABCD1234         MPC10
+        *show_config_cfm: |
+          set protocols oam ethernet connectivity-fault-management maintenance-domain test
+        *show_config_sflow: ""
+        *show_fpc_crashes: |
+          # No crashes found

@@ -1,0 +1,38 @@
+# Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_configuration: &show_configuration 'show configuration | display set | match "services active-assurance"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421589:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Paragon Active Assurance 3.3.1
+        *show_configuration: |
+          set services active-assurance enabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Paragon Active Assurance 3.3.1
+        *show_configuration: |
+          set services active-assurance saas-mode
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Paragon Active Assurance 4.0.0
+        *show_configuration: |
+          set services active-assurance enabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Paragon Active Assurance 3.3.1
+        *show_configuration: 
+          # Active Assurance not configured

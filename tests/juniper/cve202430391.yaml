@@ -1,0 +1,42 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_ipsec: &show_config_ipsec 'show configuration | display set | match "security ipsec proposal.*authentication-algorithm"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430391:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_ipsec: |
+          set security ipsec proposal test-proposal authentication-algorithm hmac-sha-384
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_ipsec: |
+          set security ipsec proposal test-proposal authentication-algorithm hmac-sha-256
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_ipsec: |
+          set security ipsec proposal test-proposal authentication-algorithm hmac-sha-384

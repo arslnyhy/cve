@@ -1,0 +1,78 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_cos: &show_config_cos 'show configuration | display set | match "class-of-service"'
+.show_processes: &show_processes 'show system processes extensive | match mgd | match sbwait'
+.show_config_ssh: &show_config_ssh 'show configuration | display set | match "system services ssh"'
+.show_config_telnet: &show_config_telnet 'show configuration | display set | match "system services telnet"'
+.show_config_netconf: &show_config_netconf 'show configuration | display set | match "system services netconf"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421610:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_config_cos: |
+          set class-of-service scheduler-maps test-map
+        *show_processes: |
+          mgd sbwait
+          mgd sbwait
+          mgd sbwait
+          mgd sbwait
+          mgd sbwait
+        *show_config_ssh: |
+          set system services ssh
+        *show_config_telnet: 
+          # Telnet not configured
+        *show_config_netconf: |
+          set system services netconf ssh
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_config_cos: 
+          # No CoS configured
+        *show_processes: 
+          # No stuck mgd processes
+        *show_config_ssh: |
+          set system services ssh
+        *show_config_telnet: 
+          # Telnet not configured
+        *show_config_netconf: |
+          set system services netconf ssh
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_config_cos: |
+          set class-of-service scheduler-maps test-map
+        *show_processes: |
+          mgd sbwait
+          mgd sbwait
+          mgd sbwait
+          mgd sbwait
+          mgd sbwait
+        *show_config_ssh: |
+          set system services ssh
+        *show_config_telnet: 
+          # Telnet not configured
+        *show_config_netconf: |
+          set system services netconf ssh

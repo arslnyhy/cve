@@ -1,0 +1,49 @@
+---
+.show_version: &show_version 'show version'
+.show_config_bmp: &show_config_bmp 'show configuration | display set | match "protocols bgp.*bmp route-monitoring pre-policy|routing-options bmp.*route-monitoring pre-policy"'
+.show_config_exclude: &show_config_exclude 'show configuration | display set | match "exclude-non-feasible"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447499:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S7
+        *show_config_bmp: |
+          set protocols bgp bmp route-monitoring pre-policy
+        *show_config_exclude: # No exclude-non-feasible configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S8  # Fixed version
+        *show_config_bmp: |
+          set protocols bgp bmp route-monitoring pre-policy
+        *show_config_exclude: # Workaround not needed for fixed version
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S7
+        *show_config_bmp: # BMP pre-policy not configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240
+          Junos: 21.4R3-S7
+        *show_config_bmp: |
+          set protocols bgp bmp route-monitoring pre-policy
+        *show_config_exclude: |
+          set protocols bgp bmp route-monitoring pre-policy exclude-non-feasible

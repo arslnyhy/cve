@@ -1,0 +1,39 @@
+.show_version: &show_version 'show version'
+.show_config_jflow: &show_config_jflow 'show configuration | display set | match "services flow-monitoring (version-ipfix|version9)"'
+.show_task_memory: &show_task_memory 'show task memory detail | match so_in'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421611:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_config_jflow: |
+          set services flow-monitoring version9
+        *show_task_memory: |
+          so_in      current: 850MB    peak: 1000MB
+          so_in6     current: 900MB    peak: 1000MB
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_config_jflow: 
+          # No jflow configured
+        *show_task_memory: |
+          so_in      current: 100MB    peak: 1000MB
+          so_in6     current: 100MB    peak: 1000MB
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_jflow: |
+          set services flow-monitoring version9
+        *show_task_memory: |
+          so_in      current: 850MB    peak: 1000MB
+          so_in6     current: 900MB    peak: 1000MB

@@ -1,0 +1,76 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_scu: &show_config_scu 'show configuration | display set | match "source-class"'
+.show_config_dcu: &show_config_dcu 'show configuration | display set | match "destination-class"'
+.show_config_accounting: &show_config_accounting 'show configuration | display set | match "accounting.*class-usage"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421603:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+        *show_config_scu: |
+          set class-of-service source-class scu1
+          set class-of-service source-class scu2
+          set class-of-service source-class scu3
+          set class-of-service source-class scu4
+          set class-of-service source-class scu5
+          set class-of-service source-class scu6
+        *show_config_dcu: |
+          set class-of-service destination-class dcu1
+          set class-of-service destination-class dcu2
+          set class-of-service destination-class dcu3
+          set class-of-service destination-class dcu4
+          set class-of-service destination-class dcu5
+        *show_config_accounting: |
+          set accounting source-class-usage
+          set accounting destination-class-usage
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+        *show_config_scu: |
+          set class-of-service source-class scu1
+        *show_config_dcu: |
+          set class-of-service destination-class dcu1
+        *show_config_accounting: |
+          set accounting source-class-usage
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+        *show_config_scu: |
+          set class-of-service source-class scu1
+          set class-of-service source-class scu2
+          set class-of-service source-class scu3
+          set class-of-service source-class scu4
+          set class-of-service source-class scu5
+          set class-of-service source-class scu6
+        *show_config_dcu: |
+          set class-of-service destination-class dcu1
+          set class-of-service destination-class dcu2
+          set class-of-service destination-class dcu3
+          set class-of-service destination-class dcu4
+          set class-of-service destination-class dcu5
+        *show_config_accounting: |
+          set accounting source-class-usage
+          set accounting destination-class-usage

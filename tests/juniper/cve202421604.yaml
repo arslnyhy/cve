@@ -1,0 +1,29 @@
+.show_version: &show_version 'show version'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "firewall filter lo0"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421604:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_config_filter: 
+          # No lo0 firewall filter configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_config_filter: |
+          set firewall filter lo0-filter term deny-all then discard
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS 22.2R2
+        *show_config_filter: 
+          # Not running Junos OS Evolved

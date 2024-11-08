@@ -1,0 +1,44 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_ddos: &show_config_ddos 'show configuration | display set | match "system ddos-protection protocols.*aggregate (bandwidth|burst)"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439531:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
+        *show_config_ddos: |
+          set system ddos-protection protocols icmp aggregate bandwidth 20000
+          set system ddos-protection protocols ospf aggregate bandwidth 10000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
+        *show_config_ddos: |
+          set system ddos-protection protocols icmp aggregate bandwidth 20000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX960
+        *show_config_ddos: |
+          set system ddos-protection protocols icmp aggregate bandwidth 20000
+          set system ddos-protection protocols ospf aggregate bandwidth 10000

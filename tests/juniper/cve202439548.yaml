@@ -1,0 +1,45 @@
+.show_version: &show_version 'show version'
+.show_memory: &show_memory 'show system memory node all | match evo-aftmann'
+.show_arp: &show_arp 'show arp no-resolve | match Incomplete'
+.show_ndp: &show_ndp 'show ipv6 neighbors | match Incomplete'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439548:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3-EVO
+        *show_memory: |
+          evo-aftmann  Current: 8000MB  Peak: 10000MB
+        *show_arp: |
+          Incomplete  00:00:00:00:00:00  ge-0/0/0
+          Incomplete  00:00:00:00:00:01  ge-0/0/1
+        *show_ndp: |
+          Incomplete  fe80::1  ge-0/0/0
+          Incomplete  fe80::2  ge-0/0/1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4-EVO
+        *show_memory: |
+          evo-aftmann  Current: 2000MB  Peak: 10000MB
+        *show_arp: |
+          # No incomplete entries
+        *show_ndp: |
+          # No incomplete entries
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3
+        *show_memory: |
+          evo-aftmann  Current: 8000MB  Peak: 10000MB
+        *show_arp: |
+          Incomplete  00:00:00:00:00:00  ge-0/0/0
+        *show_ndp: |
+          Incomplete  fe80::1  ge-0/0/0

@@ -1,0 +1,51 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_lacp: &show_config_lacp 'show configuration | display set | match "interfaces.*802.3ad|aggregated-ether-options lacp"'
+.show_interfaces: &show_interfaces 'show interfaces detail | match "Link flaps"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430388:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              QFX5120-48Y
+        *show_config_lacp: |
+          set interfaces xe-0/0/0 ether-options 802.3ad ae0
+          set interfaces ae0 aggregated-ether-options lacp active
+        *show_interfaces: |
+          Link flaps: 10
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              QFX5120-48Y
+        *show_config_lacp: 
+          # No LACP configured
+        *show_interfaces: |
+          Link flaps: 0
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              QFX5120-48Y
+        *show_config_lacp: |
+          set interfaces xe-0/0/0 ether-options 802.3ad ae0
+          set interfaces ae0 aggregated-ether-options lacp active
+        *show_interfaces: |
+          Link flaps: 10

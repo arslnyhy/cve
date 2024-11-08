@@ -2,7 +2,7 @@ from comfy import high
 
 @high(
     name='rule_cve20242973',
-    platform=['juniper_ssr'],
+    platform=['juniper_junos'],
     commands=dict(
         show_version='show version',
         show_config_ha='show configuration | display set | match "high-availability"'

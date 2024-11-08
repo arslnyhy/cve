@@ -1,0 +1,44 @@
+.show_version: &show_version 'show version'
+.show_system_users: &show_system_users 'show system users'
+.show_config_login: &show_config_login 'show configuration | display set | match "system login class"'
+.show_log_files: &show_log_files 'show log messages | last 100'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439532:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R2
+        *show_system_users: |
+          admin    pts/0    192.168.1.100   2d3h
+          operator pts/1    192.168.1.101   1:23
+        *show_config_login: |
+          set system login class super-user permissions all
+        *show_log_files: |
+          User authentication password: secretpass123
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3
+        *show_system_users: |
+          admin    pts/0    192.168.1.100   2d3h
+        *show_config_login: |
+          set system login class super-user permissions all
+        *show_log_files: |
+          User logged in successfully
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R2
+        *show_system_users: |
+          root     pts/0    192.168.1.100   2d3h
+        *show_config_login: |
+          set system login class operator permissions [ view ]
+        *show_log_files: |
+          User authentication password: secretpass123

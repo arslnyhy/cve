@@ -1,0 +1,42 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_mpls_config: &show_mpls_config 'show configuration | display set | match "protocols mpls"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421590:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R3-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10001-36MR
+        *show_mpls_config: |
+          set protocols mpls interface all
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R3-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10001-36MR
+        *show_mpls_config: 
+          # MPLS not configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS 22.2R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_mpls_config: |
+          set protocols mpls interface all

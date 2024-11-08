@@ -1,0 +1,56 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_pfe_statistics: &show_pfe_statistics 'show pfe statistics traffic'
+.show_system_memory: &show_system_memory 'show system memory'
+.show_system_core_dumps: &show_system_core_dumps 'show system core-dumps'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430398:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX4600
+        *show_pfe_statistics: |
+          Packet drops detected
+        *show_system_memory: |
+          Memory utilization is 90%
+        *show_system_core_dumps: |
+          /var/crash/pfed.core.0
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX4600
+        *show_pfe_statistics: |
+          No packet drops
+        *show_system_memory: |
+          Memory utilization is 50%
+        *show_system_core_dumps: 
+          # No core dumps found
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX4600
+        *show_pfe_statistics: |
+          Packet drops detected
+        *show_system_memory: |
+          Memory utilization is 90%
+        *show_system_core_dumps: |
+          /var/crash/pfed.core.0

@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_fti: &show_config_fti 'show configuration | display set | match "interfaces fti0"'
+.show_config_ddos: &show_config_ddos 'show configuration | display set | match "ddos-protection protocols reject"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421600:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10008
+        *show_config_fti: |
+          set interfaces fti0 unit 0
+        *show_config_ddos: 
+          # No DDoS protection configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10008
+        *show_config_fti: 
+          # No FTI configured
+        *show_config_ddos: 
+          # No DDoS protection needed
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              PTX10008
+        *show_config_fti: |
+          set interfaces fti0 unit 0
+        *show_config_ddos: |
+          set system ddos-protection protocols reject aggregate bandwidth 20

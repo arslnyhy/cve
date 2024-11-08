@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_config_flow: &show_config_flow 'show configuration | display set | match "services flow-monitoring"'
+.show_config_sampling: &show_config_sampling 'show configuration | display set | match "forwarding-options sampling"'
+.show_msvcs_crashes: &show_msvcs_crashes 'show system core-dumps | match msvcsd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439553:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_config_flow: |
+          set services flow-monitoring version-ipfix template T1
+        *show_config_sampling: |
+          set forwarding-options sampling instance FLOW1 input rate 1
+          set forwarding-options sampling instance FLOW1 output flow-server 1.1.1.1
+          set forwarding-options sampling instance FLOW1 inline-jflow source-address 2.2.2.2
+        *show_msvcs_crashes: |
+          /var/crash/msvcsd.core-tarball.0.tgz
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3-EVO
+        *show_config_flow: |
+          set services flow-monitoring version-ipfix template T1
+        *show_config_sampling: |
+          set forwarding-options sampling instance FLOW1 input rate 1
+          set forwarding-options sampling instance FLOW1 output flow-server 1.1.1.1
+          set forwarding-options sampling instance FLOW1 inline-jflow source-address 2.2.2.2
+        *show_msvcs_crashes: |
+          # No msvcsd crashes found
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_config_flow: |
+          set services flow-monitoring version-ipfix template T1
+        *show_config_sampling: |
+          set forwarding-options sampling instance FLOW1 input rate 1
+          set forwarding-options sampling instance FLOW1 output flow-server 1.1.1.1
+          set forwarding-options sampling instance FLOW1 inline-jflow source-address 2.2.2.2
+        *show_msvcs_crashes: |
+          /var/crash/msvcsd.core-tarball.0.tgz

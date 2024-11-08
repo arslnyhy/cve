@@ -1,0 +1,60 @@
+.show_version: &show_version 'show version'
+.show_config_nsr: &show_config_nsr 'show configuration | display set | match "chassis redundancy graceful-switchover|routing-options nonstop-routing"'
+.show_config_gr: &show_config_gr 'show configuration | display set | match "protocols bgp graceful-restart"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421585:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_nsr: |
+          set chassis redundancy graceful-switchover
+          set routing-options nonstop-routing
+        *show_config_gr: |
+          set protocols bgp graceful-restart
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_nsr: 
+          # NSR not configured
+        *show_config_gr: 
+          # GR configuration not relevant when NSR is disabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_nsr: |
+          set chassis redundancy graceful-switchover
+          set routing-options nonstop-routing
+        *show_config_gr: |
+          set protocols bgp graceful-restart disable
+
+    - outcome: OK
+      commands:
+        *show_version: 
+          # Non-vulnerable version
+          Junos: 23.2R2
+        *show_config_nsr: |
+          set chassis redundancy graceful-switchover
+          set routing-options nonstop-routing
+        *show_config_gr: 
+          # GR helper mode enabled by default
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+          Model: SRX5800
+        *show_config_nsr: |
+          set chassis redundancy graceful-switchover
+          set routing-options nonstop-routing
+        *show_config_gr: 
+          # Configuration not relevant for SRX Series

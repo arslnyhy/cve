@@ -1,0 +1,65 @@
+---
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_vpls: &show_config_vpls 'show configuration | display set | match "routing-instances.*instance-type vpls"'
+.show_config_satellite: &show_config_satellite 'show configuration | display set | match "chassis satellite-management"'
+.show_fpc_crashes: &show_fpc_crashes 'show system core-dumps | match fpc'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447501:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX304
+          Junos: 21.2R3
+        *show_chassis_hardware: |
+          Chassis MX304
+        *show_config_vpls: |
+          set routing-instances customer1 instance-type vpls
+        *show_config_satellite: # No Junos Fusion
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX304
+          Junos: 21.2R3-S1  # Fixed version
+        *show_chassis_hardware: |
+          Chassis MX304
+        *show_config_vpls: |
+          set routing-instances customer1 instance-type vpls
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX304
+          Junos: 21.2R3
+        *show_chassis_hardware: |
+          Chassis MX304
+        *show_config_vpls: # No VPLS configured
+        *show_config_satellite: # No Junos Fusion
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240  # Not affected platform
+          Junos: 21.2R3
+        *show_chassis_hardware: |
+          Chassis MX240
+        *show_config_vpls: |
+          set routing-instances customer1 instance-type vpls
+        *show_fpc_crashes: |
+          /var/crash/fpc0_crash_1234

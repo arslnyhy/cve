@@ -1,0 +1,42 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "interfaces.*filter output"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430389:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              EX4300-48P
+        *show_config_filter: |
+          set interfaces ge-0/0/0 unit 0 family inet filter output test-filter
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              EX4300-48P
+        *show_config_filter: 
+          # No output filters configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              EX4300-48P
+        *show_config_filter: |
+          set interfaces ge-0/0/0 unit 0 family inet filter output test-filter

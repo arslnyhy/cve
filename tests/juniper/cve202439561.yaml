@@ -1,0 +1,47 @@
+.show_config_flow: &show_config_flow 'show configuration | display set | match "security flow tcp-session no-syn-check"'
+.show_config_offload: &show_config_offload 'show configuration | display set | match "security forwarding-options services-offload"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439561:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_config_flow: |
+          set security flow tcp-session no-syn-check
+        *show_config_offload: |
+          set security forwarding-options services-offload enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_config_flow: |
+          set security flow tcp-session no-syn-check
+        *show_config_offload: |
+          set security forwarding-options services-offload enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     EX4300
+        *show_config_flow: |
+          set security flow tcp-session no-syn-check
+        *show_config_offload: |
+          set security forwarding-options services-offload enable

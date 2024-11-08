@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_te: &show_config_te 'show configuration | display set | match "protocols (ospf|isis) traffic-engineering"'
+.show_task_memory: &show_task_memory 'show task memory detail | match patroot'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421613:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_te: |
+          set protocols ospf traffic-engineering
+        *show_task_memory: |
+          patroot    current: 850MB    peak: 1000MB
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_te: 
+          # No traffic engineering configured
+        *show_task_memory: |
+          patroot    current: 100MB    peak: 1000MB
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_te: |
+          set protocols ospf traffic-engineering
+        *show_task_memory: |
+          patroot    current: 850MB    peak: 1000MB

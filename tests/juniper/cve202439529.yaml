@@ -1,0 +1,56 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_dga: &show_config_dga 'show configuration | display set | match "services security-metadata-streaming policy.*dns detections (dga|tunneling)"'
+.show_config_dns: &show_config_dns 'show configuration | display set | match "services dns-filtering traceoptions"'
+.show_pfe_crashes: &show_pfe_crashes 'show system core-dumps | match pfe'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439529:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_config_dga: |
+          set services security-metadata-streaming policy POLICY1 dns detections dga
+        *show_config_dns: |
+          set services dns-filtering traceoptions file dns.log
+        *show_pfe_crashes: |
+          /var/crash/pfe.core-tarball.0.tgz
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_config_dga: |
+          set services security-metadata-streaming policy POLICY1 dns detections tunneling
+        *show_config_dns: |
+          set services dns-filtering traceoptions file dns.log
+        *show_pfe_crashes: |
+          /var/crash/pfe.core-tarball.0.tgz
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+        *show_config_dga: |
+          set services security-metadata-streaming policy POLICY1 dns detections dga
+        *show_config_dns: |
+          set services dns-filtering traceoptions file dns.log
+        *show_pfe_crashes: |
+          # No PFE crashes found

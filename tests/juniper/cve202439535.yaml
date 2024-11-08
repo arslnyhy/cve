@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_vpls: &show_config_vpls 'show configuration | display set | match "routing-instances.*instance-type vpls"'
+.show_config_irb: &show_config_irb 'show configuration | display set | match "(routing-interface irb|family inet)"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439535:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.4R2-S1-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
+        *show_config_vpls: |
+          set routing-instances CUSTOMER1 instance-type vpls
+        *show_config_irb: |
+          set routing-instances CUSTOMER1 routing-interface irb.100
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.4R3-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
+        *show_config_vpls: |
+          set routing-instances CUSTOMER1 instance-type vpls
+        *show_config_irb: |
+          set routing-instances CUSTOMER1 routing-interface irb.100
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.4R2-S1-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX960
+        *show_config_vpls: |
+          set routing-instances CUSTOMER1 instance-type vpls
+        *show_config_irb: |
+          set routing-instances CUSTOMER1 routing-interface irb.100

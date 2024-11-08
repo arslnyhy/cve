@@ -1,0 +1,45 @@
+# Placeholder for CVE script
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_stp: &show_config_stp 'show configuration | display set | match "protocols (stp|mstp|rstp|vstp) interface"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421605:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.1R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX340
+        *show_config_stp: |
+          set protocols stp interface ge-0/0/0
+          set protocols stp interface ge-0/0/1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.1R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX340
+        *show_config_stp: |
+          set protocols stp interface ge-0/0/0
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX340
+        *show_config_stp: |
+          set protocols stp interface ge-0/0/0
+          set protocols stp interface ge-0/0/1

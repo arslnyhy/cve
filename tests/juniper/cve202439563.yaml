@@ -1,0 +1,56 @@
+---
+.show_version: &show_version 'show version'
+.show_config_web: &show_config_web 'show configuration | display set | match "system services web-management"'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "firewall filter.*from source-address"'
+
+defaults:
+  devices:
+    - platform: juniper_space
+
+tests:
+  rule_cve202439563:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: Junos Space
+          Version: 24.1R1
+        *show_config_web: |
+          set system services web-management https
+        *show_config_filter: # No firewall filters configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: Junos Space
+          Version: 24.1R1 Patch V1  # Patched version
+        *show_config_web: |
+          set system services web-management https
+        *show_config_filter: # Filtering doesn't matter for patched version
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: Junos Space
+          Version: 24.1R1
+        *show_config_web: # Web management not configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: Junos Space
+          Version: 24.1R1
+        *show_config_web: |
+          set system services web-management https
+        *show_config_filter: |
+          set firewall filter PROTECT-WEB term allow-admin from source-address 10.0.0.0/24 web-management
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240  # Not Junos Space
+          Junos: 24.1R1

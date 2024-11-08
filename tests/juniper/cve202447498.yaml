@@ -1,0 +1,54 @@
+---
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_mac_limit: &show_config_mac_limit 'show configuration | display set | match "(switch-options|l2-learning|mac-move-limit)"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447498:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: QFX5120
+          Junos: 21.4R3-S7-EVO
+        *show_chassis_hardware: |
+          Chassis QFX5120-48Y
+        *show_config_mac_limit: |
+          set switch-options interface-mac-limit 1000
+          set protocols l2-learning global-mac-limit 5000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: QFX5120
+          Junos: 21.4R3-S8-EVO  # Fixed version
+        *show_chassis_hardware: |
+          Chassis QFX5120-48Y
+        *show_config_mac_limit: |
+          set switch-options interface-mac-limit 1000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: QFX5120
+          Junos: 21.4R3-S7-EVO
+        *show_chassis_hardware: |
+          Chassis QFX5120-48Y
+        *show_config_mac_limit: # No MAC limits configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240  # Not QFX5000
+          Junos: 21.4R3-S7-EVO
+        *show_chassis_hardware: |
+          Chassis MX240
+        *show_config_mac_limit: |
+          set switch-options interface-mac-limit 1000

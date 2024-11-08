@@ -1,0 +1,35 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421602:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX7100-32C
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.3R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX7100-32C
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS 22.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX7100-32C

@@ -1,0 +1,61 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_urlf: &show_config_urlf 'show configuration | display set | match "services url-filtering"'
+.show_config_template: &show_config_template 'show configuration | display set | match "url-filter-template"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430392:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   SPC3
+          FPC 1            REV 07   MS-MPC
+        *show_config_urlf: |
+          set services url-filtering enable
+        *show_config_template: |
+          set url-filter-template test-template client-interfaces ge-0/0/0
+          set url-filter-template test-template server-interfaces ge-0/0/1
+          set url-filter-template test-template dns-server 8.8.8.8
+          set url-filter-template test-template url-filter-database test-db
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   SPC3
+          FPC 1            REV 07   MS-MPC
+        *show_config_urlf: 
+          # URL filtering not enabled
+        *show_config_template: 
+          # No URL filter template configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   SPC3
+          FPC 1            REV 07   MS-MPC
+        *show_config_urlf: |
+          set services url-filtering enable
+        *show_config_template: |
+          set url-filter-template test-template client-interfaces ge-0/0/0
+          set url-filter-template test-template server-interfaces ge-0/0/1
+          set url-filter-template test-template dns-server 8.8.8.8
+          set url-filter-template test-template url-filter-database test-db

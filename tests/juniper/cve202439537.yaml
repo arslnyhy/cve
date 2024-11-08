@@ -1,0 +1,50 @@
+# Placeholder for CVE script
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "firewall filter.*from source-address"'
+.show_netstat: &show_netstat 'show system connections | match LISTEN'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439537:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
+        *show_config_filter: |
+          # No firewall filters configured
+        *show_netstat: |
+          tcp        0      0  *.80                *.*                    LISTEN
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
+        *show_config_filter: |
+          set firewall filter mgmt_filter from source-address 10.0.0.0/8
+        *show_netstat: |
+          tcp        0      0  *.80                *.*                    LISTEN
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX960
+        *show_config_filter: |
+          # No firewall filters configured
+        *show_netstat: |
+          tcp        0      0  *.80                *.*                    LISTEN

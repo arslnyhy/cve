@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "firewall filter.*from source-address|destination-address"'
+.show_config_interface: &show_config_interface 'show configuration | display set | match "interfaces.*unit.*family inet address"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439534:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_config_filter: |
+          set firewall filter PROTECT-RE from source-address 192.168.1.0/24
+        *show_config_interface: |
+          set interfaces xe-0/0/0 unit 0 family inet address 192.168.1.1/24
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S4-EVO
+        *show_config_filter: |
+          set firewall filter PROTECT-RE from source-address 192.168.1.0/24
+        *show_config_interface: |
+          set interfaces xe-0/0/0 unit 0 family inet address 192.168.1.1/24
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_config_filter: |
+          set firewall filter PROTECT-RE from source-address 192.168.1.0/24
+        *show_config_interface: |
+          set interfaces xe-0/0/0 unit 0 family inet address 192.168.1.1/24

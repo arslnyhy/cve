@@ -1,0 +1,56 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_ike: &show_config_ike 'show configuration | display set | match "security ike gateway"'
+.show_config_ipsec: &show_config_ipsec 'show configuration | display set | match "security ipsec vpn"'
+.show_processes: &show_processes 'show system processes extensive | match "KMD|IKED"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421609:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_ike: |
+          set security ike gateway test-gw
+        *show_config_ipsec: |
+          set security ipsec vpn test-vpn
+        *show_processes: |
+          IKED
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_ike: 
+          # No IKE gateway configured
+        *show_config_ipsec: 
+          # No IPsec VPN configured
+        *show_processes: |
+          KMD
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_ike: |
+          set security ike gateway test-gw
+        *show_config_ipsec: |
+          set security ipsec vpn test-vpn
+        *show_processes: |
+          IKED

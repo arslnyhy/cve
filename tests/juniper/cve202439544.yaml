@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_netconf: &show_config_netconf 'show configuration | display set | match "system services netconf traceoptions"'
+.show_log_perms: &show_log_perms 'file list /var/log/netconflog.log detail'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439544:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_config_netconf: |
+          set system services netconf traceoptions file netconflog.log
+        *show_log_perms: |
+          -rw-r--r-- 1 root wheel netconflog.log
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3-EVO
+        *show_config_netconf: |
+          set system services netconf traceoptions file netconflog.log
+        *show_log_perms: |
+          -rw------- 1 root root netconflog.log
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_config_netconf: |
+          # No NETCONF traceoptions configured
+        *show_log_perms: |
+          # File not found

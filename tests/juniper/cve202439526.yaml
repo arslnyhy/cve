@@ -1,0 +1,62 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_dhcp: &show_config_dhcp 'show configuration | display set | match "(forwarding-options dhcp-relay|system services dhcp-local-server)"'
+.show_log_messages: &show_log_messages 'show log messages | match "Wedge-Detect.*Host Loopback"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439526:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX304
+        *show_config_dhcp: |
+          set forwarding-options dhcp-relay
+        *show_log_messages: |
+          Wedge-Detect : Host Loopback Wedge Detected
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     PTX10001-36MR
+        *show_config_dhcp: |
+          set system services dhcp-local-server
+        *show_log_messages: |
+          Wedge-Detect : Host Loopback Wedge Detected
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX304
+        *show_config_dhcp: |
+          set forwarding-options dhcp-relay
+        *show_log_messages: |
+          # No wedge detection messages found
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX304
+        *show_config_dhcp: |
+          # No DHCP configuration
+        *show_log_messages: |
+          Wedge-Detect : Host Loopback Wedge Detected

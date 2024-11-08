@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_evpn: &show_config_evpn 'show configuration | display set | match "routing-instances.*instance-type evpn"'
+.show_config_irb: &show_config_irb 'show configuration | display set | match "routing-instances.*routing-interface irb"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439519:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX7100-32C
+        *show_config_evpn: |
+          set routing-instances EVPN-1 instance-type evpn
+        *show_config_irb: |
+          set routing-instances EVPN-1 routing-interface irb.100
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX7100-32C
+        *show_config_evpn: 
+          # No EVPN configured
+        *show_config_irb: 
+          # No IRB interfaces configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 23.2R2-EVO
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              ACX7100-32C
+        *show_config_evpn: |
+          set routing-instances EVPN-1 instance-type evpn
+        *show_config_irb: |
+          set routing-instances EVPN-1 routing-interface irb.100

@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_web: &show_config_web 'show configuration | display set | match "system services web-management"'
+.show_config_filter: &show_config_filter 'show configuration | display set | match "firewall filter.*from source-address"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421620:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_web: |
+          set system services web-management https
+        *show_config_filter: 
+          # No source address restrictions
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_web: 
+          # J-Web not configured
+        *show_config_filter: 
+          # No filter needed when J-Web is disabled
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_config_web: |
+          set system services web-management https
+        *show_config_filter: |
+          set firewall filter mgmt-filter term allow-admin from source-address 192.168.1.0/24

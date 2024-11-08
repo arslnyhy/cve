@@ -1,0 +1,57 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_ccc: &show_config_ccc 'show configuration | display set | match "encapsulation ethernet-ccc"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421593:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S1
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+          FPC 0            REV 07   MPC10E
+        *show_config_ccc: |
+          set interfaces xe-0/0/0 encapsulation ethernet-ccc
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S1
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+          FPC 0            REV 07   MPC10E
+        *show_config_ccc: 
+          # No CCC encapsulation configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX304
+          FPC 0            REV 07   MPC10E
+        *show_config_ccc: |
+          set interfaces xe-0/0/0 encapsulation ethernet-ccc
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S1
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC7E
+        *show_config_ccc: |
+          set interfaces xe-0/0/0 encapsulation ethernet-ccc

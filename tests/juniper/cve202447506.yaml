@@ -1,0 +1,79 @@
+---
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_aamw: &show_config_aamw 'show configuration | display set | match "services advanced-anti-malware policy"'
+.show_config_security: &show_config_security 'show configuration | display set | match "security policies.*then permit application-services advanced-anti-malware-policy"'
+.show_pfe_crashes: &show_pfe_crashes 'show system core-dumps | match pfe'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447506:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_aamw: |
+          set services advanced-anti-malware policy ATP_POLICY
+        *show_config_security: |
+          set security policies from-zone trust to-zone untrust policy allow then permit application-services advanced-anti-malware-policy ATP_POLICY
+        *show_pfe_crashes: |
+          /var/crash/pfe.0.core.1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R3  # Fixed version
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_aamw: |
+          set services advanced-anti-malware policy ATP_POLICY
+        *show_config_security: |
+          set security policies from-zone trust to-zone untrust policy allow then permit application-services advanced-anti-malware-policy ATP_POLICY
+        *show_pfe_crashes: |
+          /var/crash/pfe.0.core.1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_aamw: # ATP Cloud not configured
+        *show_config_security: |
+          set security policies from-zone trust to-zone untrust policy allow then permit
+        *show_pfe_crashes: |
+          /var/crash/pfe.0.core.1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_aamw: |
+          set services advanced-anti-malware policy ATP_POLICY
+        *show_config_security: |
+          set security policies from-zone trust to-zone untrust policy allow then permit application-services advanced-anti-malware-policy ATP_POLICY
+        *show_pfe_crashes: # No PFE crashes
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240  # Not SRX
+          Junos: 21.4R2
+        *show_chassis_hardware: |
+          Chassis MX240

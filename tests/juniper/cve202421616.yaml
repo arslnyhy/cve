@@ -1,0 +1,41 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_alg_status: &show_alg_status 'show security alg status | match sip'
+.show_config_sip: &show_config_sip 'show configuration | display set | match "applications (application|application-set).*sip"'
+.show_nat_usage: &show_nat_usage 'show security nat resource-usage source-pool'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421616:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_alg_status: |
+          SIP : Enabled
+        *show_config_sip: |
+          set applications application junos-sip
+        *show_nat_usage: |
+          Single Ports: 95%
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_alg_status: 
+          # SIP ALG disabled
+        *show_config_sip: 
+          # No SIP applications configured
+        *show_nat_usage: |
+          Single Ports: 50%

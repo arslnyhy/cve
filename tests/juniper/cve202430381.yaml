@@ -1,0 +1,37 @@
+.show_version: &show_version 'show version'
+.show_config_paa: &show_config_paa 'show configuration | display set | match "services active-assurance"'
+.show_config_firewall: &show_config_firewall 'show configuration | display set | match "firewall filter.*from source-address"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430381:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Paragon Active Assurance 4.2.0
+        *show_config_paa: |
+          set services active-assurance enabled
+        *show_config_firewall: 
+          # No firewall filters configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Paragon Active Assurance 4.2.0
+        *show_config_paa: |
+          set services active-assurance enabled
+        *show_config_firewall: |
+          set firewall filter control-center term test-agents from source-address 10.0.0.0/24
+          set firewall filter control-center term admins from source-address 192.168.1.0/24
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Paragon Active Assurance 4.3.0
+        *show_config_paa: |
+          set services active-assurance enabled
+        *show_config_firewall: 
+          # No firewall filters needed in fixed version

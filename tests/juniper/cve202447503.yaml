@@ -1,0 +1,70 @@
+---
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_pim: &show_config_pim 'show configuration | display set | match "protocols pim"'
+.show_flowd_crashes: &show_flowd_crashes 'show system core-dumps | match flowd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447503:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R3-S8
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_pim: |
+          set protocols pim interface ge-0/0/0
+        *show_flowd_crashes: |
+          /var/crash/flowd.0.core.1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R3-S9  # Fixed version
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_pim: |
+          set protocols pim interface ge-0/0/0
+        *show_flowd_crashes: |
+          /var/crash/flowd.0.core.1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R3-S8
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_pim: # PIM not configured
+        *show_flowd_crashes: |
+          /var/crash/flowd.0.core.1234
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: SRX4600
+          Junos: 21.4R3-S8
+        *show_chassis_hardware: |
+          Chassis SRX4600
+        *show_config_pim: |
+          set protocols pim interface ge-0/0/0
+        *show_flowd_crashes: # No flowd crashes
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Hostname: test-device
+          Model: MX240  # Not SRX
+          Junos: 21.4R3-S8
+        *show_chassis_hardware: |
+          Chassis MX240

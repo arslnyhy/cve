@@ -1,0 +1,49 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_subscriber: &show_config_subscriber 'show configuration | display set | match "system services subscriber-management"'
+.show_fpc_memory: &show_fpc_memory 'show chassis fpc | match "Memory utilization"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439539:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX960
+        *show_config_subscriber: |
+          set system services subscriber-management enable
+        *show_fpc_memory: |
+          Memory utilization:  95 percent
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S3
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX960
+        *show_config_subscriber: |
+          set system services subscriber-management enable
+        *show_fpc_memory: |
+          Memory utilization:  60 percent
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     MX960
+        *show_config_subscriber: |
+          # No subscriber management configured
+        *show_fpc_memory: |
+          Memory utilization:  95 percent

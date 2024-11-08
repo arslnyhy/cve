@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_evpn: &show_config_evpn 'show configuration | display set | match "protocols evpn"'
+.show_rpd_crashes: &show_rpd_crashes 'show system core-dumps | match rpd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430394:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_evpn: |
+          set protocols evpn encapsulation vxlan
+        *show_rpd_crashes: |
+          /var/crash/rpd.core.0
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_evpn: 
+          # No EVPN configured
+        *show_rpd_crashes: 
+          # No core dumps found
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_evpn: |
+          set protocols evpn encapsulation vxlan
+        *show_rpd_crashes: |
+          /var/crash/rpd.core.0

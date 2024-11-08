@@ -1,0 +1,29 @@
+.show_version: &show_version 'show version'
+.show_config_cbf: &show_config_cbf 'show configuration | display set | match "policy-statement.*cos-next-hop-map"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430382:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_config_cbf: |
+          set policy-statement test-policy term test then cos-next-hop-map test-map
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_config_cbf: 
+          # No CoS-based forwarding configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_cbf: |
+          set policy-statement test-policy term test then cos-next-hop-map test-map

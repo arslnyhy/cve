@@ -1,0 +1,54 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_alg: &show_config_alg 'show configuration | display set | match "security alg"'
+.show_flowd_crashes: &show_flowd_crashes 'show system core-dumps | match flowd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430406:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+            FPC 1                     750-0xxxxx   ABCD1234         SPC2
+        *show_config_alg: |
+          set security alg dns
+          set security alg ftp
+        *show_flowd_crashes: |
+          /var/crash/flowd.core-tarball.0.tgz
+          /var/crash/flowd.core-tarball.1.tgz
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+            FPC 1                     750-0xxxxx   ABCD1234         SPC2
+        *show_config_alg: |
+          set security alg dns
+        *show_flowd_crashes: |
+          # No flowd crashes found
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3-S2
+        *show_chassis_hardware: |
+          Hardware inventory:
+            Item             Version  Part number  Serial number     Description
+            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+            FPC 1                     750-0xxxxx   ABCD1234         SPC2
+        *show_config_alg: |
+          # No ALGs configured
+        *show_flowd_crashes: |
+          /var/crash/flowd.core-tarball.0.tgz

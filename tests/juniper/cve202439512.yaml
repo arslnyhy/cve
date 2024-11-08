@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_system_users: &show_system_users 'show system users'
+.show_system_login: &show_system_login 'show configuration | display set | match "system login"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439512:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 23.2R2-EVO
+        *show_system_users: |
+          root     console    0    Apr  1 12:34
+        *show_system_login: 
+          # No idle timeout configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 23.2R2-EVO
+        *show_system_users: 
+          # No console users
+        *show_system_login: |
+          set system login idle-timeout 10
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 23.2R2-S1-EVO
+        *show_system_users: |
+          root     console    0    Apr  1 12:34
+        *show_system_login: 
+          # No idle timeout needed in fixed version

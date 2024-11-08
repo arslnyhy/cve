@@ -1,0 +1,59 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_ptp: &show_config_ptp 'show configuration | display set | match "protocols ptp"'
+.show_heap: &show_heap 'show heap'
+.show_clksync: &show_clksync 'show clksync ptp nbr-upd-info'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421599:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R1
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC3E
+        *show_config_ptp: |
+          set protocols ptp interface xe-0/0/0
+        *show_heap: |
+          LAN buffer utilization high
+        *show_clksync: |
+          Pending PFEs: 1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R1
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC3E
+        *show_config_ptp: 
+          # PTP not configured
+        *show_heap: |
+          LAN buffer utilization normal
+        *show_clksync: |
+          Pending PFEs: 0
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC3E
+        *show_config_ptp: |
+          set protocols ptp interface xe-0/0/0
+        *show_heap: |
+          LAN buffer utilization high
+        *show_clksync: |
+          Pending PFEs: 1

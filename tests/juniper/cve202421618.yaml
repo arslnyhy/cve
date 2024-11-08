@@ -1,0 +1,36 @@
+.show_version: &show_version 'show version'
+.show_config_lldp: &show_config_lldp 'show configuration | display set | match "protocols lldp interface"'
+.show_processes: &show_processes 'show system processes extensive | match l2cpd'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421618:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_config_lldp: |
+          set protocols lldp interface all
+        *show_processes: |
+          l2cpd core dumped
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R2
+        *show_config_lldp: 
+          # No LLDP configured
+        *show_processes: |
+          l2cpd running normally
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_lldp: |
+          set protocols lldp interface all
+        *show_processes: |
+          l2cpd running normally

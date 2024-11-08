@@ -1,0 +1,43 @@
+.show_version: &show_version 'show version'
+.show_config_telemetry: &show_config_telemetry 'show configuration | display set | match "services analytics streaming-server"'
+.show_l2ald_crashes: &show_l2ald_crashes 'show system core-dumps | match l2ald'
+.show_drend_status: &show_drend_status 'show system processes extensive | match drend'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202430402:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_telemetry: |
+          set services analytics streaming-server test-server
+        *show_l2ald_crashes: |
+          /var/crash/l2ald.core.0
+        *show_drend_status: |
+          drend process suspended
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_config_telemetry: 
+          # No telemetry configured
+        *show_l2ald_crashes: 
+          # No l2ald crashes
+        *show_drend_status: |
+          drend process running
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_config_telemetry: |
+          set services analytics streaming-server test-server
+        *show_l2ald_crashes: |
+          /var/crash/l2ald.core.0
+        *show_drend_status: |
+          drend process suspended

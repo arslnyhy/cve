@@ -1,0 +1,52 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_config_telemetry: &show_config_telemetry 'show configuration | display set | match "services analytics streaming"'
+.show_sensord_memory: &show_sensord_memory 'show system processes extensive | match sensord'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202439518:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC10E
+        *show_config_telemetry: |
+          set services analytics streaming enable
+        *show_sensord_memory: |
+          sensord   900MB    1000MB
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC10E
+        *show_config_telemetry: 
+          # No telemetry configured
+        *show_sensord_memory: |
+          sensord   100MB    1000MB
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+          FPC 0            REV 07   MPC10E
+        *show_config_telemetry: |
+          set services analytics streaming enable
+        *show_sensord_memory: |
+          sensord   900MB    1000MB
