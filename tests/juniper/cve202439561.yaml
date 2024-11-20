@@ -1,3 +1,5 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
 .show_config_flow: &show_config_flow 'show configuration | display set | match "security flow tcp-session no-syn-check"'
 .show_config_offload: &show_config_offload 'show configuration | display set | match "security forwarding-options services-offload"'
 

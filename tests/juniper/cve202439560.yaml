@@ -1,3 +1,5 @@
+.show_version: &show_version 'show version'
+.show_config_rsvp: &show_config_rsvp 'show configuration | display set | match "protocols rsvp"'
 .show_memory: &show_memory 'show system memory'
 .show_neighbors: &show_neighbors 'show rsvp neighbor detail'
 

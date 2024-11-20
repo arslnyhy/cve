@@ -1,3 +1,5 @@
+.show_version: &show_version 'show version'
+.show_config_pim: &show_config_pim 'show configuration | display set | match "protocols pim"'
 .show_config_mofrr: &show_config_mofrr 'show configuration | display set | match "routing-options multicast stream-protection"'
 .show_rpd_crashes: &show_rpd_crashes 'show system core-dumps | match rpd'
 

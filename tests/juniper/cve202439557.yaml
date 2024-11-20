@@ -1,3 +1,5 @@
+.show_version: &show_version 'show version'
+.show_l2ald: &show_l2ald 'show platform application-info allocations app l2ald-agent'
 .show_memory: &show_memory 'show system memory'
 
 defaults:
@@ -12,6 +14,7 @@ tests:
           Junos: 22.2R3-S3-EVO
         *show_l2ald: |
           net::juniper::rtnh::L2Rtinfo Live: 1500000 Allocs: 1550000
+
         *show_memory: |
           Memory utilization: 90%
 

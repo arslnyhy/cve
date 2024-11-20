@@ -30,7 +30,7 @@ tests:
 
     - outcome: OK
       commands:
-        *show_version: |
+        *show_version:
           Cisco IOS Software, Version 16.0.1  # Non-vulnerable version
         *show_running_config: |
           switchport port-security
