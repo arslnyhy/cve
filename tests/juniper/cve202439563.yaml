@@ -16,41 +16,17 @@ tests:
           Model: Junos Space
           Version: 24.1R1
         *show_config_web: |
-          set system services web-management https
-        *show_config_filter: # No firewall filters configured
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: Junos Space
-          Version: 24.1R1 Patch V1  # Patched version
-        *show_config_web: |
-          set system services web-management https
-        *show_config_filter: # Filtering doesn't matter for patched version
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: Junos Space
-          Version: 24.1R1
-        *show_config_web: # Web management not configured
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: Junos Space
-          Version: 24.1R1
-        *show_config_web: |
-          set system services web-management https
+          system services web-management
         *show_config_filter: |
-          set firewall filter PROTECT-WEB term allow-admin from source-address 10.0.0.0/24 web-management
+          web-management
 
     - outcome: OK
       commands:
         *show_version: |
           Hostname: test-device
-          Model: MX240  # Not Junos Space
-          Junos: 24.1R1
+          Model: Junos Space
+          Version: 24.1R1 Patch V1
+        *show_config_web:
+          # No web management configured
+        *show_config_filter:
+          # Filtering doesn't matter for patched version

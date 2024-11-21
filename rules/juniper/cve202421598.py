@@ -23,9 +23,6 @@ def rule_cve202421598(configuration, commands, device, devices):
     # Extract version information
     version_output = commands.show_version
     print(version_output)
-    # Versions before 20.4R1 are not affected
-    if not any(ver in version_output for ver in ['20.4R1', '20.4R1-EVO']):
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -57,8 +54,7 @@ def rule_cve202421598(configuration, commands, device, devices):
 
     # Check if version is vulnerable
     version_vulnerable = any(version in version_output for version in vulnerable_versions)
-    assert version_vulnerable
-    assert not version_vulnerable
+
     if not version_vulnerable:
         return
 

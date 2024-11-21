@@ -62,7 +62,7 @@ def rule_cve202430388(configuration, commands, device, devices):
 
     if not lacp_enabled:
         return
-
+    
     # Check for recent LACP flaps
     interface_output = commands.show_interfaces
     flap_lines = [line for line in interface_output.splitlines() if 'Link flaps' in line]

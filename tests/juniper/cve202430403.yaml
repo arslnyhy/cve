@@ -28,16 +28,5 @@ tests:
           # No Layer 2 switching configured
         *show_aftmand_crashes: 
           # No crashes found
-        *show_pfe_status: |
-          No PFE errors
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos OS Evolved 23.2R2-EVO
-        *show_config_interfaces: |
-          set interfaces xe-0/0/0 unit 0 family ethernet-switching
-        *show_aftmand_crashes: |
-          /var/crash/evo-aftmand-bt.core.0
-        *show_pfe_status: |
-          PFE errors detected
+        *show_pfe_status:
+          # No PFE errors

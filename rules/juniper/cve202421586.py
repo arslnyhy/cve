@@ -62,11 +62,13 @@ def rule_cve202421586(configuration, commands, device, devices):
     if not ('SRX' in chassis_output or 'NFX' in chassis_output):
         return True
 
-    # Only check version if it's an SRX/NFX
     version_output = commands.show_version
-    if is_version_vulnerable(version_output, srx_vulnerable_versions + nfx_vulnerable_versions):
+    vulnerable_versions = srx_vulnerable_versions + nfx_vulnerable_versions
+    is_vulnerable = any(version in version_output for version in vulnerable_versions)
+    
+    if is_vulnerable:
         # If we get here, it's an SRX/NFX with a vulnerable version
-        return False, (
+        assert not is_vulnerable, (
             f"Device {device.name} is vulnerable to CVE-2024-21586. "
             "The device is running a vulnerable version that can lead to PFE crash "
             "when processing specific valid traffic. "
@@ -75,15 +77,3 @@ def rule_cve202421586(configuration, commands, device, devices):
             "NFX Series: 21.4R3-S8, 22.2R3-S5, 22.3R3, 22.4R3, 23.2R1 or later. "
             "For more information, see https://supportportal.juniper.net/JSA83195"
         )
-    
-    return True
-
-
-def is_version_vulnerable(version_output, vulnerable_versions):
-    # Extract version from the output (format: "Junos: 21.4R3")
-    version_match = re.match(r'^Junos: (\d+\.\d+[^-\s]*)', version_output)
-    if not version_match:
-        return False
-    
-    device_version = version_match.group(1)
-    return any(device_version.startswith(v) for v in vulnerable_versions)

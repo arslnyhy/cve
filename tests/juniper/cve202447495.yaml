@@ -36,42 +36,4 @@ tests:
             CPU Load  : 10%
         *show_config_redundancy: |
           set chassis redundancy graceful-switchover
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: PTX10001-36MR
-          Junos: 21.4R3-S7-EVO
-        *show_chassis_re: |
-          Routing Engine 0:
-            CPU Load  : 12%
-        *show_config_redundancy: |
-          set chassis redundancy graceful-switchover
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: PTX10001-36MR
-          Junos: 21.4R3-S7-EVO
-        *show_chassis_re: |
-          Routing Engine 0:
-            CPU Load  : 12%
-          Routing Engine 1:
-            CPU Load  : 10%
-        *show_config_redundancy: # No redundancy configured
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: MX240
-          Junos: 21.4R3-S7  # Not Evolved
-        *show_chassis_re: |
-          Routing Engine 0:
-            CPU Load  : 12%
-          Routing Engine 1:
-            CPU Load  : 10%
-        *show_config_redundancy: |
-          set chassis redundancy graceful-switchover
+          

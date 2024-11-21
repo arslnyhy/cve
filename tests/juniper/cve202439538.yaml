@@ -33,7 +33,7 @@ tests:
             Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
         *show_config_multicast: |
           set protocols pim interface ge-0/0/0
-        *show_fpc_crashes: |
+        *show_fpc_crashes:
           # No crashes found
 
     - outcome: OK

@@ -19,7 +19,7 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 21.4R3-S7.9
+          Junos: 22.4R3
         *show_chassis_hardware: |
           Hardware inventory:
           Item             Version  Part number  Serial number     Description

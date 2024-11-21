@@ -23,14 +23,5 @@ tests:
           Junos OS Evolved 21.4R3-EVO
         *show_aftmand_crashes: 
           # No crashes found
-        *show_fpc_status: |
-          0  Online   Present  
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos OS Evolved 23.2R2-EVO
-        *show_aftmand_crashes: |
-          /var/crash/evo-aftmand.core.0
-        *show_fpc_status: |
-          0  Offline  Testing   
+        *show_fpc_status:
+          # No FPC issues

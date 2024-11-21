@@ -18,7 +18,7 @@ tests:
           Hardware inventory:
             Item             Version  Part number  Serial number     Description
             Chassis                   JN1234A1BCD  AB1234567890     ACX7100-32C
-        *show_config_filter: |
+        *show_config_filter:
           # No firewall filters configured
         *show_netstat: |
           tcp        0      0  *.80                *.*                    LISTEN
@@ -44,7 +44,7 @@ tests:
           Hardware inventory:
             Item             Version  Part number  Serial number     Description
             Chassis                   JN1234A1BCD  AB1234567890     MX960
-        *show_config_filter: |
+        *show_config_filter:
           # No firewall filters configured
         *show_netstat: |
           tcp        0      0  *.80                *.*                    LISTEN

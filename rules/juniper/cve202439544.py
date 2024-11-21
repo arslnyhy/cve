@@ -21,11 +21,8 @@ def rule_cve202439544(configuration, commands, device, devices):
         device: The current device object
         devices: All devices in the test scope
     """
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
-
+    
     # List of vulnerable software versions
     vulnerable_versions = [
         # All versions before 20.4R3-S9-EVO
@@ -69,7 +66,7 @@ def rule_cve202439544(configuration, commands, device, devices):
     log_perms = commands.show_log_perms
     incorrect_perms = any([
         'group wheel' in log_perms,  # Should be group root
-        'permissions -rw-r--r--' in log_perms  # Should not be world-readable
+        '-rw-r--r--' in log_perms  # Should not be world-readable
     ])
 
     assert not incorrect_perms, (

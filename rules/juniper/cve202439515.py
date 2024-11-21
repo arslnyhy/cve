@@ -73,9 +73,9 @@ def rule_cve202439515(configuration, commands, device, devices):
 
     # Check for recent rpd crashes
     crash_output = commands.show_rpd_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'rpd' in line])
+    recent_crashes = 'rpd' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39515. "
         f"The device is running a vulnerable version with BGP traceoptions enabled, "
         f"established BGP sessions, and {recent_crashes} recent rpd crashes. "

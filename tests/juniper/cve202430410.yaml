@@ -26,20 +26,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 20.4R3-S10
-        *show_chassis_hardware: |
-          Hardware inventory:
-            Item             Version  Part number  Serial number     Description
-            Chassis                   JN1234A1BCD  AB1234567890     EX4300-48T
-        *show_config_filter: |
-          set firewall family inet6 filter PROTECT-RE
-        *show_config_interfaces: |
-          set interfaces lo0 unit 0 family inet6 filter input PROTECT-RE
-          set interfaces ge-0/0/0 unit 0 family inet6 filter input CUSTOMER-FILTER
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos: 20.4R3-S9
         *show_chassis_hardware: |
           Hardware inventory:

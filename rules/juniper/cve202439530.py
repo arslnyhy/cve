@@ -66,9 +66,9 @@ def rule_cve202439530(configuration, commands, device, devices):
 
     # Check for recent chassisd crashes
     crash_output = commands.show_chassisd_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'chassisd' in line])
+    recent_crashes = 'chassisd' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39530. "
         "The device is running a vulnerable version with GRPC/NETCONF enabled "
         f"and has {recent_crashes} recent chassisd crashes. This can indicate exploitation "

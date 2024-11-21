@@ -11,7 +11,7 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          Junos: 21.4R3
+          Junos: 21.3R1
         *show_chassis_hardware: |
           Hardware inventory:
           Item             Version  Part number  Description

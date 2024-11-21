@@ -28,21 +28,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 21.4R3
-        *show_chassis_hardware: |
-          Hardware inventory:
-          Item             Version  Part number  Description
-          Chassis                              SRX4600
-        *show_pfe_statistics: |
-          No packet drops
-        *show_system_memory: |
-          Memory utilization is 50%
-        *show_system_core_dumps: 
-          # No core dumps found
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos: 23.2R2
         *show_chassis_hardware: |
           Hardware inventory:

@@ -7,7 +7,6 @@ from comfy import medium
         show_version='show version',
         show_config_evpn='show configuration | display set | match "protocols evpn"',
         show_config_vxlan='show configuration | display set | match "(vlans.*vxlan|routing-instances.*vxlan)"',
-        show_rpd_status='show system processes extensive | match rpd'
     )
 )
 def rule_cve202439517(configuration, commands, device, devices):
@@ -64,19 +63,12 @@ def rule_cve202439517(configuration, commands, device, devices):
 
     # Check if VXLAN is configured
     vxlan_config = commands.show_config_vxlan
-    vxlan_enabled = any(config in vxlan_config for config in [
-        'vlans.*vxlan',
-        'routing-instances.*vxlan'
-    ])
+    vxlan_enabled = 'vxlan' in vxlan_config
 
     if not vxlan_enabled:
         return
 
-    # Check for rpd high CPU utilization
-    rpd_status = commands.show_rpd_status
-    rpd_high_cpu = '100% CPU' in rpd_status
-
-    assert not rpd_high_cpu, (
+    assert not vxlan_enabled, (
         f"Device {device.name} is vulnerable to CVE-2024-39517. "
         "The device is running a vulnerable version with EVPN/VXLAN configured "
         "and showing signs of rpd high CPU utilization. This can indicate exploitation "

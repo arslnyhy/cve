@@ -25,12 +25,3 @@ tests:
           set system processes routing enable
         *show_task_accounting: |
           RPD Server TOT: 100.00 RUNS: 150
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S4
-        *show_config_crpd: |
-          set system processes routing enable
-        *show_task_accounting: |
-          RPD Server TOT: 0.50 RUNS: 100

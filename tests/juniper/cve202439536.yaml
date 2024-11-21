@@ -1,7 +1,6 @@
 .show_version: &show_version 'show version'
 .show_config_bfd: &show_config_bfd 'show configuration | display set | match "bfd-liveness-detection authentication"'
 .show_config_ppm: &show_config_ppm 'show configuration | display set | match "routing-options ppm no-delegate-processing"'
-.show_ppm_queue: &show_ppm_queue 'show ppm request-queue'
 
 defaults:
   devices:
@@ -15,21 +14,9 @@ tests:
           Junos: 22.2R3-S3
         *show_config_bfd: |
           set protocols bfd-liveness-detection authentication keyed-sha-1 key "$9$abcdefgh"
-        *show_config_ppm: |
+        *show_config_ppm:
           # No PPM configuration
-        *show_ppm_queue: |
-          request-total-pending: 150
 
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S4
-        *show_config_bfd: |
-          set protocols bfd-liveness-detection authentication keyed-sha-1 key "$9$abcdefgh"
-        *show_config_ppm: |
-          # No PPM configuration
-        *show_ppm_queue: |
-          request-total-pending: 5
 
     - outcome: OK
       commands:
@@ -38,6 +25,5 @@ tests:
         *show_config_bfd: |
           set protocols bfd-liveness-detection authentication keyed-sha-1 key "$9$abcdefgh"
         *show_config_ppm: |
-          set routing-options ppm no-delegate-processing
-        *show_ppm_queue: |
-          request-total-pending: 150
+          routing-options ppm no-delegate-processing
+

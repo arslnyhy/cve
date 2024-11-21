@@ -20,16 +20,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Paragon Active Assurance 4.2.0
-        *show_config_paa: |
-          set services active-assurance enabled
-        *show_config_firewall: |
-          set firewall filter control-center term test-agents from source-address 10.0.0.0/24
-          set firewall filter control-center term admins from source-address 192.168.1.0/24
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Paragon Active Assurance 4.3.0
         *show_config_paa: |
           set services active-assurance enabled

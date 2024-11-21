@@ -71,9 +71,9 @@ def rule_cve202439529(configuration, commands, device, devices):
 
     # Check for recent PFE crashes
     crash_output = commands.show_pfe_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'pfe' in line])
+    recent_crashes = 'pfe' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39529. "
         "The device is running a vulnerable version with DNS DGA/tunnel detection and traceoptions enabled, "
         f"and has {recent_crashes} recent PFE crashes. This can indicate exploitation through "

@@ -23,10 +23,7 @@ def rule_cve202439559(configuration, commands, device, devices):
         device: The current device object
         devices: All devices in the test scope
     """
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [

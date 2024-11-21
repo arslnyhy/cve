@@ -16,5 +16,5 @@ tests:
 
     - outcome: OK
       commands:
-        *show_version: x
-        *show_config_bgp: x
+        *show_version: 21.4R3-S5
+        *show_config_bgp: # no bgp configured

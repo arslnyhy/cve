@@ -80,9 +80,9 @@ def rule_cve202439542(configuration, commands, device, devices):
 
     # Check for recent crashes
     crash_output = commands.show_fpc_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'packetio' in line or 'evo-aftman' in line])
+    recent_crashes = 'packetio' in crash_output or 'evo-aftman' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39542. "
         "The device is running a vulnerable version with "
         f"{'CFM' if cfm_enabled else 'SFLOW'} enabled and has {recent_crashes} recent "

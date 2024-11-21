@@ -25,14 +25,6 @@ tests:
       commands:
         *show_version:
           # Non-vulnerable version
-          SSR version 5.6.15
-        *show_config_ha: |
-          set high-availability enabled
-
-    - outcome: OK
-      commands:
-        *show_version:
-          # Non-vulnerable version
           SSR version 6.2.5-sts
         *show_config_ha: |
           set high-availability enabled

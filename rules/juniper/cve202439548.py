@@ -1,5 +1,6 @@
 from comfy import medium
 
+
 @medium(
     name='rule_cve202439548',
     platform=['juniper_junos'],
@@ -22,10 +23,7 @@ def rule_cve202439548(configuration, commands, device, devices):
         device: The current device object
         devices: All devices in the test scope
     """
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -55,7 +53,8 @@ def rule_cve202439548(configuration, commands, device, devices):
     ]
 
     # Check if version is vulnerable
-    version_vulnerable = any(version in version_output for version in vulnerable_versions)
+    version_vulnerable = any(
+        version in version_output for version in vulnerable_versions)
 
     if not version_vulnerable:
         return
@@ -80,10 +79,11 @@ def rule_cve202439548(configuration, commands, device, devices):
     arp_output = commands.show_arp
     ndp_output = commands.show_ndp
     incomplete_entries = len([line for line in arp_output.splitlines() if 'Incomplete' in line]) + \
-                        len([line for line in ndp_output.splitlines() if 'Incomplete' in line])
+        len([line for line in ndp_output.splitlines() if 'Incomplete' in line])
 
     # Device is vulnerable if showing memory leak and has high number of unresolved entries
-    is_vulnerable = memory_leak and incomplete_entries > 100  # Threshold of 100 incomplete entries
+    # Threshold of 100 incomplete entries
+    is_vulnerable = memory_leak and incomplete_entries > 100
 
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-39548. "

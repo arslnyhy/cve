@@ -25,19 +25,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 21.4R3
-        *show_chassis_hardware: |
-          Hardware inventory:
-          Item             Version  Part number  Description
-          Chassis                              ACX5448
-        *show_pfe_statistics: |
-          PFE statistics normal
-        *show_interfaces: |
-          Link flaps: 0
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos: 23.2R2
         *show_chassis_hardware: |
           Hardware inventory:

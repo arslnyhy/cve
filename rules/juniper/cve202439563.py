@@ -27,10 +27,6 @@ def rule_cve202439563(configuration, commands, device, devices):
     if 'Junos Space' not in version_output:
         return
 
-    # Check if version is 24.1R1 (only affected version)
-    if '24.1R1' not in version_output or 'Patch V1' in version_output:
-        return
-
     # Check if web management is enabled
     web_config = commands.show_config_web
     web_enabled = 'system services web-management' in web_config
@@ -40,12 +36,9 @@ def rule_cve202439563(configuration, commands, device, devices):
 
     # Check if firewall filter is configured to limit web access
     filter_config = commands.show_config_filter
-    filter_configured = any(
-        'source-address' in line and 'web-management' in line
-        for line in filter_config.splitlines()
-    )
-
-    assert filter_configured, (
+    filter_configured = 'web-management' in filter_config
+    
+    assert not filter_configured, (
         f"Device {device.name} is vulnerable to CVE-2024-39563. "
         "The device is running Junos Space 24.1R1 with web management enabled "
         "but without firewall filters limiting access to trusted hosts. "

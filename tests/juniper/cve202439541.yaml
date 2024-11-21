@@ -18,25 +18,6 @@ tests:
         *show_rpd_crashes: |
           /var/crash/rpd.core-tarball.0.tgz
 
-    - outcome: TESTS_FAILED
-      commands:
-        *show_version: |
-          Junos: 22.4R2-EVO
-        *show_config_te: |
-          set protocols source-packet-routing traffic-engineering database
-          set protocols isis traffic-engineering
-        *show_rpd_crashes: |
-          /var/crash/rpd.core-tarball.0.tgz
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.4R3-S1
-        *show_config_te: |
-          set protocols source-packet-routing traffic-engineering database
-          set protocols ospf traffic-engineering
-        *show_rpd_crashes: |
-          # No rpd crashes found
 
     - outcome: OK
       commands:

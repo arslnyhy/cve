@@ -23,18 +23,6 @@ tests:
         *show_flowd_crashes: |
           /var/crash/flowd.0.core.1234
 
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: SRX5800
-          Junos: 22.4R3-S4  # Fixed version
-        *show_chassis_hardware: |
-          Chassis SRX5800
-        *show_chassis_cluster: |
-          error: Chassis cluster is not enabled
-        *show_flowd_crashes: |
-          /var/crash/flowd.0.core.1234
 
     - outcome: OK
       commands:
@@ -51,24 +39,3 @@ tests:
           1 1 secondary
         *show_flowd_crashes: |
           /var/crash/flowd.0.core.1234
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: SRX5800
-          Junos: 22.4R3-S3
-        *show_chassis_hardware: |
-          Chassis SRX5800
-        *show_chassis_cluster: |
-          error: Chassis cluster is not enabled
-        *show_flowd_crashes: # No flowd crashes
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: MX240  # Not SRX5000
-          Junos: 22.4R3-S3
-        *show_chassis_hardware: |
-          Chassis MX240

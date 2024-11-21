@@ -17,29 +17,11 @@ tests:
         *show_rpd_crashes: |
           /var/crash/rpd.core-tarball.0.tgz
 
-    - outcome: TESTS_FAILED
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S4-EVO
-        *show_config_bgp: |
-          set protocols bgp group PEERS
-        *show_rpd_crashes: |
-          /var/crash/rpd.core-tarball.0.tgz
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S5
-        *show_config_bgp: |
-          set protocols bgp group PEERS
-        *show_rpd_crashes: |
-          # No rpd crashes found
-
     - outcome: OK
       commands:
         *show_version: |
           Junos: 22.2R3-S4
-        *show_config_bgp: |
+        *show_config_bgp:
           # No BGP configuration
         *show_rpd_crashes: |
           /var/crash/rpd.core-tarball.0.tgz

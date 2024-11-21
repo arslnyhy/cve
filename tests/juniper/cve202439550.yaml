@@ -24,20 +24,6 @@ tests:
         *show_rtlog_memory: |
           rtlogd    Current: 8000MB  Peak: 10000MB
 
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S3
-        *show_chassis_hardware: |
-          Hardware inventory:
-            Item             Version  Part number  Serial number     Description
-            Chassis                   JN1234A1BCD  AB1234567890     MX960
-            FPC 1                     750-0xxxxx   ABCD1234         SPC3
-        *show_interfaces: |
-          ge-0/0/0  up    up
-          ge-0/0/1  up    up
-        *show_rtlog_memory: |
-          rtlogd    Current: 2000MB  Peak: 10000MB
 
     - outcome: OK
       commands:

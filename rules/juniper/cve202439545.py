@@ -68,9 +68,9 @@ def rule_cve202439545(configuration, commands, device, devices):
 
     # Check for recent iked crashes
     crash_output = commands.show_iked_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'iked' in line])
+    recent_crashes = 'iked' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39545. "
         "The device is running a vulnerable version with IPsec VPN configured "
         f"and has {recent_crashes} recent iked crashes. This can indicate exploitation "

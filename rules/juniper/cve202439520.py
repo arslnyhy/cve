@@ -64,11 +64,11 @@ def rule_cve202439520(configuration, commands, device, devices):
 
     # Look for users with class operator or read-only (potentially vulnerable)
     restricted_users = any(
-        'class operator' in login_config or 'class read-only' in login_config
+        'operator' in login_config or 'read-only' in login_config
     )
 
     # Check if any non-root users are currently logged in
-    active_users = len([line for line in users_output.splitlines() if 'root' not in line]) > 0
+    active_users = 'root' not in users_output
 
     # Device is at risk if it has restricted users configured or active
     at_risk = restricted_users or active_users

@@ -27,10 +27,7 @@ def rule_cve202439535(configuration, commands, device, devices):
     if not any(model in chassis_output for model in ['ACX7024', 'ACX7100', 'ACX7509']):
         return
 
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [

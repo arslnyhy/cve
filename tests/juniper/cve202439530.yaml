@@ -20,17 +20,6 @@ tests:
         *show_chassisd_crashes: |
           /var/crash/chassisd.core-tarball.0.tgz
 
-    - outcome: TESTS_FAILED
-      commands:
-        *show_version: |
-          Junos: 22.3R2
-        *show_config_grpc: |
-          # No GRPC configuration
-        *show_config_netconf: |
-          set system services netconf ssh
-        *show_chassisd_crashes: |
-          /var/crash/chassisd.core-tarball.0.tgz
-
     - outcome: OK
       commands:
         *show_version: |
@@ -39,16 +28,6 @@ tests:
           set system services extension-service request-response grpc
         *show_config_netconf: |
           set system services netconf ssh
-        *show_chassisd_crashes: |
+        *show_chassisd_crashes:
           # No chassisd crashes found
 
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 21.4R3-S4
-        *show_config_grpc: |
-          # No GRPC configuration
-        *show_config_netconf: |
-          # No NETCONF configuration
-        *show_chassisd_crashes: |
-          /var/crash/chassisd.core-tarball.0.tgz

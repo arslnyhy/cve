@@ -24,7 +24,7 @@ def rule_cve202439543(configuration, commands, device, devices):
     # Extract version information
     version_output = commands.show_version
     is_evolved = 'Evolved' in version_output
-
+    
     # List of vulnerable software versions for Junos OS
     junos_vulnerable_versions = [
         # All versions before 21.2R3-S8
@@ -66,9 +66,9 @@ def rule_cve202439543(configuration, commands, device, devices):
 
     # Check for recent rpd crashes
     crash_output = commands.show_rpd_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'rpd' in line])
+    recent_crashes = 'rpd' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39543. "
         "The device is running a vulnerable version with RPKI validation enabled "
         f"and has {recent_crashes} recent rpd crashes. This can indicate exploitation "

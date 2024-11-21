@@ -7,7 +7,6 @@ from comfy import medium
         show_version='show version',
         show_config_bfd='show configuration | display set | match "bfd-liveness-detection authentication"',
         show_config_ppm='show configuration | display set | match "routing-options ppm no-delegate-processing"',
-        show_ppm_queue='show ppm request-queue'
     )
 )
 def rule_cve202439536(configuration, commands, device, devices):
@@ -64,27 +63,10 @@ def rule_cve202439536(configuration, commands, device, devices):
     ppm_config = commands.show_config_ppm
     delegate_disabled = 'routing-options ppm no-delegate-processing' in ppm_config
 
-    if delegate_disabled:
-        return
-
-    # Check for memory leak signs in ppm request-queue
-    queue_output = commands.show_ppm_queue
-    queue_lines = queue_output.splitlines()
-    
-    # Parse total pending requests
-    total_pending = 0
-    for line in queue_lines:
-        if 'request-total-pending:' in line:
-            try:
-                total_pending = int(line.split()[-1])
-            except (ValueError, IndexError):
-                continue
-
-    # Alert if pending requests are high (indicating memory leak)
-    assert total_pending < 100, (
+    assert delegate_disabled, (
         f"Device {device.name} is vulnerable to CVE-2024-39536. "
         "The device is running a vulnerable version with BFD authentication enabled "
-        f"and showing signs of ppmd memory leak ({total_pending} pending requests). "
+        "and showing signs of ppmd memory leak (pending requests). "
         "Please upgrade to one of the following fixed versions: "
         "Junos OS: 21.2R3-S8, 21.4R3-S7, 22.1R3-S4, 22.2R3-S4, 22.3R3, 22.4R2-S2, "
         "22.4R3, 23.2R1, or later; "

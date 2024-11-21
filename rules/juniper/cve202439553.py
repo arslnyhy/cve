@@ -22,10 +22,7 @@ def rule_cve202439553(configuration, commands, device, devices):
         device: The current device object
         devices: All devices in the test scope
     """
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -71,9 +68,9 @@ def rule_cve202439553(configuration, commands, device, devices):
 
     # Check for recent msvcsd crashes
     crash_output = commands.show_msvcs_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'msvcsd' in line])
+    recent_crashes = 'msvcsd' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39553. "
         "The device is running a vulnerable version with inline jflow configured "
         f"and has {recent_crashes} recent msvcsd crashes. This can indicate exploitation "

@@ -56,10 +56,7 @@ def rule_cve202421607(configuration, commands, device, devices):
 
     # Check if IPv6 filter with payload-protocol match and tcp-reset reject is configured
     filter_config = commands.show_config_filter
-    vulnerable_config = any(
-        'payload-protocol' in line and 'tcp-reset' in line
-        for line in filter_config.splitlines()
-    )
+    vulnerable_config = 'payload-protocol' in filter_config and 'tcp-reset' in filter_config
 
     assert not vulnerable_config, (
         f"Device {device.name} is vulnerable to CVE-2024-21607. "

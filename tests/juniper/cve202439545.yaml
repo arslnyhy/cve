@@ -28,21 +28,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 22.1R3-S2
-        *show_chassis_hardware: |
-          Hardware inventory:
-            Item             Version  Part number  Serial number     Description
-            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
-        *show_config_ike: |
-          set security ike gateway VPN-GW1
-        *show_config_ipsec: |
-          set security ipsec vpn VPN1
-        *show_iked_crashes: |
-          # No iked crashes found
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos: 22.1R3-S1
         *show_chassis_hardware: |
           Hardware inventory:

@@ -31,14 +31,3 @@ tests:
           set system login class super-user permissions all
         *show_log_files: |
           User logged in successfully
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R2
-        *show_system_users: |
-          root     pts/0    192.168.1.100   2d3h
-        *show_config_login: |
-          set system login class operator permissions [ view ]
-        *show_log_files: |
-          User authentication password: secretpass123

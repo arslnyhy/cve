@@ -67,9 +67,9 @@ def rule_cve202439556(configuration, commands, device, devices):
 
     # Check for recent RPD crashes
     crash_output = commands.show_rpd_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'rpd' in line])
+    recent_crashes = 'rpd' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39556. "
         "The device is running a vulnerable version with BGP flow-spec enabled "
         f"and has {recent_crashes} recent RPD crashes. This can indicate exploitation "

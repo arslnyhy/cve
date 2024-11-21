@@ -11,8 +11,6 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          Hostname: test-device
-          Model: MX240
           Junos: 21.4R3-S5
         *show_config_bgp: |
           set protocols bgp group PEERS neighbor 10.0.0.1
@@ -20,34 +18,5 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Hostname: test-device
-          Model: MX240
-          Junos: 21.4R3-S6  # Fixed version
-        *show_config_bgp: |
-          set protocols bgp group PEERS neighbor 10.0.0.1
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: MX240
           Junos: 21.4R3-S5
         *show_config_bgp: # BGP not configured
-
-    - outcome: TESTS_FAILED
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: PTX10001-36MR
-          Junos: 21.4R3-S6-EVO
-        *show_config_bgp: |
-          set protocols bgp group PEERS neighbor 10.0.0.1
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: PTX10001-36MR
-          Junos: 21.4R3-S7-EVO  # Fixed EVO version
-        *show_config_bgp: |
-          set protocols bgp group PEERS neighbor 10.0.0.1

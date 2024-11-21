@@ -60,12 +60,11 @@ def rule_cve202439527(configuration, commands, device, devices):
 
     # Look for login classes with restricted permissions
     restricted_classes = any(
-        'class' in line and not any(priv in line for priv in ['super-user', 'all-permissions'])
-        for line in login_config.splitlines()
+        'class' in login_config and not any(priv in login_config for priv in ['super-user', 'all-permissions'])
     )
 
     # Check if any non-root users are currently logged in
-    active_users = len([line for line in users_output.splitlines() if 'root' not in line]) > 0
+    active_users = 'root' not in users_output
 
     # Device is at risk if it has restricted users configured or active
     at_risk = restricted_classes or active_users

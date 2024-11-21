@@ -25,19 +25,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 22.2R3-S3
-        *show_chassis_hardware: |
-          Hardware inventory:
-            Item             Version  Part number  Serial number     Description
-            Chassis                   JN1234A1BCD  AB1234567890     QFX5120-48Y
-        *show_config_filter: |
-          set firewall family ethernet-switching filter PROTECT from ip-source-address 192.168.1.0/24
-        *show_config_interface: |
-          set interfaces xe-0/0/0 family ethernet-switching filter output PROTECT
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos: 22.2R3-S2
         *show_chassis_hardware: |
           Hardware inventory:

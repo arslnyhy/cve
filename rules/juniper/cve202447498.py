@@ -24,9 +24,6 @@ def rule_cve202447498(configuration, commands, device, devices):
     # Check if device is QFX5000 Series running Junos OS Evolved
     chassis_output = commands.show_chassis_hardware
     version_output = commands.show_version
-    
-    if not ('QFX5' in chassis_output and 'Evolved' in version_output):
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [

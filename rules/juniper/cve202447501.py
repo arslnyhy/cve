@@ -63,9 +63,9 @@ def rule_cve202447501(configuration, commands, device, devices):
 
     # Check for recent FPC crashes
     crash_output = commands.show_fpc_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'fpc' in line])
+    recent_crashes = 'fpc' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-47501. "
         f"The device is running a vulnerable version with {'VPLS' if vpls_enabled else 'Junos Fusion'} configured "
         f"and has {recent_crashes} recent FPC crashes. This can indicate exploitation through "

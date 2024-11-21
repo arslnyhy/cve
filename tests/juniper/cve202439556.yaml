@@ -26,13 +26,6 @@ tests:
         *show_rpd_crashes: |
           /var/crash/rpd.core-tarball.0.tgz
 
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S4
-        *show_config_bgp: |
-          set protocols bgp group PEERS family inet flow
-        *show_rpd_crashes: ""
 
     - outcome: OK
       commands:

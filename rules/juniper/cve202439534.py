@@ -22,11 +22,8 @@ def rule_cve202439534(configuration, commands, device, devices):
         device: The current device object
         devices: All devices in the test scope
     """
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
-
+    
     # List of vulnerable software versions
     vulnerable_versions = [
         # All versions before 21.4R3-S8-EVO
@@ -57,8 +54,7 @@ def rule_cve202439534(configuration, commands, device, devices):
     # Check if firewall filters with source/destination address restrictions are configured
     filter_config = commands.show_config_filter
     has_address_filters = any(
-        'source-address' in line or 'destination-address' in line
-        for line in filter_config.splitlines()
+        'source-address' in filter_config or 'destination-address' in filter_config
     )
 
     if not has_address_filters:

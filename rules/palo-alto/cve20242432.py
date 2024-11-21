@@ -4,7 +4,7 @@ from comfy import high
     name='rule_cve20242432',
     platform=['paloalto_panos'],
     commands=dict(
-        show_globalprotect_version='show globalprotect version'
+        show_system_info='show system info'
     ),
 )
 def rule_cve20242432(configuration, commands, device, devices):
@@ -13,8 +13,8 @@ def rule_cve20242432(configuration, commands, device, devices):
     The vulnerability allows a local user to execute programs with elevated privileges due to a race condition.
     The test checks if the GlobalProtect app version is vulnerable.
     """
-    # Extract the GlobalProtect version from the command output
-    globalprotect_version_output = commands.show_globalprotect_version
+    # Extract the system information from the command output
+    system_info_output = commands.show_system_info
 
     # Define the minimum non-vulnerable versions
     non_vulnerable_versions = {
@@ -27,11 +27,15 @@ def rule_cve20242432(configuration, commands, device, devices):
     # Check if the current version is vulnerable
     is_vulnerable = False
     for major_version, min_version in non_vulnerable_versions.items():
-        if major_version in globalprotect_version_output:
-            current_version = globalprotect_version_output.split()[-1]
+        if major_version in system_info_output:
+            current_version = system_info_output.split()[-1]
             if current_version < min_version:
                 is_vulnerable = True
                 break
+
+    # If version is not vulnerable, exit early
+    if not is_vulnerable:
+        return
 
     # Assert that the device is not vulnerable
     assert not is_vulnerable, (

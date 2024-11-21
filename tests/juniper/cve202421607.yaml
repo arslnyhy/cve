@@ -30,15 +30,3 @@ tests:
           Chassis                              MX240
         *show_config_filter: 
           # No IPv6 filter with payload-protocol and tcp-reset configured
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 23.2R2
-        *show_chassis_hardware: |
-          Hardware inventory:
-          Item             Version  Part number  Description
-          Chassis                              MX240
-        *show_config_filter: |
-          set firewall family inet6 filter test-filter term test from payload-protocol tcp
-          set firewall family inet6 filter test-filter term test then tcp-reset

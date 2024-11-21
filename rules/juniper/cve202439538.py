@@ -27,10 +27,7 @@ def rule_cve202439538(configuration, commands, device, devices):
     if not any(model in chassis_output for model in ['ACX7024', 'ACX7100', 'ACX7509']):
         return
 
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -70,9 +67,9 @@ def rule_cve202439538(configuration, commands, device, devices):
 
     # Check for recent evo-pfemand crashes
     crash_output = commands.show_fpc_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'evo-pfemand' in line])
+    recent_crashes = 'evo-pfemand' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-39538. "
         "The device is running a vulnerable version with multicast enabled "
         f"and has {recent_crashes} recent evo-pfemand crashes. This can indicate exploitation "

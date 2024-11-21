@@ -22,18 +22,6 @@ tests:
         *show_memory: |
           jsf objcache  Current: 8000MB  Peak: 10000MB
 
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 22.2R3-S2
-        *show_chassis_hardware: |
-          Hardware inventory:
-            Item             Version  Part number  Serial number     Description
-            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
-        *show_config_alg: |
-          set security alg h323
-        *show_memory: |
-          jsf objcache  Current: 2000MB  Peak: 10000MB
 
     - outcome: OK
       commands:

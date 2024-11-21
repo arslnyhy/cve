@@ -59,7 +59,7 @@ def rule_cve202439550(configuration, commands, device, devices):
 
     # Check for interface flaps
     interface_output = commands.show_interfaces
-    flapping_interfaces = len([line for line in interface_output.splitlines() if 'down' in line])
+    flapping_interfaces = 'down' in interface_output
 
     # Check rtlogd memory usage
     rtlog_output = commands.show_rtlog_memory
@@ -78,7 +78,7 @@ def rule_cve202439550(configuration, commands, device, devices):
                 continue
 
     # Device is vulnerable if showing signs of memory leak and has flapping interfaces
-    is_vulnerable = high_memory and flapping_interfaces > 0
+    is_vulnerable = high_memory and flapping_interfaces
 
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-39550. "

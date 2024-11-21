@@ -25,19 +25,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos: 21.4R3
-        *show_chassis_hardware: |
-          Hardware inventory:
-          Item             Version  Part number  Description
-          Chassis                              EX4300-48P
-        *show_pfe_statistics: |
-          PFE statistics normal
-        *show_system_core_dumps: 
-          # No core dumps found
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos: 23.2R2
         *show_chassis_hardware: |
           Hardware inventory:

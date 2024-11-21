@@ -23,8 +23,6 @@ def rule_cve202439512(configuration, commands, device, devices):
     """
     # Check if device is running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -42,18 +40,16 @@ def rule_cve202439512(configuration, commands, device, devices):
 
     # Check for active console sessions
     users_output = commands.show_system_users
-    console_sessions = len([line for line in users_output.splitlines() if 'console' in line.lower()])
 
     # Check if console timeout is configured
     login_config = commands.show_system_login
-    timeout_configured = 'system login idle-timeout' in login_config
 
     # Device is vulnerable if it has console sessions and no timeout configured
-    is_vulnerable = console_sessions > 0 and not timeout_configured
+    is_vulnerable = 'console' in users_output and 'system login idle-timeout' not in login_config
 
     assert not is_vulnerable, (
         f"Device {device.name} is vulnerable to CVE-2024-39512. "
-        f"The device is running a vulnerable version with {console_sessions} active console "
+        f"The device is running a vulnerable version with active console "
         "sessions and no idle timeout configured. This allows an attacker with physical access "
         "to gain unauthorized access through disconnected console sessions. "
         "Please upgrade to one of the following fixed versions: "

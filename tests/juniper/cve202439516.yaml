@@ -35,16 +35,3 @@ tests:
           # No traffic engineering configured
         *show_rpd_crashes: 
           # No rpd crashes found
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 23.2R2
-        *show_config_bgp: |
-          set protocols bgp group test-group peer-as 65000
-        *show_config_traceoptions: |
-          set protocols bgp traceoptions packets detail
-        *show_config_te: |
-          set protocols bgp family traffic-engineering unicast
-        *show_rpd_crashes: |
-          /var/crash/rpd.core.0

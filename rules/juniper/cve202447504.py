@@ -61,9 +61,9 @@ def rule_cve202447504(configuration, commands, device, devices):
 
     # Check for recent flowd crashes
     crash_output = commands.show_flowd_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'flowd' in line])
+    recent_crashes = 'flowd' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-47504. "
         "The device is running a vulnerable version without chassis clustering "
         f"and has {recent_crashes} recent flowd crashes. This can indicate exploitation "

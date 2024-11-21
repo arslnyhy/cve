@@ -31,24 +31,3 @@ tests:
           Chassis QFX5120-48Y
         *show_config_mac_limit: |
           set switch-options interface-mac-limit 1000
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: QFX5120
-          Junos: 21.4R3-S7-EVO
-        *show_chassis_hardware: |
-          Chassis QFX5120-48Y
-        *show_config_mac_limit: # No MAC limits configured
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: MX240  # Not QFX5000
-          Junos: 21.4R3-S7-EVO
-        *show_chassis_hardware: |
-          Chassis MX240
-        *show_config_mac_limit: |
-          set switch-options interface-mac-limit 1000

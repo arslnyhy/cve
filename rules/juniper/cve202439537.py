@@ -27,10 +27,7 @@ def rule_cve202439537(configuration, commands, device, devices):
     if not any(model in chassis_output for model in ['ACX7024', 'ACX7100', 'ACX7509']):
         return
 
-    # Check if running Junos OS Evolved
     version_output = commands.show_version
-    if 'Evolved' not in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -60,18 +57,14 @@ def rule_cve202439537(configuration, commands, device, devices):
     # Check for firewall filter protecting internal services
     filter_config = commands.show_config_filter
     filter_configured = any(
-        'firewall filter mgmt_filter' in line and 'from source-address' in line
-        for line in filter_config.splitlines()
+        'firewall filter mgmt_filter' in filter_config and 'from source-address' in filter_config
     )
 
     # Check for exposed internal ports
     netstat_output = commands.show_netstat
-    exposed_ports = len([line for line in netstat_output.splitlines() if 'LISTEN' in line])
+    exposed_ports = 'LISTEN' in netstat_output
 
-    # Device is vulnerable if it has exposed ports without proper filtering
-    is_vulnerable = exposed_ports > 0 and not filter_configured
-
-    assert not is_vulnerable, (
+    assert not exposed_ports or filter_configured, (
         f"Device {device.name} is vulnerable to CVE-2024-39537. "
         "The device is running a vulnerable version of Junos OS Evolved with exposed internal ports "
         "and without proper firewall filtering. This can allow an attacker to access internal "

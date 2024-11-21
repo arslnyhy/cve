@@ -27,10 +27,6 @@ def rule_cve202430403(configuration, commands, device, devices):
     if 'Evolved' not in version_output:
         return
 
-    # Check if version is 23.2-EVO
-    if not '23.2-EVO' in version_output:
-        return
-
     # List of vulnerable software versions
     vulnerable_versions = [
         # 23.2-EVO versions before 23.2R1-S1-EVO
@@ -57,13 +53,10 @@ def rule_cve202430403(configuration, commands, device, devices):
     pfe_status = commands.show_pfe_status
 
     # Look for recent crashes and PFE errors
-    recent_crashes = len([line for line in aftmand_crashes.splitlines() if 'evo-aftmand-bt' in line])
-    pfe_errors = 'error' in pfe_status.lower()
+    recent_crashes = 'evo-aftmand-bt' in aftmand_crashes
+    pfe_errors = 'error' in pfe_status
 
-    # Device shows signs of vulnerability if either condition is true
-    stability_issues = recent_crashes > 0 or pfe_errors
-
-    assert not stability_issues, (
+    assert not (recent_crashes or pfe_errors), (
         f"Device {device.name} is vulnerable to CVE-2024-30403. "
         "The device is running a vulnerable version of Junos OS Evolved with Layer 2 switching enabled "
         "and showing signs of evo-aftmand-bt crashes or PFE errors. This can indicate exploitation "

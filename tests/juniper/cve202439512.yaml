@@ -14,17 +14,8 @@ tests:
           Junos OS Evolved 23.2R2-EVO
         *show_system_users: |
           root     console    0    Apr  1 12:34
-        *show_system_login: 
+        *show_system_login:
           # No idle timeout configured
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos OS Evolved 23.2R2-EVO
-        *show_system_users: 
-          # No console users
-        *show_system_login: |
-          set system login idle-timeout 10
 
     - outcome: OK
       commands:
@@ -32,5 +23,5 @@ tests:
           Junos OS Evolved 23.2R2-S1-EVO
         *show_system_users: |
           root     console    0    Apr  1 12:34
-        *show_system_login: 
-          # No idle timeout needed in fixed version
+        *show_system_login: |
+          system login idle-timeout 10

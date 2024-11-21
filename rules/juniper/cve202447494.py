@@ -22,10 +22,7 @@ def rule_cve202447494(configuration, commands, device, devices):
         device: The current device object
         devices: All devices in the test scope
     """
-    # Check if running Junos OS Evolved (not affected)
     version_output = commands.show_version
-    if 'Evolved' in version_output:
-        return
 
     # List of vulnerable software versions
     vulnerable_versions = [
@@ -62,9 +59,9 @@ def rule_cve202447494(configuration, commands, device, devices):
 
     # Check for recent FPC crashes
     crash_output = commands.show_fpc_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'fpc' in line])
+    recent_crashes = 'fpc' in crash_output
 
-    assert recent_crashes == 0, (
+    assert not recent_crashes, (
         f"Device {device.name} is vulnerable to CVE-2024-47494. "
         "The device is running a vulnerable version with analytics services enabled "
         f"and has {recent_crashes} recent FPC crashes. This can indicate exploitation "

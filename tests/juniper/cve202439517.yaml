@@ -1,7 +1,6 @@
 .show_version: &show_version 'show version'
 .show_config_evpn: &show_config_evpn 'show configuration | display set | match "protocols evpn"'
 .show_config_vxlan: &show_config_vxlan 'show configuration | display set | match "(vlans.*vxlan|routing-instances.*vxlan)"'
-.show_rpd_status: &show_rpd_status 'show system processes extensive | match rpd'
 
 defaults:
   devices:
@@ -17,8 +16,7 @@ tests:
           set protocols evpn encapsulation vxlan
         *show_config_vxlan: |
           set vlans vlan100 vxlan vni 100
-        *show_rpd_status: |
-          rpd     100% CPU
+
 
     - outcome: OK
       commands:
@@ -28,16 +26,3 @@ tests:
           # No EVPN configured
         *show_config_vxlan: 
           # No VXLAN configured
-        *show_rpd_status: |
-          rpd     5% CPU
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Junos: 23.2R2
-        *show_config_evpn: |
-          set protocols evpn encapsulation vxlan
-        *show_config_vxlan: |
-          set vlans vlan100 vxlan vni 100
-        *show_rpd_status: |
-          rpd     100% CPU

@@ -32,7 +32,7 @@ tests:
           set forwarding-options sampling instance FLOW1 input rate 1
           set forwarding-options sampling instance FLOW1 output flow-server 1.1.1.1
           set forwarding-options sampling instance FLOW1 inline-jflow source-address 2.2.2.2
-        *show_msvcs_crashes: |
+        *show_msvcs_crashes:
           # No msvcsd crashes found
 
     - outcome: OK

@@ -1,5 +1,6 @@
 from comfy import medium
 
+
 @medium(
     name='rule_cve202439513',
     platform=['juniper_junos'],
@@ -57,26 +58,24 @@ def rule_cve202439513(configuration, commands, device, devices):
     ]
 
     # Check if version is vulnerable
-    version_vulnerable = any(version in version_output for version in vulnerable_versions)
+    version_vulnerable = any(
+        version in version_output for version in vulnerable_versions)
 
     if not version_vulnerable:
         return
 
     # Check for recent AFT manager crashes
     crash_output = commands.show_aftmand_crashes
-    recent_crashes = len([line for line in crash_output.splitlines() if 'evo-aftmand' in line])
+    recent_crashes = 'evo-aftmand' in crash_output
 
     # Check for FPC status issues
     fpc_output = commands.show_fpc_status
     fpc_issues = any(
-        state in fpc_output.lower()
-        for state in ['offline', 'present', 'down']
+        state in fpc_output
+        for state in ['offline', 'Offline', 'present', 'Present', 'down', 'Down']
     )
 
-    # Device shows signs of vulnerability if either condition is true
-    stability_issues = recent_crashes > 0 or fpc_issues
-
-    assert not stability_issues, (
+    assert not (recent_crashes or fpc_issues), (
         f"Device {device.name} is vulnerable to CVE-2024-39513. "
         f"The device is running a vulnerable version and showing signs of instability "
         f"({recent_crashes} recent AFT manager crashes, FPC status issues: {fpc_issues}). "
