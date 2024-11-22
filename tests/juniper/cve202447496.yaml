@@ -1,0 +1,35 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_chassis_fpc: &show_chassis_fpc 'show chassis fpc'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447496:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_chassis_fpc: |
+          Slot  State     CPU Util  Memory Util  Utilization
+            0   Online      12         15           10      MPC5E 3D Q 2CGE XFP
+            1   Online      10         12            8      MPC7E 3D MRATE-12xQSFPP-XGE-XLGE-CGE
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 22.2R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              SRX5400
+        *show_chassis_fpc: |
+          Slot  State     CPU Util  Memory Util  Utilization
+            0   Online      12         15           10      MPC11E
+            1   Online      10         12            8      MPC10E

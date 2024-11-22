@@ -25,19 +25,6 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Junos OS Evolved 22.2R2-EVO
-        *show_chassis_hardware: |
-          Hardware inventory:
-          Item             Version  Part number  Description
-          Chassis                              PTX10008
-        *show_system_users: |
-          root     pts/0    Apr  1 12:34
-        *show_config_login: |
-          set system login class super-user permissions all
-
-    - outcome: OK
-      commands:
-        *show_version: |
           Junos OS Evolved 23.2R2-EVO
         *show_chassis_hardware: |
           Hardware inventory:

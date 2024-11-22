@@ -1,0 +1,29 @@
+.show_version: &show_version 'show version'
+.show_snmp_config: &show_snmp_config 'show configuration | display set | match "snmp"'
+.show_guids: &show_guids 'show platform application-info allocations app evo-pfemand/evo-pfemand'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447505:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R3-EVO
+        *show_snmp_config: |
+          set snmp community public authorization read-only
+        *show_guids: |
+          Application    PID      Guids
+          evo-pfemand   1234     1500000
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos OS Evolved 22.2R3-EVO
+        *show_snmp_config:
+          # SNMP not configured
+        *show_guids: |
+          Application    PID      Guids
+          evo-pfemand   1234     50000

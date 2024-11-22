@@ -73,7 +73,7 @@ def rule_cve202439520(configuration, commands, device, devices):
     # Device is at risk if it has restricted users configured or active
     at_risk = restricted_users or active_users
 
-    assert not at_risk, (
+    assert at_risk, (
         f"Device {device.name} is vulnerable to CVE-2024-39520 through CVE-2024-39524. "
         "The device is running a vulnerable version of Junos OS Evolved with non-root users "
         "who could exploit CLI parameter handling to escalate privileges. "

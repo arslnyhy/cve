@@ -30,7 +30,7 @@ tests:
         *show_chassis_hardware: |
           Hardware inventory:
             Item             Version  Part number  Serial number     Description
-            Chassis                   JN1234A1BCD  AB1234567890     SRX5800
+            Chassis                   JN1234A1BCD  AB1234567890     MX5800
         *show_system_users: |
           admin    pts/0    192.168.1.100   2d3h
         *show_config_login: |

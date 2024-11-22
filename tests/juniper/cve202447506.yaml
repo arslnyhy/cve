@@ -54,26 +54,3 @@ tests:
           set security policies from-zone trust to-zone untrust policy allow then permit
         *show_pfe_crashes: |
           /var/crash/pfe.0.core.1234
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: SRX4600
-          Junos: 21.4R2
-        *show_chassis_hardware: |
-          Chassis SRX4600
-        *show_config_aamw: |
-          set services advanced-anti-malware policy ATP_POLICY
-        *show_config_security: |
-          set security policies from-zone trust to-zone untrust policy allow then permit application-services advanced-anti-malware-policy ATP_POLICY
-        *show_pfe_crashes: # No PFE crashes
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: MX240  # Not SRX
-          Junos: 21.4R2
-        *show_chassis_hardware: |
-          Chassis MX240

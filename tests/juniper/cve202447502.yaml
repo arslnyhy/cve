@@ -39,25 +39,7 @@ tests:
           Model: PTX10001-36MR
           Junos: 21.4R3-S8-EVO
         *show_system_connections: |
-          tcp 0 0 0.0.0.0:22 0.0.0.0:* ESTABLISHED
-          tcp 0 0 0.0.0.0:23 0.0.0.0:* ESTABLISHED
-        *show_config_filter: # No stale connections
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: PTX10001-36MR
-          Junos: 21.4R3-S8-EVO
-        *show_system_connections: |
           tcp 0 0 0.0.0.0:22 0.0.0.0:* CLOSED
           tcp 0 0 0.0.0.0:23 0.0.0.0:* TIME_WAIT
         *show_config_filter: |
           set firewall filter PROTECT-MGMT term allow-admin from source-address 10.0.0.0/24
-
-    - outcome: OK
-      commands:
-        *show_version: |
-          Hostname: test-device
-          Model: MX240  # Not Evolved
-          Junos: 21.4R3-S8

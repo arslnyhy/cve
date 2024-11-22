@@ -1,0 +1,30 @@
+.show_version: &show_version 'show version'
+.show_vxlan_config: &show_vxlan_config 'show configuration | display set | match "vxlan"'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202421595:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_vxlan_config: |
+          set vlans vlan1 vxlan
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 21.4R3
+        *show_vxlan_config:
+          # VXLAN not configured
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_vxlan_config: |
+          set vlans vlan1 vxlan
+          

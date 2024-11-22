@@ -1,0 +1,37 @@
+.show_version: &show_version 'show version'
+.show_chassis_hardware: &show_chassis_hardware 'show chassis hardware'
+.show_chassis_fpc: &show_chassis_fpc 'show chassis fpc'
+
+defaults:
+  devices:
+    - platform: juniper_junos
+
+tests:
+  rule_cve202447493:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Junos: 22.2R3
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_chassis_fpc: |
+          Slot State  CPU(%)  Memory(%)  Utilization
+           0  Online    41      85         14
+           1  Online    41      49         14
+           2  Online    41      49         14
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Junos: 23.2R2
+        *show_chassis_hardware: |
+          Hardware inventory:
+          Item             Version  Part number  Description
+          Chassis                              MX240
+        *show_chassis_fpc: |
+          Slot State  CPU(%)  Memory(%)  Utilization
+           0  Online    41      85         14
+           1  Online    41      49         14
+           2  Online    41      49         14
