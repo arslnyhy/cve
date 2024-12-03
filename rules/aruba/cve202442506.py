@@ -1,0 +1,61 @@
+from comfy import high
+
+@high(
+    name='rule_cve202442506',
+    platform=['aruba_os'],
+    commands=dict(
+        show_version='show version',
+        show_cli_service='show configuration | include cli service'
+    ),
+)
+def rule_cve202442506(configuration, commands, device, devices):
+    """
+    This rule checks for CVE-2024-42506 vulnerability in ArubaOS devices.
+    The vulnerability allows unauthenticated remote attackers to execute arbitrary code through
+    command injection in the CLI service via PAPI protocol (UDP port 8211), which could lead to
+    complete system compromise with privileged user access.
+    """
+    # Extract the version information from the command output
+    version_output = commands.show_version
+
+    # Define the vulnerable versions based on CVE data
+    vulnerable_versions = [
+        # 10.6.x versions
+        '10.6.0.2', '10.6.0.1', '10.6.0.0',
+        # 10.5.x and below
+        '10.5.0.0', '10.4.1.13', '10.4.1.12', '10.4.1.11',
+        '10.4.1.10', '10.4.1.9', '10.4.1.8', '10.4.1.7',
+        '10.4.1.6', '10.4.1.5', '10.4.1.4', '10.4.1.3',
+        '10.4.1.2', '10.4.1.1', '10.4.1.0', '10.4.0.0',
+        '10.3.0.0', '10.2.0.0', '10.1.0.0', '10.0.0.0',
+        # 8.12.x versions
+        '8.12.0.1', '8.12.0.0',
+        # 8.11.x versions
+        '8.11.0.0',
+        # 8.10.x versions
+        '8.10.0.13', '8.10.0.12', '8.10.0.11', '8.10.0.10',
+        '8.10.0.9', '8.10.0.8', '8.10.0.7', '8.10.0.6',
+        '8.10.0.5', '8.10.0.4', '8.10.0.3', '8.10.0.2',
+        '8.10.0.1', '8.10.0.0',
+        # 8.9.x and below
+        '8.9.0.0', '6.5.4.0'
+    ]
+
+    # Check if the current version is vulnerable
+    version_vulnerable = any(version in version_output for version in vulnerable_versions)
+
+    # If version is not vulnerable, exit early
+    if not version_vulnerable:
+        return
+
+    # Check if CLI service is enabled
+    cli_config = commands.show_cli_service
+    cli_enabled = 'cli service enable' in cli_config
+
+    # Assert that the device is not vulnerable
+    assert not cli_enabled, (
+        f"Device {device.name} is vulnerable to CVE-2024-42506. "
+        "The device is running a vulnerable version with CLI service enabled, "
+        "which makes it susceptible to unauthenticated remote code execution attacks "
+        "through PAPI protocol that could lead to privileged system access."
+    )
