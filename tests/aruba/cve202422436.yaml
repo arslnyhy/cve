@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_agent_config: &show_agent_config 'show configuration | include agent'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202422436:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version:
+          ArubaOS version 10.0.0
+        *show_agent_config:
+          agent service enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 11.1.0
+        *show_agent_config:
+          # Agent service not enabled

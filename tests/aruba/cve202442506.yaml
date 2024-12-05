@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_cli_service: &show_cli_service 'show configuration | include cli service'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202442506:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 10.6.0.0
+        *show_cli_service: |
+          cli service enable
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 10.6.1.0
+        *show_cli_service:
+          # CLI service not enabled

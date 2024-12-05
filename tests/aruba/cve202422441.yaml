@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_pals_config: &show_pals_config 'show configuration | include pals'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202422441:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 8.7.0.0
+        *show_pals_config: |
+          pals service enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 8.8.0.0
+        *show_pals_config:
+          # PALS service not enabled

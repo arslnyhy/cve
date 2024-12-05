@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_ssh_server: &show_ssh_server 'show configuration | include ssh-server'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202426303:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 6.12.0
+        *show_ssh_server: |
+          ssh-server enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 6.13.0
+        *show_ssh_server:
+          # SSH server not enabled

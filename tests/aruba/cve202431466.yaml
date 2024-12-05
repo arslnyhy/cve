@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_papi: &show_papi 'show configuration | include papi'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202431466:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 10.5.0.0
+        *show_papi: |
+          papi enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 10.6.0.0
+        *show_papi:
+          # PAPI service not enabled

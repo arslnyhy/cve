@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_sensitive_config: &show_sensitive_config 'show configuration | include sensitive'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202442508:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 10.6.0.0
+        *show_sensitive_config: |
+          sensitive access enable
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 10.6.1.0
+        *show_sensitive_config:
+          # Sensitive information access not enabled

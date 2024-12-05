@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_web_admin: &show_web_admin 'show configuration | include web-admin'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202426298:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 6.12.0
+        *show_web_admin: |
+          web-admin enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 6.13.0
+        *show_web_admin:
+          # Web admin interface not enabled

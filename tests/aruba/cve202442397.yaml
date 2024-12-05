@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_cert_mgmt: &show_cert_mgmt 'show configuration | include certificate-mgmt'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202442397:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 10.6.0.0
+        *show_cert_mgmt: |
+          certificate-mgmt enable
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 10.6.1.0
+        *show_cert_mgmt:
+          # Certificate Management daemon not enabled

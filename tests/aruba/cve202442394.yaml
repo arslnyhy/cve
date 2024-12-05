@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_soft_ap: &show_soft_ap 'show configuration | include soft-ap'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202442394:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 8.12.0.0
+        *show_soft_ap: |
+          soft-ap enable
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 8.13.0.0
+        *show_soft_ap:
+          # Soft AP Daemon Service not enabled

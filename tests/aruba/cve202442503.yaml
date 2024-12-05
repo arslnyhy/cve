@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_lua_config: &show_lua_config 'show configuration | include lua'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve202442503:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 10.6.0.0
+        *show_lua_config: |
+          lua enable
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 10.6.1.0
+        *show_lua_config:
+          # Lua package not enabled

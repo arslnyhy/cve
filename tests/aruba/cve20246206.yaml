@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_container_config: &show_container_config 'show container config'
+
+defaults:
+  devices:
+    - platform: aruba_os
+
+tests:
+  rule_cve20246206:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 1.23.4.1
+        *show_container_config: |
+          privileged: true
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 1.24.0.0
+        *show_container_config:
+          # Container not in privileged mode
