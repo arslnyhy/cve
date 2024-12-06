@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_tcam: &show_tcam 'show hardware tcam profile'
+.show_acl: &show_acl 'show running-config | section ip access-list'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128504:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.3F
+        *show_tcam: |
+          Profile: custom
+        *show_acl: |
+          protocol vxlan
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.4F
+        *show_tcam: |
+          Profile: custom
+        *show_acl: |
+          protocol vxlan

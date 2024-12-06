@@ -1,1 +1,38 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_monitor: &show_monitor 'show monitor session'
+.show_config: &show_config 'show running-config | section monitor'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve20233646:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version:
+          4.28.5.1M
+        *show_monitor:
+          Session 1:  active
+          Session 2:  active
+        *show_config:
+          monitor session 1 source interface Ethernet1
+          monitor session 1 destination interface Ethernet2
+          monitor session 2 source interface Ethernet3
+          monitor session 2 destination interface Ethernet4
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.28.6M
+        *show_monitor:
+          Session 1:  active
+          Session 2:  active
+        *show_config:
+          monitor session 1 source interface Ethernet1
+          monitor session 1 destination interface Ethernet2
+          monitor session 2 source interface Ethernet3
+          monitor session 2 destination interface Ethernet4

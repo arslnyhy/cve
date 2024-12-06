@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_ptp: &show_ptp 'show running-config | section ptp'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128510:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.4
+        *show_ptp: |
+          ptp enable
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.5
+        *show_ptp: |
+          ptp enable

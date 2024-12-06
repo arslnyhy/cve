@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_nat: &show_nat 'show running-config | section ip nat'
+.show_acl: &show_acl 'show running-config | section ip access-list'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128511:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.5
+        *show_nat: |
+          ip nat inside source list test
+        *show_acl: |
+          ip access-list test
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.6
+        *show_nat: |
+          ip nat inside source list test
+        *show_acl: |
+          ip access-list test

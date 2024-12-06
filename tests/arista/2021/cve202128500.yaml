@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_users: &show_users 'show running-config | section username'
+.show_agents: &show_agents 'show running-config | include openconfig|terminattr'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128500:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.1F
+        *show_users: |
+          username admin nopassword
+        *show_agents: |
+          openconfig enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.2F
+        *show_users: |
+          username admin nopassword
+        *show_agents:
+          # No agents enabled

@@ -1,1 +1,35 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_gnmi: &show_gnmi 'show management api gnmi'
+.show_restconf: &show_restconf 'show management api restconf'
+.show_gnoi: &show_gnoi 'show management api gnoi'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128506:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.2F
+        *show_gnmi: |
+          enabled
+        *show_restconf: |
+          enabled
+        *show_gnoi: |
+          enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.3M
+        *show_gnmi: |
+          enabled
+        *show_restconf: |
+          enabled
+        *show_gnoi: |
+          enabled

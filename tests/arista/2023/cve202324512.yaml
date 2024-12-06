@@ -1,1 +1,32 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version detail | grep TerminAttr-core'
+.show_daemon: &show_daemon 'show daemon TerminAttr'
+.show_daemon_config: &show_daemon_config 'show running-config | section daemon TerminAttr'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202324512:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version:
+          TerminAttr-core version v1.23.0
+        *show_daemon:
+          running with PID 1234
+        *show_daemon_config:
+          daemon TerminAttr
+            exec /usr/bin/TerminAttr -grpcaddr=localhost:6042
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          TerminAttr-core version v1.25.0
+        *show_daemon:
+          running with PID 1234
+        *show_daemon_config:
+          daemon TerminAttr
+            exec /usr/bin/TerminAttr -grpcaddr=localhost:6042

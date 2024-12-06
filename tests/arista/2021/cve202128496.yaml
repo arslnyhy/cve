@@ -1,1 +1,32 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_bfd: &show_bfd 'show running-config | section bfd'
+.show_eapi: &show_eapi 'show management api http-commands'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128496:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.24.7
+        *show_bfd: |
+          profile test
+          key-id 1
+        *show_eapi: |
+          enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.24.8
+        *show_bfd: |
+          profile test
+          key-id 1
+        *show_eapi: |
+          enabled

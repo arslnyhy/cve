@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_acl: &show_acl 'show running-config | section ip access-list'
+.show_interfaces: &show_interfaces 'show running-config | section interface'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128505:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.3M
+        *show_acl: |
+          protocol vxlan
+        *show_interfaces: |
+          ip access-group test in
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.4M
+        *show_acl: |
+          protocol vxlan
+        *show_interfaces: |
+          ip access-group test in

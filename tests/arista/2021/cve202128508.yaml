@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_terminattr: &show_terminattr 'show running-config | include terminattr'
+.show_ipsec: &show_ipsec 'show running-config | section crypto ipsec'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128508:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.26.5
+        *show_terminattr: |
+          terminattr enabled
+        *show_ipsec: |
+          crypto ipsec profile test
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.26.6
+        *show_terminattr: |
+          terminattr enabled
+        *show_ipsec: |
+          crypto ipsec profile test

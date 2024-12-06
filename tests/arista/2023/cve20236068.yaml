@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_multiaccess: &show_multiaccess 'show running-config | section multiaccess'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve20236068:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          multiaccess-1.7.1
+        *show_multiaccess: |
+          access-list test permit ip any any
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          multiaccess-1.8.0
+        *show_multiaccess: |
+          access-list test permit ip any any

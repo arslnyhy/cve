@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_config: &show_config 'show running-config'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve20244578:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          ArubaOS version 15.5.0.0
+        *show_config: |
+          config user enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          ArubaOS version 16.1.0-51-vv703
+        *show_config: |
+          config user enabled

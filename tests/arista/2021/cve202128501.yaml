@@ -1,1 +1,35 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_terminattr: &show_terminattr 'show running-config | include terminattr'
+.show_openconfig: &show_openconfig 'show running-config | include openconfig'
+.show_users: &show_users 'show running-config | section username'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202128501:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          1.16.1
+        *show_terminattr: |
+          terminattr enabled
+        *show_openconfig: |
+          openconfig enabled
+        *show_users: |
+          username admin nopassword
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          1.16.2
+        *show_terminattr: |
+          terminattr enabled
+        *show_openconfig: |
+          openconfig enabled
+        *show_users: |
+          username admin nopassword

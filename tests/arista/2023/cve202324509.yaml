@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_module: &show_module 'show module'
+.show_redundancy: &show_redundancy 'show redundancy status'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202324509:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version:
+          4.28.3M
+        *show_module:
+          Module 1: Standby supervisor
+        *show_redundancy:
+          Route Processor Redundancy enabled
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.28.4M
+        *show_module:
+          Module 1: Standby supervisor
+        *show_redundancy:
+          Route Processor Redundancy enabled

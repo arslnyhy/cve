@@ -1,1 +1,29 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_ip_helper: &show_ip_helper 'show running-config | include ip helper-address'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202324510:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          4.28.6.1M
+        *show_ip_helper: |
+          interface Ethernet1
+            ip helper-address source-interface Loopback0 10.1.1.1
+            ip helper-address 10.2.2.2
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.28.7M
+        *show_ip_helper: |
+          interface Ethernet1
+            ip helper-address source-interface Loopback0 10.1.1.1
+            ip helper-address 10.2.2.2

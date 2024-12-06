@@ -1,1 +1,27 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_bgp_config: &show_bgp_config 'show running-config | section router bgp'
+
+defaults:
+  devices:
+    - platform: arista_mos
+
+tests:
+  rule_cve202324547:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          0.39.4
+        *show_bgp_config: |
+          router bgp 65000
+            neighbor 10.1.1.1 password plaintext
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          0.39.5
+        *show_bgp_config: |
+          router bgp 65000
+            neighbor 10.1.1.1 password key 7 encrypted

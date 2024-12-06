@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_version: &show_version 'show version'
+.show_sfe: &show_sfe 'show sfe status'
+.show_platform: &show_platform 'show platform cloudeos'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202324545:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version:
+          4.28.4M
+        *show_sfe:
+          SFE enabled
+        *show_platform:
+          CloudEOS Router
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.28.5M
+        *show_sfe:
+          SFE enabled
+        *show_platform:
+          CloudEOS Router

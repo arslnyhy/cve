@@ -1,1 +1,57 @@
-# Placeholder for CVE script
+.show_version: &show_version 'show version'
+.show_ip_routing: &show_ip_routing 'show running-config | include ip routing'
+.show_vxlan_config: &show_vxlan_config 'show running-config | section vxlan'
+.show_vxlan_vni: &show_vxlan_vni 'show vxlan vni'
+.show_vlan: &show_vlan 'show vlan'
+.show_ip_interface: &show_ip_interface 'show ip interface brief'
+
+defaults:
+  devices:
+    - platform: arista_eos
+
+tests:
+  rule_cve202324548:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version:
+          4.24.11M
+        *show_ip_routing:
+          ip routing
+        *show_vxlan_config:
+          interface Vxlan1
+            vxlan source-interface Loopback0
+            vxlan udp-port 4789
+            vxlan vlan 10 vni 10010
+        *show_vxlan_vni:
+          VNI to VLAN Mapping for Vxlan1
+          VNI         VLAN       Source       Interface
+          10010      10         static       Vlan10
+        *show_vlan:
+          VLAN  Name                             Status    Ports
+          10    VLAN0010                         active    Vxlan1
+        *show_ip_interface:
+          Interface       IP Address         Status
+          Vlan10         10.1.1.1/24       up
+
+    - outcome: OK
+      commands:
+        *show_version:
+          # Non-vulnerable version
+          4.25.1F
+        *show_ip_routing:
+          ip routing
+        *show_vxlan_config:
+          interface Vxlan1
+            vxlan source-interface Loopback0
+            vxlan udp-port 4789
+            vxlan vlan 10 vni 10010
+        *show_vxlan_vni:
+          VNI to VLAN Mapping for Vxlan1
+          VNI         VLAN       Source       Interface
+          10010      10         static       Vlan10
+        *show_vlan:
+          VLAN  Name                             Status    Ports
+          10    VLAN0010                         active    Vxlan1
+        *show_ip_interface:
+          Interface       IP Address         Status
+          Vlan10         10.1.1.1/24       up
