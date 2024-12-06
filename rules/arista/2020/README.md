@@ -1,0 +1,1 @@
+There are no vulnerabilities for arista eos in 2020.

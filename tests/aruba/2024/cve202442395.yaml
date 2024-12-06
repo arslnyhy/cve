@@ -12,7 +12,7 @@ tests:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          ArubaOS version 10.6.0.0
+          ArubaOS version 8.12.0.1
         *show_cert_mgmt: |
           certificate-mgmt enable
 
