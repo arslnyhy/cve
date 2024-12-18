@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_running_config: &show_running_config 'show config running'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20249471:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.2.7
+        *show_running_config: |
+          set mgmt-config api enable
+
+    - outcome: OK
+      commands:
+        *show_system_info:
+          # Non-vulnerable version
+          sw-version: 10.2.8
+        *show_running_config: |
+          set mgmt-config api enable

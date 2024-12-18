@@ -1,1 +1,20 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20248686:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 11.2.2
+
+    - outcome: OK
+      commands:
+        *show_system_info:
+          # Non-vulnerable version
+          sw-version: 11.2.3

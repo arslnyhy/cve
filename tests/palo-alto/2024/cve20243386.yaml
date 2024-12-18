@@ -1,1 +1,22 @@
-# Placeholder for CVE script
+.show_system_info: &show_system_info 'show system info'
+.show_running_config: &show_running_config 'show config running | match ssl-decrypt'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20243386:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.1.8
+        *show_running_config: |
+          set ssl-decrypt forward-proxy
+
+    - outcome: OK
+      commands:
+        *show_system_info: |
+          sw-version: 10.1.8
+        *show_running_config:
+          # SSL decryption not configured

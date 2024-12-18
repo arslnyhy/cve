@@ -1,1 +1,26 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_certificate: &show_certificate 'show device-certificate status'
+
+defaults:
+  devices:
+    - platform: paloalto_panorama
+
+tests:
+  rule_cve20243387:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.1.11
+        *show_certificate: |
+          No device certificate found
+
+
+    - outcome: OK
+      commands:
+        *show_system_info:
+          # Non-vulnerable version
+          sw-version: 10.1.12
+        *show_certificate: |
+          No device certificate found

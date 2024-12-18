@@ -1,1 +1,26 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_running_config: &show_running_config 'show config running'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20240011:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.1.2
+        *show_running_config: |
+          captive-portal {
+            enabled: yes
+          }
+
+    - outcome: OK
+      commands:
+        *show_system_info: |
+          sw-version: 10.1.3
+        *show_running_config:
+          # No captive portal configuration

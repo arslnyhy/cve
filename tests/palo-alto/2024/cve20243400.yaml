@@ -1,1 +1,25 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_global_protect: &show_global_protect 'show global-protect-gateway gateway'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20243400:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.2.8
+          iamportal: enabled
+        *show_global_protect: |
+          Gateway: enabled
+
+    - outcome: OK
+      commands:
+        *show_system_info: |
+          sw-version: 12
+        *show_global_protect:
+        # No GlobalProtect gateway

@@ -1,1 +1,28 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_running_config: &show_running_config 'show config running'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20243384:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 9.1.15
+        *show_running_config: |
+          authentication {
+            ntlm {
+              enabled: yes
+            }
+          }
+
+    - outcome: OK
+      commands:
+        *show_system_info: |
+          sw-version: 9.1.15-h1
+        *show_running_config:
+        # No ntlm authentication

@@ -1,1 +1,30 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_running_config: &show_running_config 'show config running'
+.show_global_protect: &show_global_protect 'show global-protect-gateway gateway'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20243388:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.1.10
+        *show_running_config: |
+          set ssl-vpn enable
+        *show_global_protect: |
+          Gateway: enabled
+
+    - outcome: OK
+      commands:
+        *show_system_info:
+          # Non-vulnerable version
+          sw-version: 10.1.11-h4
+        *show_running_config: |
+          set ssl-vpn enable
+        *show_global_protect: |
+          Gateway: enabled

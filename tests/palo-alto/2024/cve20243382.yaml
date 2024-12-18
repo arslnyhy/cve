@@ -1,1 +1,26 @@
 # Placeholder for CVE script
+
+.show_system_info: &show_system_info 'show system info'
+.show_running_config: &show_running_config 'show config running | match "ssl-forward-proxy"'
+
+defaults:
+  devices:
+    - platform: paloalto_panos
+
+tests:
+  rule_cve20243382:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_system_info: |
+          sw-version: 10.2.7
+        *show_running_config: |
+          ssl-forward-proxy {
+            enabled: yes
+          }
+
+    - outcome: OK
+      commands:
+        *show_system_info: |
+          sw-version: 10.2.7-h3
+        *show_running_config:
+        # No ssl-forward-proxy
