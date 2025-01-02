@@ -1,0 +1,19 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'get system status'
+
+defaults:
+  devices:
+    - platform: fortinet
+
+tests:
+  rule_cve202426007:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Version: 7.4.1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Version: 7.4.4
