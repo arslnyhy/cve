@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_bfd: &check_bfd 'show running-config | include bfd'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202320049:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.2
+        *check_bfd: |
+          bfd hardware-offload enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.2
+        *check_bfd:
+          # BFD hardware offload not configured

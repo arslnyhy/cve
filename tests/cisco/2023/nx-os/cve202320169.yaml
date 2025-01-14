@@ -1,0 +1,25 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_isis: &check_isis 'show running-config | include router isis'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202320169:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Version: 10.3(2)
+        *check_isis: |
+          router isis 100
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Version: 10.3(2)
+        *check_isis:
+          # No IS-IS configuration

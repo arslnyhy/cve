@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_install: &check_install 'show install active summary'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202320135:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.5.3
+        *check_install: |
+          Active install operations detected
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.5.3
+        *check_install:
+          # No active install operations

@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ipxe: &check_ipxe 'show running-config | include ipxe'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202320236:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.9.2
+        *check_ipxe: |
+          ipxe configuration
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.9.2
+        *check_ipxe:
+          # No iPXE configuration

@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ssh: &check_ssh 'show running-config | include ssh'
+
+defaults:
+  devices:
+    - platform: cisco_sdwan
+
+tests:
+  rule_cve202320262:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco SD-WAN Software
+          Version: 20.9.1
+        *check_ssh: |
+          ip ssh server enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco SD-WAN Software
+          Version: 20.9.1
+        *check_ssh:
+          # No SSH configuration

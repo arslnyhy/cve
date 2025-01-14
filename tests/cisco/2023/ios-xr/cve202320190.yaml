@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_acl: &check_acl 'show running-config | include ipv4 access-list'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202320190:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.8.1
+        *check_acl: |
+          ipv4 access-list test-acl
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.8.1
+        *check_acl:
+          # No ACLs configured

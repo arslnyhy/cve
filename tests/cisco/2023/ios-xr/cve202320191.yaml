@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_mpls_acl: &check_mpls_acl 'show running-config | include mpls|access-list'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202320191:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.5.4
+        *check_mpls_acl: |
+          mpls configuration
+          ipv4 access-list test-acl
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.5.4
+        *check_mpls_acl:
+          # No MPLS or ACL configuration

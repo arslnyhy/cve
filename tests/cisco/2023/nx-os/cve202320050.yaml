@@ -1,0 +1,19 @@
+# Placeholder for rule tester
+
+.check_cli: &check_cli 'show running-config | include cli'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202320050:
+    - outcome: TESTS_FAILED
+      commands:
+        *check_cli: |
+          cli
+
+    - outcome: OK
+      commands:
+        *check_cli:
+          # CLI command not configured
