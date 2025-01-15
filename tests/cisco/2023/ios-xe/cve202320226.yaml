@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_appqoe_utd: &check_appqoe_utd 'show running-config | include appqoe|utd'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320226:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.2
+        *check_appqoe_utd: |
+          appqoe enable
+          utd enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.2
+        *check_appqoe_utd: # No AppQoE or UTD configuration present

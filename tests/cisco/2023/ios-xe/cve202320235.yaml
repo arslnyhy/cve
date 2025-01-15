@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_iox: &check_iox 'show running-config | include iox|app-hosting'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320235:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.2
+        *check_iox: |
+          iox
+          app-hosting enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.9.2
+        *check_iox: # No IOx/app-hosting configuration present

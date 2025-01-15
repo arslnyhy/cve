@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include ASR1'
+.check_ipv6: &check_ipv6 'show running-config | include ipv6 multicast'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320187:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 3.16.8S
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco ASR1006 Chassis"
+        *check_ipv6: |
+          ipv6 multicast-routing
+          ipv6 multicast vrf RED
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 3.16.8S
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco ISR4451 Chassis"
+        *check_ipv6: # No IPv6 multicast configuration present

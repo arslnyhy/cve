@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_vfr: &check_vfr 'show running-config | include ip virtual-reassembly'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320027:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_vfr: |
+          ip virtual-reassembly in
+          ip virtual-reassembly out
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_vfr: # No VFR configuration present

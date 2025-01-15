@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_wlc: &check_wlc 'show running-config | include wireless|http client'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320067:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_wlc: |
+          wireless management interface
+          http client profile-http
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_wlc: # No WLC and HTTP client profiling configuration present

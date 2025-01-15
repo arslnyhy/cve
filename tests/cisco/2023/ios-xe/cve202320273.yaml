@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_webui: &check_webui 'show running-config | include ip http|webui'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320273:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.6.3
+        *check_webui: |
+          ip http server
+          ip http secure-server
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.6.3
+        *check_webui: # No web UI configuration present

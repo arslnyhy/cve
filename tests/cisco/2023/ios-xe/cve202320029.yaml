@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_meraki: &check_meraki 'show running-config | include meraki'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320029:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_meraki: |
+          meraki onboarding enable
+          meraki registration-mode automatic
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_meraki: # No Meraki configuration present

@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_tunnel: &check_tunnel 'show running-config | include tunnel|gre'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320072:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_tunnel: |
+          interface Tunnel0
+          tunnel mode gre ip
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_tunnel: # No tunnel protocols configured

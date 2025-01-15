@@ -1,0 +1,25 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_mgmt: &check_mgmt 'show running-config | include interface GigabitEthernet0'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320033:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.6.5
+        *check_mgmt: |
+          interface GigabitEthernet0/0
+          interface GigabitEthernet0/1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.1.1
+        *check_mgmt: |
+          interface GigabitEthernet0/0

@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_capwap: &check_capwap 'show running-config | include wireless|capwap'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320100:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_capwap: |
+          wireless management interface
+          capwap ap controller
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_capwap: # No wireless/CAPWAP configuration present

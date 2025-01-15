@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_l2tp: &check_l2tp 'show running-config | include vpdn|l2tp'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202320227:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.9.3
+        *check_l2tp: |
+          vpdn enable
+          l2tp tunnel enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.9.3
+        *check_l2tp: # No L2TP configuration present
