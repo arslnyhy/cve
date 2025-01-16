@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_aaa: &check_aaa 'show running-config | include aaa|ip scp'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202320186:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.2(4)M4
+        *check_aaa: |
+          aaa authorization commands 15 default group tacacs+
+          ip scp server enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.2(4)M4
+        *check_aaa: # No AAA authorization or SCP configuration present

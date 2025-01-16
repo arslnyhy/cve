@@ -26,12 +26,17 @@ def rule_cve20240011(configuration, commands, device, devices):
     # Extract version information
     version = commands.show_system_info
     
-    # List of vulnerable base versions
-    vulnerable_versions = ['sw-version: 8.1.', 'sw-version: 9.0.', 'sw-version: 9.1.', 
-                         'sw-version: 10.0.', 'sw-version: 10.1.']
+    # Define version ranges for vulnerable versions
+    vulnerable_version_ranges = [
+        {'version': '8.1.0', 'lessThan': '8.1.24'},
+        {'version': '9.0.0', 'lessThan': '9.0.17'},
+        {'version': '9.1.0', 'lessThan': '9.1.13'},
+        {'version': '10.0.0', 'lessThan': '10.0.11'},
+        {'version': '10.1.0', 'lessThan': '10.1.3'},
+    ]
     
-    # Check if version contains any vulnerable base version
-    version_vulnerable = any(v in version for v in vulnerable_versions)
+    # Check if version is vulnerable using the normalizer function
+    version_vulnerable = is_version_affected(version, vulnerable_version_ranges)
     
     # If version is not vulnerable, no need to check further
     if not version_vulnerable:

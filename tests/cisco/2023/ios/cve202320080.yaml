@@ -5,14 +5,14 @@
 
 defaults:
   devices:
-    - platform: cisco_xe
+    - platform: cisco_ios
 
 tests:
   rule_cve202320080:
     - outcome: TESTS_FAILED
       commands:
         *show_version: |
-          Cisco IOS XE Software, Version 16.12.01
+          Cisco IOS Software, Version 15.7(3)M4
         *check_dhcpv6: |
           ipv6 dhcp relay
           ipv6 dhcp server
@@ -20,5 +20,5 @@ tests:
     - outcome: OK
       commands:
         *show_version: |
-          Cisco IOS XE Software, Version 16.12.01
+          Cisco IOS Software, Version 15.7(3)M4
         *check_dhcpv6: # No DHCPv6 configuration present

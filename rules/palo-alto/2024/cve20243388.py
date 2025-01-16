@@ -16,16 +16,47 @@ def rule_cve20243388(configuration, commands, device, devices):
     The vulnerability in GlobalProtect Gateway allows an authenticated attacker to impersonate 
     another user and send network packets to internal assets when SSL VPN is enabled.
     """
-    # Extract version information
+    # Extract system info
     version_output = commands.show_system_info
+    
+    def is_version_affected(device_version: str, versions: list) -> bool:
+        """
+        Check if a device version is affected by comparing it against version ranges.
+        
+        Args:
+            device_version: Device version string to check
+            versions: List of dicts containing version ranges with 'version' and 'lessThan' keys
+        
+        Returns:
+            bool: True if the version is affected, False otherwise
+        """
+        # Assuming normalized_cve_version is a separate function that normalizes version strings
+        device_norm = normalized_cve_version(device_version)
+        
+        for version_range in versions:
+            base_version = normalized_cve_version(version_range['version'])
+            cap_version = normalized_cve_version(version_range['lessThan'])
+            
+            if base_version <= device_norm < cap_version:
+                return True
+                
+        return False
 
-    # List of vulnerable software versions
-    vulnerable_versions = [
-        'sw-version: 8.1.', 'sw-version: 9.0.', 'sw-version: 9.1.', 'sw-version: 10.1.', 'sw-version: 10.2.', 'sw-version: 11.0.'
+    # Extract version information
+    version = commands.show_system_info
+    
+    # Define version ranges for vulnerable versions
+    vulnerable_version_ranges = [
+        {'version': '8.1.0', 'lessThan': '8.1.26'},
+        {'version': '9.0.0', 'lessThan': '9.0.17-h4'},
+        {'version': '9.1.0', 'lessThan': '9.1.17'},
+        {'version': '10.1.0', 'lessThan': '10.1.11-h4'},
+        {'version': '10.2.0', 'lessThan': '10.2.7-h3'},
+        {'version': '11.0.0', 'lessThan': '11.0.3'},
     ]
-
-    # Check if version is vulnerable
-    version_vulnerable = any(version in version_output for version in vulnerable_versions)
+    
+    # Check if version is vulnerable using the normalizer function
+    version_vulnerable = is_version_affected(version, vulnerable_version_ranges)
 
     # If version is not vulnerable, no need to check further
     if not version_vulnerable:

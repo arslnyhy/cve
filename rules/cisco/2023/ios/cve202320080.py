@@ -2,7 +2,7 @@ from comfy import high
 
 @high(
     name='rule_cve202320080',
-    platform=['cisco_xe'],
+    platform=['cisco_ios'],
     commands=dict(
         show_version='show version',
         check_dhcpv6='show running-config | include ipv6 dhcp'
@@ -10,7 +10,7 @@ from comfy import high
 )
 def rule_cve202320080(configuration, commands, device, devices):
     """
-    This rule checks for the CVE-2023-20080 vulnerability in Cisco IOS XE Software.
+    This rule checks for the CVE-2023-20080 vulnerability in Cisco IOS Software.
     The vulnerability is due to insufficient validation of data boundaries in the IPv6 DHCP (DHCPv6)
     relay and server features. An attacker could exploit this vulnerability by sending crafted DHCPv6
     messages to an affected device, causing it to reload unexpectedly.
@@ -19,7 +19,7 @@ def rule_cve202320080(configuration, commands, device, devices):
     dhcpv6_output = commands.check_dhcpv6
 
     # Check if DHCPv6 relay or server is configured
-    dhcpv6_configured = 'ipv6 dhcp' in dhcpv6_output
+    dhcpv6_configured = any(feature in dhcpv6_output for feature in ['ipv6 dhcp relay', 'ipv6 dhcp server'])
 
     # Assert that the device is not vulnerable
     assert not dhcpv6_configured, (

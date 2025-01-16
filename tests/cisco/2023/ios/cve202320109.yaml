@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_getvpn: &check_getvpn 'show running-config | include crypto gdoi'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202320109:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_getvpn: |
+          crypto gdoi group GETVPN-GROUP
+          crypto gdoi ipsec platform
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_getvpn: # No GET VPN configuration present
