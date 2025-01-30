@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ipsec: &check_ipsec 'show running-config | include crypto ipsec'
+.check_mtu: &check_mtu 'show interfaces | include MTU'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202220679:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_ipsec: |
+          crypto ipsec transform-set TS esp-aes esp-sha-hmac
+        *check_mtu: |
+          MTU 2000 bytes
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_ipsec: # No IPsec configuration present
+        *check_mtu: |
+          MTU 1500 bytes

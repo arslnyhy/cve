@@ -1,0 +1,38 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_tl1: &check_tl1 'show processes | include tl1'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202220845:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 6.5.29
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco Network Convergence System 4000 (NCS-4)"
+        *check_tl1: |
+          12345  tl1-server  Running
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 6.5.33
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco Network Convergence System 4000"
+        *check_tl1: |
+          12345  tl1-server  Running
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 6.5.29
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco ASR 9000"
+        *check_tl1: |
+          12345  tl1-server  Running

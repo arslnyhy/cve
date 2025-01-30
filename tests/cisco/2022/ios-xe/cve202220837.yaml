@@ -1,0 +1,25 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_nat: &check_nat 'show running-config | include ip nat|alg'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202220837:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_nat: |
+          ip nat inside source list 1 interface GigabitEthernet0/0/0 overload
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_nat: |
+          ip nat inside source list 1 interface GigabitEthernet0/0/0 overload
+          no ip nat service alg dns tcp

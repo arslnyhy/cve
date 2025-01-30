@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ap: &check_ap 'show running-config | include autonomous-ap'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202220761:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_ap: |
+          autonomous-ap
+          autonomous-ap dot11 24ghz
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_ap: # No autonomous AP configuration present

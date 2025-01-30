@@ -1,0 +1,32 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_confd: &check_confd 'show processes confd'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202220655:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.0.1
+        *check_confd: |
+          PID    Name                 State        CPU    Memory    RunTime
+          12345  confd               Running      0.2%   128MB     10:30:15
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.2.1
+        *check_confd: |
+          PID    Name                 State        CPU    Memory    RunTime
+          12345  confd               Running      0.2%   128MB     10:30:15
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.0.1
+        *check_confd: # No ConfD process running

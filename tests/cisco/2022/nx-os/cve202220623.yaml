@@ -1,0 +1,33 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_bfd: &check_bfd 'show running-config | include feature bfd'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202220623:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Hardware: Nexus 9000 C9300v Chassis
+        *check_bfd: |
+          feature bfd
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Hardware: Nexus 9000 C9300v Chassis
+        *check_bfd: # No BFD configuration present
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Hardware: Nexus 7000 Chassis
+        *check_bfd: |
+          feature bfd

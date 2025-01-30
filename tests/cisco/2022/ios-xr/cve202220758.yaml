@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_bgp: &check_bgp 'show running-config | include router bgp|address-family l2vpn evpn'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202220758:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_bgp: |
+          router bgp 65000
+          address-family l2vpn evpn
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_bgp: # No BGP EVPN configuration present

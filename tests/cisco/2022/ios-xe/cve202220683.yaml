@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_fnf: &check_fnf 'show running-config | include flow|performance monitor'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202220683:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9800-40 Wireless Controller"
+        *check_fnf: |
+          flow record my-record
+          performance monitor context my-context
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco ISR4451 Chassis"
+        *check_fnf: # No AVC/FNF configuration present

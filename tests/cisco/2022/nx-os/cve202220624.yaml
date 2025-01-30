@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_cfs: &check_cfs 'show running-config | include cfs ipv4 distribute'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202220624:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_cfs: |
+          cfs ipv4 distribute
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_cfs: # No CFSoIP configuration present

@@ -1,0 +1,36 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ospfv3: &check_ospfv3 'show running-config | include router ospfv3|ipv6 router ospf'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve202220823:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_ospfv3: |
+          router ospfv3 1
+
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_ospfv3: |
+          ipv6 router ospf 1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_ospfv3: # No OSPFv3 configuration present

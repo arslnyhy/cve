@@ -1,0 +1,30 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_wireless: &check_wireless 'show running-config | include ap|wireless'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202220848:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9115AX-40 Access Point"
+        *check_wireless: |
+          ap sso
+          wireless management interface
+          wireless controller
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco ISR4451 Chassis"
+        *check_wireless: # No wireless controller configuration present

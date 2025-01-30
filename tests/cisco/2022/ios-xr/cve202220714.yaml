@@ -1,0 +1,23 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_linecard: &check_linecard 'show inventory | include Lightspeed-Plus'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202220714:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_linecard: |
+          NAME: "0/0/CPU0", DESCR: "ASR9K Lightspeed-Plus Line Card"
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_linecard: # No Lightspeed-Plus line cards present

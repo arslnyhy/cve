@@ -1,0 +1,21 @@
+.show_version: &show_version 'show version'
+.check_cip: &check_cip 'show running-config | include cip enable'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202220919:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_cip: |
+          cip enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_cip: # No CIP configuration present

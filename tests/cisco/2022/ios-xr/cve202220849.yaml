@@ -1,0 +1,32 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_pppoe: &check_pppoe 'show running-config | include bba-group pppoe|pppoe enable'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202220849:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_pppoe: |
+          bba-group pppoe BNG-PPPoE
+          pppoe enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.6.1
+        *check_pppoe: |
+          bba-group pppoe BNG-PPPoE
+          pppoe enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_pppoe: # No PPPoE configuration present

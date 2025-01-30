@@ -1,0 +1,31 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_6vpe: &check_6vpe 'show running-config | include vrf|ipv6|zone'
+.check_zbfw: &check_zbfw 'show running-config | include zone-pair|class-map|policy-map'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202220915:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_6vpe: |
+          vrf definition CUSTOMER
+          ipv6 unicast-routing
+          ipv6 vrf CUSTOMER
+        *check_zbfw: |
+          zone-pair security IN-OUT source INSIDE destination OUTSIDE
+          class-map type inspect match-any CM-INSPECT
+          policy-map type inspect PM-INSPECT
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_6vpe: # No 6VPE configuration present
+        *check_zbfw: # No ZBFW configuration present

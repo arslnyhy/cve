@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_redis: &check_redis 'show processes | include redis'
+.check_port: &check_port 'show processes | include 6379'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202220821:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_redis: |
+          12345  redis-server  Running
+        *check_port: |
+          TCP  *:6379  LISTEN
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software, Version 7.3.2
+        *check_redis: # No Redis process running
+        *check_port: # Port 6379 not open
