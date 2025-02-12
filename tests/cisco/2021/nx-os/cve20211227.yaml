@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_nxapi: &check_nxapi 'show running-config | include feature nxapi'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211227:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_nxapi: |
+          feature nxapi
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_nxapi: # No NX-API configuration present

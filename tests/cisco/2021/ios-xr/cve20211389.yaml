@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ipv6_acl: &check_ipv6_acl 'show running-config | include ipv6 access-list|interface|ipv6 traffic-filter'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211389:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ipv6_acl: |
+          ipv6 access-list ACL-V6
+          interface GigabitEthernet0/0/0/0
+            ipv6 traffic-filter ACL-V6 in
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ipv6_acl: # No IPv6 ACLs configured or applied

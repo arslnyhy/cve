@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_capwap: &check_capwap 'show running-config | include ap capwap|wireless management'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202134770:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9800-40 Wireless Controller"
+        *check_capwap: |
+          ap capwap timers
+          wireless management interface vlan 100
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9800-40 Wireless Controller"
+        *check_capwap: # No wireless management configuration

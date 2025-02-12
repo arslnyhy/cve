@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_enf: &check_enf 'show running-config | include enf|enforcement'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211313:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_enf: |
+          enforcement broker enabled
+          enf policy active
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_enf: # No enforcement broker features configured

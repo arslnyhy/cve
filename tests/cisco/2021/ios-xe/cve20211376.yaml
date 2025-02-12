@@ -1,0 +1,31 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1376 vulnerability in Cisco IOS XE Software
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_reload: &check_reload 'show running-config | include reload|boot'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211376:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco Catalyst C9300-48P"
+        *check_reload: |
+          reload fast
+          boot system flash:cat9k_iosxe.16.12.01.SPA.bin
+          
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco Catalyst C9300-48P"
+        *check_reload: # No fast reload configuration present

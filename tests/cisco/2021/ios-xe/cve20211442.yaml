@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1442 vulnerability in Cisco IOS XE Software
+
+.show_version: &show_version 'show version'
+.check_pnp: &check_pnp 'show running-config | include pnp|username.*privilege'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211442:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_pnp: |
+          pnp profile pnp-zero-touch
+          username operator privilege 1 password 0 cisco123
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_pnp: |
+          pnp profile pnp-zero-touch
+          username operator privilege 1 password 0 cisco123

@@ -1,0 +1,32 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1622 vulnerability in Cisco IOS XE Software for cBR-8
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_cops: &check_cops 'show running-config | include cops|packetcable'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211622:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco CBR-8-CCAP-CHASS"
+        *check_cops: |
+          cops server 192.0.2.1
+          packetcable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco CBR-8-CCAP-CHASS"
+        *check_cops: |
+          cops server 192.0.2.1

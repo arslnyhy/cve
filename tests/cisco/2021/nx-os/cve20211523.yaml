@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_svi: &check_svi 'show running-config | include interface vlan|svi'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211523:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software in ACI Mode
+          Hardware: Nexus 9000 C93180YC-EX
+        *check_svi: |
+          interface vlan100
+          interface vlan200
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software in ACI Mode
+          Hardware: Nexus 9000 C93180YC-EX
+        *check_svi: # No SVI configuration present

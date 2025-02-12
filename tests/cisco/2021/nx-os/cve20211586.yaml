@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_multipod: &check_multipod 'show running-config | include multipod|multi-site'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211586:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software in ACI Mode
+          Hardware: Nexus 9000 C93180YC-EX
+        *check_multipod: |
+          multipod enable
+          multi-site enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software in ACI Mode
+          Hardware: Nexus 9000 C93180YC-EX
+        *check_multipod: # No Multi-Pod or Multi-Site configuration present

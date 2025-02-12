@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ikev2: &check_ikev2 'show running-config | include crypto ikev2'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve20211620:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_ikev2: |
+          crypto ikev2 client configuration group GROUP1
+          crypto ikev2 authorization policy POLICY1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_ikev2: # No IKEv2 configuration present

@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_login_block: &check_login_block 'show running-config | include system login block-for'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211590:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_login_block: |
+          system login block-for 100 attempts 2 within 50
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_login_block: # No system login block-for configuration present

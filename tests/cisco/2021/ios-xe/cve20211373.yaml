@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1373 vulnerability in Cisco IOS XE Wireless Controller Software
+
+.show_version: &show_version 'show version'
+.check_wireless: &check_wireless 'show running-config | include wireless|ap|capwap'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211373:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+          Cisco Catalyst C9800-CL Wireless Controller
+        *check_wireless: |
+          wireless management interface Vlan100
+          ap capwap timers discovery-timeout 10
+          wireless mobility controller
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4  # Not IOS XE
+        *check_wireless: |
+          wireless management interface Vlan100

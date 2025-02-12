@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ddos: &check_ddos 'show running-config | include tcp syn-flood|half-open|syn-cookie'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202134697:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_ddos: |
+          tcp syn-flood limit 100
+          tcp half-open limit 50
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_ddos: # No DDoS protection features configured

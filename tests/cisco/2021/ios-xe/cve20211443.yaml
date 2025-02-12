@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1443 vulnerability in Cisco IOS XE Software web UI
+
+.show_version: &show_version 'show version'
+.check_webui: &check_webui 'show running-config | include ip http|restconf|username.*privilege 15'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211443:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_webui: |
+          ip http server
+          ip http secure-server
+          username admin privilege 15 password 0 cisco123
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_webui: |
+          ip http server
+          username admin privilege 15 password 0 cisco123

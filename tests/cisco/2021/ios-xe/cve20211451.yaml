@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_vss: &check_vss 'show running-config | include virtual-switch|easy-virtual-switch'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211451:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco WS-C4500X Switch"
+        *check_vss: |
+          easy-virtual-switch domain 100
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco WS-C4500X Switch"
+        *check_vss: |
+          easy-virtual-switch domain 100

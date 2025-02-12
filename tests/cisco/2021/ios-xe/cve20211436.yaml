@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1436 vulnerability in Cisco IOS XE SD-WAN Software
+
+.show_version: &show_version 'show version'
+.check_sdwan: &check_sdwan 'show running-config | include sdwan|username'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211436:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE SD-WAN Software, Version 17.3.1a
+        *check_sdwan: |
+          sdwan
+          username operator password 0 cisco123
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_sdwan: |
+          sdwan
+          username operator password 0 cisco123

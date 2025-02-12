@@ -1,0 +1,31 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1452 vulnerability in Cisco IOS XE ROMMON Software
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_rommon: &check_rommon 'show rom-monitor'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211452:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco IE-3400 Series Switch"
+        *check_rommon: |
+          ROMMON version 16.12(1r)
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco IE-3400 Series Switch"
+        *check_rommon: |
+          ROMMON version 16.12(1r)

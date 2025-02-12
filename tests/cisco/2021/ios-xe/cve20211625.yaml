@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_zbfw: &check_zbfw 'show running-config | include zone-pair|utd|appqoe'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211625:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_zbfw: |
+          zone-pair security inside-outside source inside destination outside
+          utd engine standard
+          policy-map type inspect utd policy1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_zbfw:
+          zone-pair security inside-outside source inside destination outside
+          # No UTD or AppQoE configuration

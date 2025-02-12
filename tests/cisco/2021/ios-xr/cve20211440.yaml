@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_rpki: &check_rpki 'show running-config | include router bgp|rpki'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211440:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_rpki: |
+          router bgp 65000
+            rpki server 192.0.2.1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_rpki: # No BGP or RPKI configuration present

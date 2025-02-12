@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ingress: &check_ingress 'show running-config | include ingress|qos'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211288:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ingress: |
+          service-policy input QOS-IN
+          qos-policy ingress
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ingress: # No ingress packet processing features configured

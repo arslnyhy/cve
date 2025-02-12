@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1616 vulnerability in Cisco IOS XE Software
+
+.show_version: &show_version 'show version'
+.check_nat: &check_nat 'show running-config | include ip nat|alg|h323'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211616:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_nat: |
+          ip nat inside
+          ip nat outside
+          ip nat pool mypool
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_nat: |
+          ip nat inside
+          ip nat outside

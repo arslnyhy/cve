@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1281 vulnerability in Cisco IOS XE SD-WAN Software
+
+.show_version: &show_version 'show version'
+.check_sdwan: &check_sdwan 'show running-config | include sdwan|confd'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211281:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE SD-WAN Software, Version 17.3.1a
+        *check_sdwan: |
+          sdwan
+          confd
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1a
+        *check_sdwan: # No SD-WAN configuration present

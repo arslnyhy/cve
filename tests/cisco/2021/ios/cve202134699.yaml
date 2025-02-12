@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_trustsec: &check_trustsec 'show running-config | include cts|trustsec'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve202134699:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_trustsec: |
+          cts authorization list TEST
+          cts role-based enforcement
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_trustsec: # No TrustSec configuration present

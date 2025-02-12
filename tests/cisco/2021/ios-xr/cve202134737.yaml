@@ -1,0 +1,25 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_dhcp: &check_dhcp 'show running-config | include ipv4 dhcp server'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202134737:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_dhcp: |
+          ipv4 dhcp server
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_dhcp: # No DHCPv4 server configuration present

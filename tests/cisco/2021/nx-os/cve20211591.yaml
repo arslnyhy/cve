@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_acl_portchannel: &check_acl_portchannel 'show running-config | include interface port-channel|ip access-group'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211591:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Hardware: Nexus 9500
+        *check_acl_portchannel: |
+          interface port-channel1
+            ip access-group ACL-IN in
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Hardware: Nexus 9500
+        *check_acl_portchannel: # No ACLs on port-channels configured

@@ -1,0 +1,21 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211485:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.2.1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.3.1

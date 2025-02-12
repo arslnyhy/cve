@@ -1,0 +1,32 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1623 vulnerability in Cisco IOS XE Software for cBR-8
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_snmp: &check_snmp 'show running-config | include snmp-server'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211623:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco CBR-8-CCAP-CHASS"
+        *check_snmp: |
+          snmp-server community public RO
+          snmp-server host 192.0.2.1 version 2c public
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco CBR-8-CCAP-CHASS"
+        *check_snmp: |
+          snmp-server community public RO

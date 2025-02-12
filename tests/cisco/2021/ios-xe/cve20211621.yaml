@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1621 vulnerability in Cisco IOS XE Software
+
+.show_version: &show_version 'show version'
+.check_l2: &check_l2 'show running-config | include switchport|spanning-tree|vlan'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211621:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_l2: |
+          switchport mode access
+          spanning-tree mode rapid-pvst
+          vlan 10
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_l2: |
+          switchport mode access
+          spanning-tree mode rapid-pvst

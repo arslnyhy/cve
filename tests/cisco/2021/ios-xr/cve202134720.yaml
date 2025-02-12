@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ipsla: &check_ipsla 'show running-config | include ip sla|twamp'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202134720:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ipsla: |
+          ip sla responder
+          twamp server enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ipsla: # No IP SLA or TWAMP configuration present

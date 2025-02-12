@@ -1,0 +1,29 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.show_platform: &show_platform 'show platform'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211370:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          NCS540L Software
+        *show_platform: |
+          Node name    Node type   State      Config state
+          --------------------------------------------------------------------
+          0/RP0/CPU0  NCS-540     IOS XR RUN NSHUT
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+        *show_platform: |
+          Node name    Node type   State      Config state
+          --------------------------------------------------------------------
+          0/RP0/CPU0  ASR9K       IOS XR RUN NSHUT

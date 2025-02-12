@@ -1,0 +1,30 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_wireless: &check_wireless 'show running-config | include ap role active|ap capwap'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211615:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 16.12.01
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9115AXI-B Access Point"
+        *check_wireless: |
+          ap role active
+          ap capwap timers
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9115AXI-B Access Point"
+        *check_wireless: |
+          ap role active

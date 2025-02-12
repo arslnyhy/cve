@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_mpp: &check_mpp 'show running-config | include control-plane|management-plane|snmp|inband'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve20211243:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_mpp: |
+          management-plane
+            inband
+              allow snmp
+              deny snmp peer 10.0.0.0/8
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_mpp: # No management plane protection or SNMP restrictions configured

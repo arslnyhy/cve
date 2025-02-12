@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-1439 vulnerability in Cisco Aironet Access Points Software
+
+.show_version: &show_version 'show version'
+.check_mdns: &check_mdns 'show running-config | include mdns|flexconnect|vlan'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211439:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Aironet Access Point Software
+        *check_mdns: |
+          mdns gateway
+          flexconnect local-switching
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_mdns: |
+          mdns gateway
+          flexconnect local-switching

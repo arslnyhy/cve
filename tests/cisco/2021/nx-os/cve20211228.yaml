@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_lldp: &check_lldp 'show running-config | include lldp|fabric-mode'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211228:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software in ACI Mode
+          Hardware: Nexus 9000 C93180YC-EX
+        *check_lldp: |
+          feature lldp
+          fabric-mode
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software in ACI Mode
+          Hardware: Nexus 9000 C93180YC-EX
+        *check_lldp: # No LLDP or fabric-mode configuration present

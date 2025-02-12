@@ -1,0 +1,31 @@
+# Placeholder for rule tester
+
+# Test for CVE-2021-34767 vulnerability in Cisco IOS XE Wireless Controller Software
+
+.show_version: &show_version 'show version'
+.check_platform: &check_platform 'show inventory | include Chassis'
+.check_ipv6: &check_ipv6 'show running-config | include ipv6'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve202134767:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9800-40 Wireless Controller"
+        *check_ipv6: |
+          ipv6 unicast-routing
+          ipv6 cef
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software, Version 17.3.1
+        *check_platform: |
+          NAME: "Chassis", DESCR: "Cisco C9800-40 Wireless Controller"
+        *check_ipv6: # No IPv6 configuration

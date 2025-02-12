@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_pim: &check_pim 'show running-config | include feature pim|ip pim'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211367:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_pim: |
+          feature pim
+          ip pim sparse-mode
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_pim: # No PIM configuration present

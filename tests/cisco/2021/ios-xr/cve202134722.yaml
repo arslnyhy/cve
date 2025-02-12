@@ -1,0 +1,33 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.show_xml_agent: &show_xml_agent 'show running-config | include xml agent'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202134722:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.3.1
+        *show_xml_agent: |
+          xml agent tty
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.3.2
+        *show_xml_agent: |
+          xml agent tty
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.3.1
+        *show_xml_agent: |

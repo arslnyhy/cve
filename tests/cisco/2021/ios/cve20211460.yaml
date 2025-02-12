@@ -1,0 +1,24 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_iox: &check_iox 'show running-config | include iox'
+
+defaults:
+  devices:
+    - platform: cisco_ios
+
+tests:
+  rule_cve20211460:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_iox: |
+          iox
+          iox client enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS Software, Version 15.7(3)M4
+        *check_iox: # No IOx configuration present

@@ -1,0 +1,28 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ipv6: &check_ipv6 'show running-config | include ipv6'
+
+defaults:
+  devices:
+    - platform: cisco_nxos
+
+tests:
+  rule_cve20211229:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_ipv6: |
+          ipv6 address 2001:db8::1/64
+          ipv6 enable
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco Nexus Operating System (NX-OS) Software
+          Software
+          NXOS: version 9.3(8)
+        *check_ipv6: # No IPv6 configuration present

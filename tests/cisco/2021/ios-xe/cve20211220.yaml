@@ -1,0 +1,26 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_webui: &check_webui 'show running-config | include ip http|username'
+
+defaults:
+  devices:
+    - platform: cisco_xe
+
+tests:
+  rule_cve20211220:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XE Software
+          Version: 17.1.1
+        *check_webui: |
+          ip http server
+          username operator privilege 1 password 0 cisco123
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XE Software
+          Version: 17.1.1
+        *check_webui: # No web UI configuration present

@@ -1,0 +1,27 @@
+# Placeholder for rule tester
+
+.show_version: &show_version 'show version'
+.check_ssh: &check_ssh 'show running-config | include ssh|scp'
+
+defaults:
+  devices:
+    - platform: cisco_xr
+
+tests:
+  rule_cve202134718:
+    - outcome: TESTS_FAILED
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ssh: |
+          ssh server
+          scp server enable
+          username operator ssh-key ssh-rsa privilege 1
+
+    - outcome: OK
+      commands:
+        *show_version: |
+          Cisco IOS XR Software
+          Version: 7.1.1
+        *check_ssh: # No SSH/SCP configuration present
